@@ -21,6 +21,18 @@
 								<i class="pi pi-inbox"></i>
 							</router-link>
 						</li>
+						<li>
+							<router-link
+								class="link"
+								:to="{ name: 'createJob' }"
+							>
+								<Button
+									label="Add job"
+									icon="pi pi-plus"
+									iconPos="right"
+								/>
+							</router-link>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -30,11 +42,12 @@
 
 <script setup lang="ts">
 import VLogo from "@/components/base/VLogo.vue";
+import Button from "primevue/button";
 </script>
 
 <style scoped>
 .link {
-	@apply flex items-center gap-2 text-lg font-semibold text-white transition;
+	@apply hover:text-primary-200 flex items-center gap-2 text-lg font-semibold text-white transition;
 
 	&.router-link-active {
 		@apply text-primary-400;

@@ -1,7 +1,10 @@
 <template>
-	<v-header />
+	<v-header class="mb-10" />
+
 	<main class="flex-grow pb-10">
-		<div class="container">Hello</div>
+		<div class="container">
+			<router-view></router-view>
+		</div>
 	</main>
 </template>
 
