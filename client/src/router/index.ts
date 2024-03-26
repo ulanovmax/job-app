@@ -11,13 +11,13 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => {
-	// to.meta.requiresAuth && !user.id
-	if (to.meta.requiresAuth) {
-		next({ name: "login" }); // If user id not found
-	} else {
-		next({ name: "main" });
-	}
-});
+// router.beforeEach((to, from, next) => {
+// 	// to.meta.requiresAuth && !user.id
+// 	if (to.meta.requiresAuth) {
+// 		next({ name: "login" }); // If user id not found
+// 	} else {
+// 		next({ name: "main" });
+// 	}
+// });
 
 export default router;
