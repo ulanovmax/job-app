@@ -2,7 +2,7 @@ import { Company } from "./company";
 
 interface Job {
 	id: string;
-	company: Company;
+	companyId: number;
 	responses: number;
 	date: Date;
 	title: string;

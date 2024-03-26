@@ -1,0 +1,7 @@
+type Query {
+  jobs: [Job]
+}
+
+type Job {
+  title: String!
+}
