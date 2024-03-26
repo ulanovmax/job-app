@@ -11,6 +11,9 @@ dependencies:
   pinia-plugin-persistedstate:
     specifier: ^3.2.1
     version: 3.2.1(pinia@2.1.7)
+  primeicons:
+    specifier: ^6.0.1
+    version: 6.0.1
   primevue:
     specifier: ^3.50.0
     version: 3.50.0(vue@3.4.21)
@@ -1988,6 +1991,10 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
+
+  /primeicons@6.0.1:
+    resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
+    dev: false
 
   /primevue@3.50.0(vue@3.4.21):
     resolution: {integrity: sha512-vYpQzvIXSmF0hWUkviHEGnwbFY/G8jI2RSxoa75noJloI2rWhzOX+JarJ8iaesVOr7b2se31N/p7zOx6uh3ddQ==}

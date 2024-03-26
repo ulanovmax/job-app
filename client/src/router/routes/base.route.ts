@@ -1,3 +1,6 @@
+import inboxRoute from "./inbox.route";
+import jobBoardRoute from "./job-board.route";
+
 export default {
 	path: "/",
 	name: "main",
@@ -5,11 +8,5 @@ export default {
 
 	meta: { requiresAuth: true },
 
-	// children: [
-	// 	...userRequestsRoute,
-	// 	allRequestsRoute,
-	// 	createRequestRoute,
-	// 	createOrderRoute,
-	// 	createDeliveryRoute,
-	// ],
+	children: [jobBoardRoute, inboxRoute],
 };

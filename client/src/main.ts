@@ -5,6 +5,7 @@ import Lara from "./presets/lara";
 
 import "./assets/tailwind.css";
 import "./assets/base.css";
+import "primeicons/primeicons.css";
 
 // Router
 import router from "./router";

@@ -1,7 +1,7 @@
 <template>
-	<main>Login</main>
+	<main>Job board</main>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped lang="postcss"></style>
+<style scoped></style>
