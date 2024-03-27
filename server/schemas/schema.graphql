@@ -2,3 +2,7 @@ type Query {
   jobs: [Job]!
   company(id: ID!): Company
 }
+
+type Mutation {
+  createJob(input: JobCreateInput!): Job
+}

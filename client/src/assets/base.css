@@ -39,3 +39,7 @@ h5,
 h6 {
 	font-weight: 700;
 }
+
+h1 {
+	@apply text-3xl;
+}

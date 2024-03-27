@@ -15,7 +15,22 @@ type JobRequirements {
   englishLevel: String!
 }
 
+input JobRequirementsInput {
+  years: Int!
+  englishLevel: String!
+}
+
 enum JobType {
   Office
   Remote
+}
+
+"""
+Create job
+"""
+input JobCreateInput {
+  title: String!
+  description: String
+  type: JobType
+  requirements: JobRequirementsInput
 }

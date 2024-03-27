@@ -17,6 +17,6 @@ interface JobRequirements {
 	englishLevel: string;
 }
 
-type JobType = "remote" | "office";
+type JobType = "Remote" | "Office";
 
-export type { Job };
+export type { Job, JobType };

@@ -5,18 +5,6 @@ const { schema } = connection;
 await schema.dropTableIfExists("job");
 await schema.dropTableIfExists("company");
 
-await schema.createTable("job", (table) => {
-  table.text("id").notNullable().primary();
-  table.text("companyId").notNullable();
-  table.text("title").notNullable();
-  table.text("description");
-  table.text("dateCreated").notNullable();
-  table.text("country").notNullable();
-  table.enu("type", ["Office", "Remote"]);
-  table.integer("responses").notNullable();
-  table.json("requirements").notNullable();
-});
-
 await schema.createTable("company", (table) => {
   table.text("id").notNullable().primary();
   table.text("name").notNullable();
@@ -24,22 +12,17 @@ await schema.createTable("company", (table) => {
   table.text("country").notNullable();
 });
 
-await connection.table("job").insert([
-  {
-    id: "f3YzmnBZpK0o",
-    companyId: "FjcJCHJALA4i",
-    title: "Frontend Developer",
-    description: "We are looking for a Frontend Developer familiar with React.",
-    dateCreated: "2024-03-25T12:00:00.000Z",
-    country: "Ukraine",
-    type: "Office",
-    responses: 0,
-    requirements: JSON.stringify({
-      years: 3,
-      englishLevel: "Intermidiate",
-    }),
-  },
-]);
+await schema.createTable("job", (table) => {
+  table.text("id").notNullable().primary();
+  table.text("companyId").notNullable().references("id").inTable("company");
+  table.text("title").notNullable();
+  table.text("description");
+  table.text("dateCreated").notNullable();
+  table.text("country").notNullable();
+  table.enu("type", ["Office", "Remote"]);
+  table.integer("responses");
+  table.json("requirements").notNullable();
+});
 
 await connection.table("company").insert([
   {

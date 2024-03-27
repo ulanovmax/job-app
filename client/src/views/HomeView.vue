@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1 class="mb-5 text-3xl">Featured jobs 🔥</h1>
+		<h1 class="mb-5">Featured jobs 🔥</h1>
 
 		<ProgressSpinner class="mx-auto my-10 !block" v-if="loading" />
 

@@ -14,12 +14,18 @@
 		"noEmit": true,
 		"jsx": "preserve",
 
+		"paths": {
+			"@/*": ["./src/*"],
+			"@public/*": ["./public/*"]
+		},
+
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
+	"exclude": ["./presets/**/*js"],
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",

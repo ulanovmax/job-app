@@ -1,6 +1,7 @@
 import { createApp, h, provide } from "vue";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import PrimeVue from "primevue/config";
+import ToastService from "primevue/toastservice";
 
 import "./assets/tailwind.css";
 import "./assets/base.css";
@@ -12,16 +13,18 @@ import Lara from "./presets/lara";
 // Router
 import router from "./router";
 
-createApp({
+const app = createApp({
 	setup() {
 		provide(DefaultApolloClient, apolloClient);
 	},
 
 	render: () => h(App),
-})
-	.use(router)
+});
+
+app.use(router)
 	.use(PrimeVue, {
 		unstyled: true,
 		pt: Lara,
 	})
+	.use(ToastService)
 	.mount("#app");
