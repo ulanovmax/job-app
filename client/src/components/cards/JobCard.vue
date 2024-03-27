@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-surface-700 rounded-lg p-4">
+	<div class="rounded-lg bg-surface-700 p-4">
 		<div class="flex items-start justify-between">
 			<div class="mb-2 flex items-center gap-4">
 				<router-link to="#" class="text-primary-400 hover:underline">
@@ -12,7 +12,7 @@
 				</div>
 				<div class="opacity-60">
 					<i class="pi pi-calendar"></i>
-					{{ data.date }}
+					{{ formatDate(data.dateCreated) }}
 				</div>
 			</div>
 
@@ -56,6 +56,8 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const formatDate = (date: string): string => date.split("T")[0];
 
 import Tag from "primevue/tag";
 import Button from "primevue/button";

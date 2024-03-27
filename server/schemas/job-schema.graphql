@@ -1,0 +1,21 @@
+type Job {
+  id: ID!
+  title: String!
+  company: Company!
+  dateCreated: String!
+  description: String
+  responses: Int!
+  country: String!
+  type: JobType!
+  requirements: JobRequirements
+}
+
+type JobRequirements {
+  years: Int!
+  englishLevel: String!
+}
+
+enum JobType {
+  Office
+  Remote
+}

@@ -1,16 +1,24 @@
-import { createApp } from "vue";
-import App from "./App.vue";
+import { createApp, h, provide } from "vue";
+import { DefaultApolloClient } from "@vue/apollo-composable";
 import PrimeVue from "primevue/config";
-import Lara from "./presets/lara";
 
 import "./assets/tailwind.css";
 import "./assets/base.css";
 import "primeicons/primeicons.css";
 
+import { apolloClient } from "./apollo";
+import App from "./App.vue";
+import Lara from "./presets/lara";
 // Router
 import router from "./router";
 
-createApp(App)
+createApp({
+	setup() {
+		provide(DefaultApolloClient, apolloClient);
+	},
+
+	render: () => h(App),
+})
 	.use(router)
 	.use(PrimeVue, {
 		unstyled: true,

@@ -4,7 +4,7 @@ interface Job {
 	id: string;
 	companyId: number;
 	responses: number;
-	date: Date;
+	dateCreated: string;
 	title: string;
 	country: string;
 	requirements: JobRequirements;

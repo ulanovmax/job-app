@@ -1,0 +1,6 @@
+type Company {
+  id: ID!
+  name: String!
+  description: String
+  country: String!
+}

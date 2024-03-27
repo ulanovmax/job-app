@@ -1,7 +1,4 @@
 type Query {
-  jobs: [Job]
-}
-
-type Job {
-  title: String!
+  jobs: [Job]!
+  company(id: ID!): Company
 }
