@@ -13,33 +13,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 
 import JobCard from "@/components/cards/JobCard.vue";
 import ProgressSpinner from "primevue/progressspinner";
+import { GET_JOBS } from "@/apollo/queries/jobs.queries";
 
-const { result, loading } = useQuery(gql`
-	query getJobs {
-		jobs {
-			title
-			id
-			country
-			responses
-			type
-			description
-			dateCreated
-
-			requirements {
-				years
-				englishLevel
-			}
-
-			company {
-				name
-			}
-		}
-	}
-`);
+const { result, loading } = useQuery(GET_JOBS, null, {
+	fetchPolicy: "network-only",
+});
 
 const jobs = computed(() => result.value.jobs);
 </script>

@@ -1,5 +1,8 @@
 <template>
-	<div class="rounded-lg bg-surface-700 p-4">
+	<router-link
+		:to="{ name: 'jobView', params: { id: data.id } }"
+		class="block rounded-lg bg-surface-700 p-4 transition-colors hover:bg-surface-600"
+	>
 		<div class="flex items-start justify-between">
 			<div class="mb-2 flex items-center gap-4">
 				<router-link to="#" class="text-primary-400 hover:underline">
@@ -12,11 +15,11 @@
 				</div>
 				<div class="opacity-60">
 					<i class="pi pi-calendar"></i>
-					{{ formatDate(data.dateCreated) }}
+					{{ useFormatDate(data.dateCreated) }}
 				</div>
 			</div>
 
-			<div class="flex items-center gap-3">
+			<div v-if="editable" class="flex items-center gap-3">
 				<button class="opacity-50 transition-opacity hover:opacity-100">
 					<i class="pi pi-pencil"></i>
 				</button>
@@ -45,20 +48,19 @@
 		<p>
 			{{ data.description }}
 		</p>
-	</div>
+	</router-link>
 </template>
 
 <script lang="ts" setup>
 import type { Job } from "@/ts/types/jobs";
+import { useFormatDate } from "@/composables/useFormatDate";
+import Tag from "primevue/tag";
+import Button from "primevue/button";
 
 interface Props {
 	data: Job;
+	editable?: boolean;
 }
 
 defineProps<Props>();
-
-const formatDate = (date: string): string => date.split("T")[0];
-
-import Tag from "primevue/tag";
-import Button from "primevue/button";
 </script>

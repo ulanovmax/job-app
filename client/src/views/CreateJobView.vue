@@ -62,10 +62,10 @@ import InputNumber from "primevue/inputnumber";
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { useMutation } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import type { JobType } from "@/ts/types/jobs"
+import { CREATE_JOBS } from "@/apollo/mutations/jobs.mutations"
 
 const toast = useToast()
 
@@ -89,14 +89,7 @@ const langs = ref([
 	"Proficient",
 ]);
 
-const { mutate: createJob, loading, onError, onDone } = useMutation(gql`
-	mutation CreateJob($input: JobCreateInput!) {
-		job: createJob(input: $input) {
-			id
-			title
-		}
-	}
-`)
+const { mutate: createJob, loading, onError, onDone } = useMutation(CREATE_JOBS)
 
 const hundleSubmit = () => {
 	createJob({

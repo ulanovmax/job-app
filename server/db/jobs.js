@@ -5,6 +5,8 @@ const getJobTable = () => connection.table("job");
 
 export const getJobs = async () => await getJobTable().select();
 
+export const getJob = async (id) => await getJobTable().first().where({ id });
+
 export const addJob = async ({ companyId, country }, input) => {
   const { title, description, type, requirements } = input;
 

@@ -1,10 +1,11 @@
-import { getJobs, addJob } from "./db/jobs.js";
+import { getJobs, getJob, addJob } from "./db/jobs.js";
 import { getCompany } from "./db/company.js";
 
 export const resolvers = {
   Query: {
     jobs: () => getJobs(),
     company: (_root, { id }) => getCompany(id),
+    job: (_root, { id }) => getJob(id),
   },
 
   Mutation: {
