@@ -24,8 +24,10 @@ module.exports = {
 		allowImportExportEverywhere: true,
 		project: true,
 		tsconfigRootDir: __dirname,
+		extraFileExtensions: [".vue"],
 	},
 	plugins: ["@typescript-eslint", "prettier", "simple-import-sort"],
+	ignorePatterns: ["src/presets/**/*.js"],
 	rules: {
 		"@typescript-eslint/no-explicit-any": "warn",
 		"@typescript-eslint/no-confusing-void-expression": "off",

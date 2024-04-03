@@ -1,5 +1,5 @@
-import { getJobs, getJob, addJob } from "./db/jobs.js";
-import { getCompany } from "./db/company.js";
+import { getJobs, getJob, addJob, getJobsByCompany } from "./db/jobs.js";
+import { getCompany, addCompany } from "./db/company.js";
 
 export const resolvers = {
   Query: {
@@ -15,10 +15,16 @@ export const resolvers = {
 
       return addJob({ companyId, country }, input);
     },
+
+    createCompany: async (_root, { input }) => addCompany(input),
   },
 
   Job: {
     company: (job) => getCompany(job.companyId),
     requirements: (job) => JSON.parse(job.requirements),
+  },
+
+  Company: {
+    jobs: (company) => getJobsByCompany(company.id),
   },
 };

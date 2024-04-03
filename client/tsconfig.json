@@ -23,8 +23,9 @@
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
-	},
+		"noFallthroughCasesInSwitch": true,
+      "allowSyntheticDefaultImports": true
+    },
 	"exclude": ["node_modules", "./presets/**/*js"],
 	"include": [
 		"src/**/*.ts",

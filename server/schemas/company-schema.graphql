@@ -1,6 +1,16 @@
 type Company {
   id: ID!
+  dateCreated: String!
   name: String!
   description: String
   country: String!
+  jobs: [Job!]!
+  employees: Int!
+}
+
+input CompanyCreateInput {
+  name: String!
+  country: String!
+  employees: Int!
+  description: String
 }

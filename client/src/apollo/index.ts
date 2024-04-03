@@ -10,6 +10,7 @@ const graphqlURL = "http://localhost:9000/graphql";
 const httpLink = createHttpLink({
 	// You should use an absolute URL here
 	uri: graphqlURL,
+	credentials: "include",
 });
 
 // Cache implementation
