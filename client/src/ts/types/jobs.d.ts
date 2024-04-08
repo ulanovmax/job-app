@@ -12,6 +12,11 @@ interface Job {
 	type: JobType;
 }
 
+interface JobList {
+	items: Job[];
+	totalCount: number;
+}
+
 interface JobRequirements {
 	years: number;
 	englishLevel: string;
@@ -19,4 +24,4 @@ interface JobRequirements {
 
 type JobType = "Remote" | "Office";
 
-export type { Job, JobType };
+export type { Job, JobList, JobType };

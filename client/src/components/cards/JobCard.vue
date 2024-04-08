@@ -52,10 +52,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { Job } from "@/ts/types/jobs";
-import { useFormatDate } from "@/composables/useFormatDate";
-import Tag from "primevue/tag";
 import Button from "primevue/button";
+import Tag from "primevue/tag";
+
+import { useFormatDate } from "@/composables/useFormatDate";
+import type { Job } from "@/ts/types/jobs";
 
 interface Props {
 	data: Job;
