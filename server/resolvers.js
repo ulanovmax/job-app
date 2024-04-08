@@ -4,7 +4,7 @@ import {unauthorizedError} from "./errors.js";
 
 export const resolvers = {
   Query: {
-    jobs: () => getJobs(),
+    jobs: (_root, { limit }) => getJobs(limit),
     company: (_root, { id }) => getCompany(id),
     job: (_root, { id }) => getJob(id),
   },
