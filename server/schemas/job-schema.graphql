@@ -10,6 +10,11 @@ type Job {
   requirements: JobRequirements
 }
 
+type JobList {
+  items: [Job!]!
+  totalCount: Int!
+}
+
 type JobRequirements {
   years: Int!
   englishLevel: String!

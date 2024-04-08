@@ -1,10 +1,15 @@
-import { getJobs, getJob, addJob, getJobsByCompany } from "./db/jobs.js";
+import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
 import {unauthorizedError} from "./errors.js";
 
 export const resolvers = {
   Query: {
-    jobs: (_root, { limit }) => getJobs(limit),
+    jobs: async (_root, { limit, offset }) => {
+      const items = await getJobs(limit, offset);
+      const totalCount  = await countJobs();
+
+      return { items, totalCount  }
+    },
     company: (_root, { id }) => getCompany(id),
     job: (_root, { id }) => getJob(id),
   },

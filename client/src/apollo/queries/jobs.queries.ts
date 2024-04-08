@@ -1,24 +1,28 @@
 import gql from "graphql-tag";
 
 export const GET_JOBS = gql`
-	query getJobs {
-		jobs {
-			title
-			id
-			country
-			responses
-			type
-			description
-			dateCreated
+	query getJobs($limit: Int, $offset: Int) {
+		jobs(limit: $limit, offset: $offset) {
+			items {
+				title
+				id
+				country
+				responses
+				type
+				description
+				dateCreated
 
-			requirements {
-				years
-				englishLevel
+				requirements {
+					years
+					englishLevel
+				}
+
+				company {
+					name
+				}
 			}
 
-			company {
-				name
-			}
+			totalCount
 		}
 	}
 `;

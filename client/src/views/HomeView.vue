@@ -35,7 +35,7 @@ const { result, loading } = useQuery(GET_JOBS, null, {
 // 	}),
 // });
 
-const jobs = computed(() => result.value.jobs);
+const jobs = computed(() => result.value.jobs.items);
 </script>
 
 <style scoped lang="postcss"></style>
