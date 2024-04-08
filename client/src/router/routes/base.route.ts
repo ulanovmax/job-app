@@ -9,6 +9,8 @@ export default {
 	name: "main",
 	component: () => import("@/views/MainView.vue"),
 
+	redirect: { name: "home" },
+
 	meta: { requiresAuth: true },
 
 	children: [jobBoardRoute, inboxRoute, createJobRoute, homeRoute, jobRoute],

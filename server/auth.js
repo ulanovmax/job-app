@@ -32,7 +32,7 @@ export async function handleLogin(req, res) {
 }
 
 export const handleLogout = async (req, res) => {
-  res.clearCookie('accessToken').sendStatus(200);
+  res.clearCookie('accessToken').status(200).json({ success: true });
 }
 
 export const getAuthInfo = async (req,res) => {

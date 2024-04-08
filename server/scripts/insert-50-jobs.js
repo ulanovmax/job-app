@@ -14,7 +14,14 @@ for (let n = 1; n <= 50; n++) {
     companyId: companyIds[n % companyIds.length],
     title: `Job ${n}`,
     description: `This is the job number ${n}.`,
-    createdAt: new Date(START_TIME + n * INTERVAL).toISOString(),
+    country: `Ukraine`,
+    responses: 0,
+    type: "Office",
+    requirements: JSON.stringify({
+      years: 2,
+      englishLevel: "Upper-Intermediate"
+    }),
+    dateCreated: new Date(START_TIME + n * INTERVAL).toISOString(),
   });
 }
 

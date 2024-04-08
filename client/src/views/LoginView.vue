@@ -32,23 +32,22 @@
 				</form>
 			</div>
 		</section>
-
-		<Toast position="bottom-right" />
 	</main>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
-import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
 import type { LoginInput } from "@/api/login.api.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const toast = useToast();
+const router = useRouter();
 
 const authStore = useAuthStore();
 
@@ -58,10 +57,15 @@ const initialState: LoginInput = {
 };
 
 const state = ref<LoginInput>({ ...initialState });
+const isLoading = ref(false);
 
 const handleSubmit = async () => {
+	isLoading.value = true;
+
 	try {
 		await authStore.login(state.value);
+
+		void router.replace({ name: "main" });
 	} catch (e) {
 		toast.add({
 			severity: "error",
@@ -70,6 +74,8 @@ const handleSubmit = async () => {
 			closable: true,
 			life: 3000,
 		});
+	} finally {
+		isLoading.value = false;
 	}
 };
 </script>

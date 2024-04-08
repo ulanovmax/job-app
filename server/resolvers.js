@@ -1,5 +1,6 @@
 import { getJobs, getJob, addJob, getJobsByCompany } from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
+import {unauthorizedError} from "./errors.js";
 
 export const resolvers = {
   Query: {
@@ -9,9 +10,13 @@ export const resolvers = {
   },
 
   Mutation: {
-    createJob: async (_root, { input }) => {
+    createJob: async (_root, { input }, { accessToken }) => {
       const companyId = "FjcJCHJALA4i";
       const country = "Ukraine";
+
+      if (!accessToken) {
+        throw unauthorizedError()
+      }
 
       return addJob({ companyId, country }, input);
     },

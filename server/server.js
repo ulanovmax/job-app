@@ -6,29 +6,21 @@ import { resolvers } from "./resolvers.js";
 import typeDefs from "./schemas/index.js";
 import cookieParser from "cookie-parser"
 import {authMiddleware, getAuthInfo, handleLogin, handleLogout} from "./auth.js";
+import corsOptions from "./cors.js";
 
 const PORT = 9000;
 
 const app = express();
-
-const whitelist = ['http://localhost:5173']
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  credentials: true
-}
 
 app.use(cors(corsOptions), cookieParser(), express.json(), authMiddleware);
 
 app.post("/login", handleLogin);
 app.post("/logout", handleLogout);
 app.get("/auth", getAuthInfo)
+
+const getContext = ({ req }) => {
+  return { accessToken: req.cookies["accessToken"] }
+}
 
 const apolloServer = new ApolloServer({
   typeDefs,
@@ -37,7 +29,7 @@ const apolloServer = new ApolloServer({
 
 await apolloServer.start();
 
-app.use('/graphql', expressMiddleware(apolloServer));
+app.use('/graphql', expressMiddleware(apolloServer, { context: getContext }));
 
 app.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);

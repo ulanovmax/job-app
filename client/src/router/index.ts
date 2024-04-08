@@ -22,14 +22,14 @@ router.beforeEach((to, from, next) => {
 			next();
 		} else {
 			// User is not authenticated, redirect to login
-			next("/login");
+			next({ name: "login" });
 		}
 	} else {
 		// Non-protected route
 		if (to.path === "/login" && getAccessToken()) {
 			// If user is already authenticated and tries to access login page,
 			// redirect to some other page like home or profile
-			next("/"); // Adjust the destination path accordingly
+			next({ name: "main" }); // Adjust the destination path accordingly
 		} else {
 			// Allow access to non-protected routes
 			next();

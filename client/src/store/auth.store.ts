@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 
 import type { LoginInput } from "@/api/login.api.ts";
 import { loginAuth } from "@/api/login.api.ts";
+import { logoutAuth } from "@/api/logout.api.ts";
 import { throwError } from "@/api/throw-error.api.ts";
 
 export const useAuthStore = defineStore("authStore", () => {
@@ -18,8 +19,17 @@ export const useAuthStore = defineStore("authStore", () => {
 		}
 	};
 
+	const logout = async () => {
+		try {
+			await logoutAuth();
+		} catch (e) {
+			throwError(e);
+		}
+	};
+
 	return {
 		getAccessToken,
 		login,
+		logout,
 	};
 });

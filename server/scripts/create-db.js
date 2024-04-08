@@ -20,7 +20,7 @@ await schema.createTable("job", (table) => {
   table.text("description");
   table.text("dateCreated").notNullable();
   table.text("country").notNullable();
-  table.enu("type", ["Office", "Remote"]);
+  table.enu("type", ["Office", "Remote"]).notNullable();
   table.integer("responses");
   table.json("requirements").notNullable();
 });
