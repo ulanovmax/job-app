@@ -1,7 +1,13 @@
+import type { Job } from "@/ts/types/jobs";
+
 export interface Company {
 	id: string;
+	dateCreated: string;
 	name: string;
 	description?: string;
+	country: string;
+	jobs: Job[];
+	employees: number;
 }
 
 export interface CreateCompanyInput {
@@ -10,5 +16,5 @@ export interface CreateCompanyInput {
 	country: string;
 	password: string;
 	employees: number;
-	description: string;
+	description?: string;
 }

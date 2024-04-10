@@ -43,7 +43,7 @@ module.exports = {
 		"@typescript-eslint/prefer-optional-chain": "error",
 		"no-implied-eval": "off",
 		"@typescript-eslint/no-implied-eval": "error",
-		"no-unused-vars": "off",
+		"no-unused-vars": "error",
 		"@typescript-eslint/no-unused-vars": "warn",
 		"require-await": "off",
 		"@typescript-eslint/require-await": "error",

@@ -52,8 +52,6 @@ const onChange = (event: DropdownChangeEvent) => {
 	selectedCountry.value = event.value?.name ?? event.value;
 
 	loadCountries();
-
-	console.log(selectedCountry.value);
 };
 
 const loadCountries = useDebounce(async () => {

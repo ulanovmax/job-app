@@ -131,7 +131,7 @@ onError(() => {
 	toast.add({
 		severity: "error",
 		summary: "Error",
-		detail: "Job was successfully created",
+		detail: "Couldn't create job",
 		closable: true,
 		life: 3000,
 	});

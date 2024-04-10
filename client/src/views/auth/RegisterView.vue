@@ -12,10 +12,10 @@
 
 				<div class="w-full max-w-3xl">
 					<!-- Form for company  -->
-					<register-company-form v-if="active === 0" />
+					<register-company-form v-show="active === 0" />
 
 					<!-- Form for candidate  -->
-					<register-candidate-form v-else />
+					<register-candidate-form v-show="active === 1" />
 				</div>
 
 				<form

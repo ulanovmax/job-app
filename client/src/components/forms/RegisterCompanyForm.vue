@@ -5,7 +5,7 @@
 				<label for="name">Enter your company name</label>
 				<InputText
 					id="name"
-					v-model="state.email"
+					v-model="state.name"
 					placeholder="Company name"
 				/>
 			</fieldset>
@@ -68,30 +68,83 @@
 			/>
 		</fieldset>
 
-		<Button label="Sign in" class="w-full" type="submit" />
+		<Button
+			label="Sign in"
+			:loading="loading"
+			class="w-full"
+			type="submit"
+			@click="handleSubmit"
+		/>
 	</form>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import type { FetchResult } from "@apollo/client";
+import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import Textarea from "primevue/textarea";
+import { useToast } from "primevue/usetoast";
 
 import SearchCountries from "@/components/base/SearchCountries.vue";
 
-const initialState = {
+import { CREATE_COMPANY } from "@/apollo/mutations/company.mutations.ts";
+import type { CreateCompanyInput } from "@/ts/types/company";
+
+const router = useRouter();
+const toast = useToast();
+
+const initialState: CreateCompanyInput = {
+	name: "",
 	email: "",
-	password: "",
-	description: "",
 	country: "",
 	employees: 0,
+	password: "",
+	description: undefined,
 };
 
-const state = ref({ ...initialState });
+const state = ref<CreateCompanyInput>({ ...initialState });
 const repeatPassword = ref("");
+
+const { mutate: createCompany, loading } = useMutation(CREATE_COMPANY, {
+	errorPolicy: "all",
+});
+
+const handleSubmit = async () => {
+	try {
+		const response: FetchResult | null = await createCompany({
+			input: { ...state.value },
+		});
+
+		if (response) {
+			if (response.errors) {
+				throw response.errors;
+			}
+
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "Your account is successfully created",
+				closable: true,
+				life: 3000,
+			});
+
+			void router.push({ name: "login" });
+		}
+	} catch (e) {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "Couldn't create job",
+			closable: true,
+			life: 3000,
+		});
+	}
+};
 </script>
 
 <style scoped></style>

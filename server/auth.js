@@ -1,7 +1,7 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
 import {getUserByEmail} from "./db/users.js";
-import {getCompanyByEmail} from "./db/company.js";
+import {getCompany, getCompanyByEmail} from "./db/company.js";
 
 const secret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
 
@@ -12,22 +12,17 @@ export const authMiddleware = expressjwt({
 });
 
 export async function handleLogin(req, res) {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
 
-  let user;
+  const candidate = await getUserByEmail(email);
+  const company = await getCompanyByEmail(email);
 
-  if (role === "candidate") {
-    user = await getUserByEmail(email);
-  }
-
-  if (role === "company") {
-    user = await getCompanyByEmail(email)
-  }
+  const user = candidate ?? company;
 
   if (!user || user.password !== password) {
     res.status(401).json({ error: 'Unauthorized' });
   } else {
-    const claims = { userId: user.id, email: user.email };
+    const claims = { id: user.id, email: user.email, role: candidate ? "candidate" : "company"  };
     const token = jwt.sign(claims, secret);
 
     // Set days

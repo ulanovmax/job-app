@@ -3,17 +3,18 @@ import knex from "knex";
 
 const { schema } = connection;
 
-await schema.dropTableIfExists('user');
+await schema.dropTableIfExists("user");
 await schema.dropTableIfExists("job");
 await schema.dropTableIfExists("company");
 
 await schema.createTable("company", (table) => {
   table.text("id").notNullable().primary();
-  table.text('dateCreated');
+  table.text("dateCreated");
   table.text("name").notNullable();
   table.text("email").notNullable().unique();
   table.text("country").notNullable();
-  table.text('password').notNullable();
+  table.integer("employees").notNullable();
+  table.text("password").notNullable();
   table.text("description");
 });
 
@@ -29,17 +30,15 @@ await schema.createTable("job", (table) => {
   table.json("requirements").notNullable();
 });
 
-await schema.createTable('user', (table) => {
-  table.text('id').notNullable().primary();
-  table.text('companyId').notNullable()
-      .references('id').inTable('company');
-  table.text('name').notNullable();
-  table.text('email').notNullable().unique();
-  table.integer('years').notNullable();
+await schema.createTable("user", (table) => {
+  table.text("id").notNullable().primary();
+  table.text("companyId").notNullable().references("id").inTable("company");
+  table.text("name").notNullable();
+  table.text("email").notNullable().unique();
+  table.integer("years").notNullable();
   table.text("englishLevel").notNullable();
-  table.text('password').notNullable();
+  table.text("password").notNullable();
 });
-
 
 // await connection.table("company").insert([
 //   {

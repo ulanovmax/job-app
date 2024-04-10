@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 import { defineStore } from "pinia";
 
@@ -6,10 +7,13 @@ import type { LoginInput } from "@/api/login.api.ts";
 import { loginAuth } from "@/api/login.api.ts";
 import { logoutAuth } from "@/api/logout.api.ts";
 import { throwError } from "@/api/throw-error.api.ts";
+import { useSetCookies } from "@/composables/useSetCookies.ts";
 import router from "@/router";
+import type { Token } from "@/ts/types/token";
 
 export const useAuthStore = defineStore("authStore", () => {
 	const getAccessToken = () => Cookies.get("accessToken");
+	const getRole = () => Cookies.get("role");
 
 	const login = async (input: LoginInput) => {
 		try {
@@ -18,12 +22,10 @@ export const useAuthStore = defineStore("authStore", () => {
 			if (res) {
 				const { accessToken } = res;
 
-				Cookies.set("accessToken", accessToken, {
-					expires: 7,
-					path: "",
-					secure: true,
-					sameSite: "lax",
-				});
+				const decode = jwtDecode<Token>(accessToken);
+
+				useSetCookies("accessToken", accessToken);
+				useSetCookies("role", decode.role);
 			}
 		} catch (e) {
 			throwError(e);
@@ -44,6 +46,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
 	return {
 		getAccessToken,
+		getRole,
 		login,
 		logout,
 	};
