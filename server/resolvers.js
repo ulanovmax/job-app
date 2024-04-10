@@ -1,6 +1,7 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
 import {unauthorizedError} from "./errors.js";
+import {addCandidate} from "./db/candidates.js";
 
 export const resolvers = {
   Query: {
@@ -27,6 +28,8 @@ export const resolvers = {
     },
 
     createCompany: async (_root, { input }) => addCompany(input),
+
+    createCandidate: async (_root, { input }) => addCandidate(input)
   },
 
   Job: {

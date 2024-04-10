@@ -7,13 +7,16 @@ import type { LoginInput } from "@/api/login.api.ts";
 import { loginAuth } from "@/api/login.api.ts";
 import { logoutAuth } from "@/api/logout.api.ts";
 import { throwError } from "@/api/throw-error.api.ts";
-import { useSetCookies } from "@/composables/useSetCookies.ts";
 import router from "@/router";
 import type { Token } from "@/ts/types/token";
 
 export const useAuthStore = defineStore("authStore", () => {
 	const getAccessToken = () => Cookies.get("accessToken");
-	const getRole = () => Cookies.get("role");
+	const getRole = () => {
+		const token = getAccessToken();
+
+		return token ? jwtDecode<Token>(token).role : null;
+	};
 
 	const login = async (input: LoginInput) => {
 		try {
@@ -22,10 +25,12 @@ export const useAuthStore = defineStore("authStore", () => {
 			if (res) {
 				const { accessToken } = res;
 
-				const decode = jwtDecode<Token>(accessToken);
-
-				useSetCookies("accessToken", accessToken);
-				useSetCookies("role", decode.role);
+				Cookies.set("accessToken", accessToken, {
+					expires: 7,
+					path: "",
+					secure: true,
+					sameSite: "lax",
+				});
 			}
 		} catch (e) {
 			throwError(e);

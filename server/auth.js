@@ -1,6 +1,6 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
-import {getUserByEmail} from "./db/users.js";
+import {getCandidateByEmail} from "./db/candidates.js";
 import {getCompany, getCompanyByEmail} from "./db/company.js";
 
 const secret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
@@ -14,7 +14,7 @@ export const authMiddleware = expressjwt({
 export async function handleLogin(req, res) {
   const { email, password } = req.body;
 
-  const candidate = await getUserByEmail(email);
+  const candidate = await getCandidateByEmail(email);
   const company = await getCompanyByEmail(email);
 
   const user = candidate ?? company;

@@ -14,6 +14,7 @@ async function combineTypeDefs(filePaths) {
 const schemaFilePaths = [
   "./schemas/schema.graphql",
   "./schemas/job-schema.graphql",
+  "./schemas/candidate-schema.graphql",
   "./schemas/company-schema.graphql",
 ];
 

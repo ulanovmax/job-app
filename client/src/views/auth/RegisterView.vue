@@ -18,11 +18,6 @@
 					<register-candidate-form v-show="active === 1" />
 				</div>
 
-				<form
-					class="mb-5 w-full space-y-4"
-					@submit.prevent="handleSubmit"
-				></form>
-
 				<p>
 					Already have account?
 					<router-link

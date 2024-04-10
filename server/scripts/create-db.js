@@ -3,7 +3,7 @@ import knex from "knex";
 
 const { schema } = connection;
 
-await schema.dropTableIfExists("user");
+await schema.dropTableIfExists("candidate");
 await schema.dropTableIfExists("job");
 await schema.dropTableIfExists("company");
 
@@ -18,6 +18,15 @@ await schema.createTable("company", (table) => {
   table.text("description");
 });
 
+const langLevels = [
+  "Beginner",
+  "Pre Intermediate",
+  "Intermediate",
+  "Upper Intermediate",
+  "Advanced",
+  "Proficient",
+];
+
 await schema.createTable("job", (table) => {
   table.text("id").notNullable().primary();
   table.text("companyId").notNullable().references("id").inTable("company");
@@ -30,13 +39,12 @@ await schema.createTable("job", (table) => {
   table.json("requirements").notNullable();
 });
 
-await schema.createTable("user", (table) => {
+await schema.createTable("candidate", (table) => {
   table.text("id").notNullable().primary();
-  table.text("companyId").notNullable().references("id").inTable("company");
   table.text("name").notNullable();
   table.text("email").notNullable().unique();
   table.integer("years").notNullable();
-  table.text("englishLevel").notNullable();
+  table.enu("englishLevel", langLevels).notNullable();
   table.text("password").notNullable();
 });
 

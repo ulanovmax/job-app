@@ -28,6 +28,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import JobCard from "@/components/cards/JobCard.vue";
 
 import { GET_JOBS } from "@/apollo/queries/jobs.queries";
+import { useAuthStore } from "@/store/auth.store.ts";
 import type { JobList } from "@/ts/types/jobs";
 
 const limit = ref(2);

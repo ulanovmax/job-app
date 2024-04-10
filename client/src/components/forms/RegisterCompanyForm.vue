@@ -138,8 +138,8 @@ const handleSubmit = async () => {
 	} catch (e) {
 		toast.add({
 			severity: "error",
-			summary: "Error",
-			detail: "Couldn't create job",
+			summary: "Register Error",
+			detail: "Couldn't register your account",
 			closable: true,
 			life: 3000,
 		});

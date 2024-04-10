@@ -64,32 +64,81 @@
 			/>
 		</fieldset>
 
-		<Button label="Sign in" class="w-full" type="submit" />
+		<Button
+			:loading="loading"
+			label="Sign in"
+			class="w-full"
+			type="submit"
+			@click="handleSubmit"
+		/>
 	</form>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import type { FetchResult } from "@apollo/client";
+import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
+import { useToast } from "primevue/usetoast";
 
+import { CREATE_CANDIDATE } from "@/apollo/mutations/candidate.mutations.ts";
 import { langLevels } from "@/constants/langLevels.ts";
+import type { CreateCandidateInput } from "@/ts/types/candidate";
 
-const initialState = {
+const toast = useToast();
+const router = useRouter();
+
+const initialState: CreateCandidateInput = {
 	name: "",
 	email: "",
 	years: 0,
 	englishLevel: "",
 	password: "",
-	description: "",
-	country: "",
 };
 
-const state = ref({ ...initialState });
+const state = ref<CreateCandidateInput>({ ...initialState });
 const repeatPassword = ref("");
+
+const { mutate: createCompany, loading } = useMutation(CREATE_CANDIDATE, {
+	errorPolicy: "all",
+});
+
+const handleSubmit = async () => {
+	try {
+		const response: FetchResult | null = await createCompany({
+			input: { ...state.value },
+		});
+
+		if (response) {
+			if (response.errors) {
+				throw response.errors;
+			}
+
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "Your account is successfully created",
+				closable: true,
+				life: 3000,
+			});
+
+			void router.push({ name: "login" });
+		}
+	} catch (e) {
+		toast.add({
+			severity: "error",
+			summary: "Register Error",
+			detail: "Couldn't register your account",
+			closable: true,
+			life: 3000,
+		});
+	}
+};
 </script>
 
 <style scoped></style>
