@@ -10,7 +10,9 @@ type Company {
 
 input CompanyCreateInput {
   name: String!
+  email: String!
   country: String!
+  password: String!
   employees: Int!
   description: String
 }

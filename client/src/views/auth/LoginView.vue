@@ -6,7 +6,7 @@
 				<p class="mb-5">Please login to continue to your account</p>
 
 				<form
-					class="w-full max-w-sm space-y-4"
+					class="mb-5 w-full max-w-sm space-y-4"
 					@submit.prevent="handleSubmit"
 				>
 					<fieldset class="field">
@@ -30,6 +30,13 @@
 
 					<Button label="Sign in" class="w-full" type="submit" />
 				</form>
+
+				<router-link
+					class="text-primary-400 hover:underline"
+					:to="{ name: 'register' }"
+				>
+					Create account
+				</router-link>
 			</div>
 		</section>
 	</main>

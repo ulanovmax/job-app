@@ -31,7 +31,7 @@
 					<label>Select a preferable English level</label>
 					<Dropdown
 						v-model="state.selectedLang"
-						:options="langs"
+						:options="langLevels"
 						show-clear
 						placeholder="English level"
 						class="w-full"
@@ -77,7 +77,7 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
 import { CREATE_JOBS } from "@/apollo/mutations/jobs.mutations";
-import { useToastMessage } from "@/composables/useToastAlerts.ts";
+import { langLevels } from "@/constants/langLevels.ts";
 import type { JobType } from "@/ts/types/jobs";
 
 const toast = useToast();
@@ -93,14 +93,6 @@ const initialState = {
 const state = ref({ ...initialState });
 
 const jobTypes = ref<JobType[]>(["Office", "Remote"]);
-const langs = ref([
-	"Beginner",
-	"Pre Intermediate",
-	"Intermediate",
-	"Upper Intermediate",
-	"Advanced",
-	"Proficient",
-]);
 
 const {
 	mutate: createJob,

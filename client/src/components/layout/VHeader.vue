@@ -53,7 +53,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 
@@ -62,7 +61,6 @@ import VLogo from "@/components/base/VLogo.vue";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const { logout } = useAuthStore();
-const router = useRouter();
 const toast = useToast();
 const isLoading = ref(false);
 
@@ -71,8 +69,6 @@ const handleLogout = async () => {
 
 	try {
 		await logout();
-
-		void router.replace({ name: "login" });
 	} catch (e) {
 		toast.add({
 			severity: "error",
