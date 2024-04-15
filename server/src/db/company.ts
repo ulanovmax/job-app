@@ -1,12 +1,12 @@
-import { connection } from "./connection.js";
-import {generateId} from "./ids.js";
+import { connection } from "./connection.ts";
+import {generateId} from "./ids.ts";
 
 const getCompanyTable = () => connection.table("company");
 
-export const getCompany = async (id) =>
+export const getCompany = async (id: string) =>
   await getCompanyTable().first().where({ id });
 
-export const getCompanyByEmail = async (email) => await getCompanyTable().first().where({ email });
+export const getCompanyByEmail = async (email: string) => await getCompanyTable().first().where({ email });
 
 export const addCompany = async (input) => {
   const company = {

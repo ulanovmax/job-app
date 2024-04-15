@@ -1,0 +1,90 @@
+type Query {
+  jobs(limit: Int, offset: Int): JobList!
+  job(id: ID!): Job
+  company(id: ID!): Company
+}
+
+type Mutation {
+  createJob(input: JobCreateInput!): Job
+  createCompany(input: CompanyCreateInput!): Company
+  createCandidate(input: CandidateCreateInput!): Candidate
+}
+
+type Candidate {
+  id: ID!
+  name: String!
+  email: String!
+  years: Int!
+  englishLevel: String!
+}
+
+input CandidateCreateInput {
+  name: String!
+  email: String!
+  years: Int!
+  englishLevel: String!
+  password: String!
+}
+
+type Company {
+  id: ID!
+  dateCreated: String!
+  name: String!
+  description: String
+  country: String!
+  jobs: [Job!]!
+  employees: Int!
+}
+
+input CompanyCreateInput {
+  name: String!
+  email: String!
+  country: String!
+  password: String!
+  employees: Int!
+  description: String
+}
+
+type Job {
+  id: ID!
+  title: String!
+  company: Company!
+  dateCreated: String!
+  description: String
+  responses: Int!
+  country: String!
+  type: JobType!
+  requirements: JobRequirements
+}
+
+type JobList {
+  items: [Job!]!
+  totalCount: Int!
+}
+
+type JobRequirements {
+  years: Int!
+  englishLevel: String!
+}
+
+input JobRequirementsInput {
+  years: Int!
+  englishLevel: String!
+}
+
+enum JobType {
+  Office
+  Remote
+}
+
+"""
+Create job
+"""
+input JobCreateInput {
+  title: String!
+  description: String
+  type: JobType
+  requirements: JobRequirementsInput
+}
+
+

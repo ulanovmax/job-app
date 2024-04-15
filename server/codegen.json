@@ -1,0 +1,16 @@
+{
+  "overwrite":true,
+  "schema": "./src/schemas/schema.graphql",
+  "generates": {
+    "src/generated/shema.ts": {
+      "plugins":["typescript","typescript-resolvers"],
+      "config": {
+        "skipTypename": true,
+        "mappers": {
+          "Company": "./src/ts/entities/company.entity#CompanyEntity",
+          "Job": "./src/ts/entities/job.entity#JobEntity"
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,17 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
-import {noPermissionError, unauthorizedError} from "./errors.js";
+import {noPermissionError, unauthorizedError} from "./errors.ts";
 import {addCandidate} from "./db/candidates.js";
+import { Resolvers} from "./generated/shema.js";
+import {Token} from "./ts/token.js";
 
-export const resolvers = {
+export interface ResolverContext {
+  context: Token
+}
+
+export const resolvers: Resolvers<ResolverContext> = {
   Query: {
     jobs: async (_root, { limit, offset }, { context }) => {
-      if (context) {
-
-      }
       const items = await getJobs(limit, offset);
       const totalCount  = await countJobs();
 

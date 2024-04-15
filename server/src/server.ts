@@ -1,12 +1,14 @@
 import cors from "cors";
 import express from "express";
+import { readFile } from 'node:fs/promises';
+
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServer } from "@apollo/server";
-import { resolvers } from "./resolvers.js";
-import typeDefs from "./schemas/index.js";
+import { resolvers } from "./resolvers.ts";
+
 import cookieParser from "cookie-parser"
-import {authMiddleware, getAuthInfo, handleLogin, handleLogout} from "./auth.js";
-import corsOptions from "./cors.js";
+import {authMiddleware, getAuthInfo, handleLogin, handleLogout} from "./auth.ts";
+import corsOptions from "./cors.ts";
 import jwt from "jsonwebtoken";
 
 const PORT = 9000;
@@ -24,13 +26,17 @@ const getContext = ({ req }) => {
   return { context: decoded }
 }
 
+const typeDefs = await readFile('./src/schemas/schema.graphql', 'utf8');
+
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
+// @ts-ignore
 await apolloServer.start();
 
+// @ts-ignore
 app.use('/graphql', expressMiddleware(apolloServer, { context: getContext }));
 
 app.listen({ port: PORT }, () => {

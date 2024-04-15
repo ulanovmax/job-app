@@ -1,9 +1,9 @@
-import { connection } from "./connection.js";
-import { generateId } from "./ids.js";
+import { connection } from "./connection.ts";
+import { generateId } from "./ids.ts";
 
 const getJobTable = () => connection.table("job");
 
-export const getJobs = async (limit,offset) => {
+export const getJobs = async (limit: number, offset: number) => {
   const query = getJobTable().select().orderBy("dateCreated", "desc");
 
   if (limit) {
@@ -18,14 +18,14 @@ export const getJobs = async (limit,offset) => {
 };
 
 export const countJobs = async () => {
-  const { count } = await getJobTable().first().count("* as count");
+  const { count } = await getJobTable().first().count("*", "count");
 
-  return count
+  return count as number
 }
 
-export const getJob = async (id) => await getJobTable().first().where({ id });
+export const getJob = async (id: string) => await getJobTable().first().where({ id });
 
-export const getJobsByCompany = async (companyId) =>
+export const getJobsByCompany = async (companyId: string) =>
   await getJobTable().select().where({ companyId });
 
 export const addJob = async ({ companyId, country }, input) => {

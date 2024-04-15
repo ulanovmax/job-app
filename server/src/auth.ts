@@ -2,6 +2,8 @@ import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
 import {getCandidateByEmail} from "./db/candidates.js";
 import {getCompany, getCompanyByEmail} from "./db/company.js";
+import {Token} from "./ts/token.js";
+import {Response, Request} from "express";
 
 const secret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
 
@@ -11,7 +13,7 @@ export const authMiddleware = expressjwt({
   secret,
 });
 
-export async function handleLogin(req, res) {
+export async function handleLogin(req: Request, res: Response) {
   const { email, password } = req.body;
 
   const candidate = await getCandidateByEmail(email);
@@ -22,7 +24,7 @@ export async function handleLogin(req, res) {
   if (!user || user.password !== password) {
     res.status(401).json({ error: 'Unauthorized' });
   } else {
-    const claims = {
+    const claims: Token = {
       id: user.id,
       email: user.email,
       name: user.name,
