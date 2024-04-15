@@ -12,10 +12,11 @@ import type { Token } from "@/ts/types/token";
 
 export const useAuthStore = defineStore("authStore", () => {
 	const getAccessToken = () => Cookies.get("accessToken");
-	const getRole = () => {
+
+	const getTokenInfo = (value: keyof Token) => {
 		const token = getAccessToken();
 
-		return token ? jwtDecode<Token>(token).role : null;
+		return token ? jwtDecode<Token>(token)[value] : null;
 	};
 
 	const login = async (input: LoginInput) => {
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
 	return {
 		getAccessToken,
-		getRole,
+		getTokenInfo,
 		login,
 		logout,
 	};

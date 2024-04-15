@@ -22,7 +22,13 @@ export async function handleLogin(req, res) {
   if (!user || user.password !== password) {
     res.status(401).json({ error: 'Unauthorized' });
   } else {
-    const claims = { id: user.id, email: user.email, role: candidate ? "candidate" : "company"  };
+    const claims = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: candidate ? "candidate" : "company"
+    };
+
     const token = jwt.sign(claims, secret);
 
     // Set days

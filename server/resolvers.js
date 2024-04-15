@@ -1,11 +1,14 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
-import {unauthorizedError} from "./errors.js";
+import {noPermissionError, unauthorizedError} from "./errors.js";
 import {addCandidate} from "./db/candidates.js";
 
 export const resolvers = {
   Query: {
-    jobs: async (_root, { limit, offset }) => {
+    jobs: async (_root, { limit, offset }, { context }) => {
+      if (context) {
+
+      }
       const items = await getJobs(limit, offset);
       const totalCount  = await countJobs();
 
@@ -16,15 +19,21 @@ export const resolvers = {
   },
 
   Mutation: {
-    createJob: async (_root, { input }, { accessToken }) => {
-      const companyId = "FjcJCHJALA4i";
-      const country = "Ukraine";
+    createJob: async (_root, { input }, { context }) => {
+      if (context.role !== "company") {
+        throw noPermissionError()
+      }
 
-      if (!accessToken) {
+      if (!context.name) {
         throw unauthorizedError()
       }
 
-      return addJob({ companyId, country }, input);
+      const company = await getCompany(context.id)
+
+      return addJob({
+        companyId: company.id,
+        country: company.country
+      }, input);
     },
 
     createCompany: async (_root, { input }) => addCompany(input),

@@ -4,7 +4,7 @@
 			<div class="flex items-center">
 				<v-logo />
 
-				<nav class="ml-auto mr-5">
+				<nav class="ml-16">
 					<ul class="flex items-center gap-7">
 						<li>
 							<router-link
@@ -21,31 +21,10 @@
 								<i class="pi pi-inbox"></i>
 							</router-link>
 						</li>
-						<li>
-							<router-link
-								class="link"
-								:to="{ name: 'createJob' }"
-							>
-								<Button
-									size="small"
-									label="Add job"
-									icon="pi pi-plus"
-									icon-pos="right"
-								/>
-							</router-link>
-						</li>
 					</ul>
 				</nav>
 
-				<Button
-					size="small"
-					severity="danger"
-					label="Logout"
-					icon="pi pi-sign-out"
-					icon-pos="right"
-					:loading="isLoading"
-					@click="handleLogout"
-				/>
+				<header-menu class="ml-auto" />
 			</div>
 		</div>
 	</header>
@@ -56,36 +35,15 @@ import { ref } from "vue";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 
+import HeaderMenu from "@/components/base/HeaderMenu.vue";
 import VLogo from "@/components/base/VLogo.vue";
 
 import { useAuthStore } from "@/store/auth.store.ts";
-
-const { logout } = useAuthStore();
-const toast = useToast();
-const isLoading = ref(false);
-
-const handleLogout = async () => {
-	isLoading.value = true;
-
-	try {
-		await logout();
-	} catch (e) {
-		toast.add({
-			severity: "error",
-			summary: "Logout error",
-			detail: "Couldn't logout you from account",
-			closable: true,
-			life: 3000,
-		});
-	} finally {
-		isLoading.value = false;
-	}
-};
 </script>
 
 <style scoped>
 .link {
-	@apply flex items-center gap-2 text-lg font-semibold text-white transition hover:text-primary-200;
+	@apply flex items-center gap-2 text-base font-semibold text-white transition hover:text-primary-200;
 
 	&.router-link-active {
 		@apply text-primary-400;

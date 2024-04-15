@@ -44,7 +44,7 @@ module.exports = {
 		"no-implied-eval": "off",
 		"@typescript-eslint/no-implied-eval": "error",
 		"no-unused-vars": "error",
-		"@typescript-eslint/no-unused-vars": "warn",
+		"@typescript-eslint/no-unused-vars": "error",
 		"require-await": "off",
 		"@typescript-eslint/require-await": "error",
 		"default-param-last": ["error"],

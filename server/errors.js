@@ -7,3 +7,11 @@ export const unauthorizedError = () => {
         }
     })
 }
+
+export const noPermissionError = () => {
+    return new GraphQLError("You have no permission for this operation", {
+        extensions: {
+            code: "NO_PERMISSION"
+        }
+    })
+}

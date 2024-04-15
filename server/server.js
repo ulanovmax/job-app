@@ -7,6 +7,7 @@ import typeDefs from "./schemas/index.js";
 import cookieParser from "cookie-parser"
 import {authMiddleware, getAuthInfo, handleLogin, handleLogout} from "./auth.js";
 import corsOptions from "./cors.js";
+import jwt from "jsonwebtoken";
 
 const PORT = 9000;
 
@@ -19,7 +20,8 @@ app.post("/logout", handleLogout);
 app.get("/auth", getAuthInfo)
 
 const getContext = ({ req }) => {
-  return { accessToken: req.cookies["accessToken"] }
+  const decoded = jwt.decode( req.cookies["accessToken"]);
+  return { context: decoded }
 }
 
 const apolloServer = new ApolloServer({

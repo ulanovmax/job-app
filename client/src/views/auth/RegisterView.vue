@@ -10,7 +10,7 @@
 					:model="items"
 				/>
 
-				<div class="w-full max-w-3xl">
+				<div class="mb-5 w-full max-w-3xl">
 					<!-- Form for company  -->
 					<register-company-form v-show="active === 0" />
 
