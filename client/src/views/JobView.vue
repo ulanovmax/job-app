@@ -1,7 +1,7 @@
 <template>
 	<ProgressSpinner v-if="loading" class="mx-auto my-10 !block" />
 
-	<div v-else>
+	<div v-else-if="job">
 		<div class="mb-5">
 			<h1 class="mb-3">
 				{{ job.title }}
@@ -22,7 +22,7 @@
 
 		<div class="flex items-start justify-between gap-10">
 			<div class="content-element flex-grow">
-				{{ job.description }}
+				{{ job.description ? job.description : "No description" }}
 			</div>
 
 			<div class="max-w-sm flex-grow rounded-lg bg-surface-700 p-5">
@@ -35,10 +35,6 @@
 
 				<ul>
 					<li class="list-item">
-						<i class="pi pi-check-circle"></i>
-						{{ job.requirements.years }} years of experience
-					</li>
-					<li class="list-item">
 						<i class="pi pi-map-marker"></i>
 						{{ job.country }}
 					</li>
@@ -47,8 +43,12 @@
 						{{ job.type }}
 					</li>
 					<li class="list-item">
+						<i class="pi pi-check-circle"></i>
+						{{ job.requirements?.years }} years of experience
+					</li>
+					<li class="list-item">
 						<i class="pi pi-language"></i>
-						{{ job.requirements.englishLevel }}
+						{{ job.requirements?.englishLevel }}
 					</li>
 				</ul>
 			</div>
@@ -62,14 +62,17 @@ import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import ProgressSpinner from "primevue/progressspinner";
 
-import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.queries";
+import type { Job } from "@/apollo/generated/graphql.ts";
+import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.query.ts";
 import { useFormatDate } from "@/composables/useFormatDate";
 
 const { params } = useRoute();
 
-const { result, loading, error } = useQuery(GET_CURRENT_JOB, { id: params.id });
+const { result, loading, error } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
+	id: params.id,
+});
 
-const job = computed(() => result.value.job);
+const job = computed(() => result.value?.job);
 </script>
 
 <style scoped>

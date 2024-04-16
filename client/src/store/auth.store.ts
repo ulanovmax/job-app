@@ -13,10 +13,10 @@ import type { Token } from "@/ts/types/token";
 export const useAuthStore = defineStore("authStore", () => {
 	const getAccessToken = () => Cookies.get("accessToken");
 
-	const getTokenInfo = (value: keyof Token) => {
+	const getTokenInfo = () => {
 		const token = getAccessToken();
 
-		return token ? jwtDecode<Token>(token)[value] : null;
+		return token ? jwtDecode<Token>(token) : null;
 	};
 
 	const login = async (input: LoginInput) => {

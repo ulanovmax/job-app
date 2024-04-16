@@ -8,6 +8,7 @@
 	<Paginator
 		v-if="pagination && jobs?.totalCount"
 		v-model:first="offset"
+		:always-show="false"
 		class="mt-5"
 		:rows="limit"
 		:total-records="jobs.totalCount"
@@ -26,7 +27,7 @@ import type { JobList } from "@/apollo/generated/graphql.ts";
 
 interface Props {
 	jobs: JobList;
-	loading: boolean;
+	loading?: boolean;
 	pagination?: boolean;
 	limit?: number;
 	offset?: number;
@@ -38,7 +39,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
 	pagination: true,
-	limit: 5,
+	limit: 4,
 	offset: 0,
 });
 

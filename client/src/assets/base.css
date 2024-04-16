@@ -49,3 +49,31 @@ h6 {
 h1 {
 	@apply text-3xl;
 }
+
+.fade-up {
+	animation: fade-up 0.5s ease
+}
+
+.fade-down {
+	animation: fade-down 0.5s ease
+}
+
+@keyframes fade-up {
+	0% {
+		transform: translateY(20px);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fade-down {
+	0% {
+		transform: translateY(-20px);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}

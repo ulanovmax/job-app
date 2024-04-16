@@ -47,6 +47,11 @@ export const resolvers: Resolvers<ResolverContext> = {
   },
 
   Company: {
-    jobs: (company) => getJobsByCompany(company.id),
+    jobs: async (company, { limit}) => {
+      const items = await getJobsByCompany(company.id, limit);
+      const totalCount  = await countJobs();
+
+      return { items, totalCount }
+    },
   },
 };

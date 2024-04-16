@@ -24,10 +24,10 @@ import { useQuery } from "@vue/apollo-composable";
 
 import JobsList from "@/components/lists/JobsList.vue";
 
-import { GET_JOBS } from "@/apollo/gql/queries/jobs.queries";
+import { GET_JOBS } from "@/apollo/gql/queries/jobs.query.ts";
 import type { JobList } from "@/ts/types/jobs";
 
-const limit = ref(5);
+const limit = ref(4);
 const offset = ref(0);
 
 const { result, loading, refetch } = useQuery<{ jobs: JobList }>(

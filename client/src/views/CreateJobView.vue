@@ -76,7 +76,7 @@ import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
-import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutations";
+import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutation.ts";
 import { langLevels } from "@/constants/langLevels.ts";
 import type { JobType } from "@/ts/types/jobs";
 

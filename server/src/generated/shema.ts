@@ -1,7 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-// @ts-ignore
 import { CompanyEntity } from './src/ts/entities/company.entity';
-// @ts-ignore
 import { JobEntity } from './src/ts/entities/job.entity';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -43,8 +41,13 @@ export type Company = {
   description?: Maybe<Scalars['String']['output']>;
   employees: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
-  jobs: Array<Job>;
+  jobs: JobList;
   name: Scalars['String']['output'];
+};
+
+
+export type CompanyJobsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CompanyCreateInput = {
@@ -262,7 +265,7 @@ export type CompanyResolvers<ContextType = any, ParentType extends ResolversPare
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   employees?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  jobs?: Resolver<Array<ResolversTypes['Job']>, ParentType, ContextType>;
+  jobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<CompanyJobsArgs>>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

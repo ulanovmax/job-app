@@ -1,6 +1,6 @@
 export interface Token {
 	id: string;
 	email: string;
-	role: string;
+	role: "candidate" | "company";
 	name: string;
 }

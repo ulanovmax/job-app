@@ -1,3 +1,5 @@
+import profileRoute from "@/router/routes/profile.route.ts";
+
 import createJobRoute from "./create-job.route";
 import homeRoute from "./home.route";
 import inboxRoute from "./inbox.route";
@@ -13,5 +15,12 @@ export default {
 
 	meta: { requiresAuth: true },
 
-	children: [jobBoardRoute, inboxRoute, createJobRoute, homeRoute, jobRoute],
+	children: [
+		jobBoardRoute,
+		inboxRoute,
+		createJobRoute,
+		homeRoute,
+		jobRoute,
+		profileRoute,
+	],
 };

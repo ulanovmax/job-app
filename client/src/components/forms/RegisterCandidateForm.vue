@@ -86,7 +86,7 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import { useToast } from "primevue/usetoast";
 
-import { CREATE_CANDIDATE } from "@/apollo/gql/mutations/candidate.mutations.ts";
+import { CREATE_CANDIDATE } from "@/apollo/gql/mutations/candidate.mutation.ts";
 import { langLevels } from "@/constants/langLevels.ts";
 import type { CreateCandidateInput } from "@/ts/types/candidate";
 

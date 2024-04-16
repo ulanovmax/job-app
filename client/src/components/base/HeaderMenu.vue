@@ -1,16 +1,16 @@
 <template>
 	<div class="flex items-center gap-3">
 		<router-link
-			to="#"
+			v-if="tokenInfo"
+			:to="{ name: 'profileView' }"
 			class="flex items-center rounded-md p-1 font-semibold transition-colors hover:text-primary-300"
 		>
 			<span
-				v-if="name"
 				class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary-700 uppercase"
 			>
-				{{ name[0] }}
+				{{ tokenInfo.name[0] }}
 			</span>
-			<span>{{ name }}</span>
+			<span>{{ tokenInfo.name }}</span>
 		</router-link>
 
 		<button
@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import type { MenuItem } from "primevue/menuitem";
 import TieredMenu from "primevue/tieredmenu";
 import { useToast } from "primevue/usetoast";
@@ -36,18 +37,23 @@ import { useToast } from "primevue/usetoast";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const { logout } = useAuthStore();
+
 const toast = useToast();
+const router = useRouter();
 const isLoading = ref(false);
 
 const { getTokenInfo } = useAuthStore();
 
 const menu = ref();
-const name = getTokenInfo("name");
+const tokenInfo = getTokenInfo();
 
 const items = ref<MenuItem[]>([
 	{
 		label: "Add job",
 		icon: "pi pi-plus",
+		command() {
+			router.push({ name: "createJob" });
+		},
 	},
 	{
 		label: "Logout",
