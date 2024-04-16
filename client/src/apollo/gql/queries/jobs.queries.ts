@@ -1,6 +1,6 @@
-import gql from "graphql-tag";
+import { graphql } from "@/apollo/generated";
 
-export const GET_JOBS = gql`
+export const GET_JOBS = graphql(`
 	query getJobs($limit: Int, $offset: Int) {
 		jobs(limit: $limit, offset: $offset) {
 			items {
@@ -25,9 +25,9 @@ export const GET_JOBS = gql`
 			totalCount
 		}
 	}
-`;
+`);
 
-export const GET_CURRENT_JOB = gql`
+export const GET_CURRENT_JOB = graphql(`
 	query GetJob($id: ID!) {
 		job(id: $id) {
 			id
@@ -48,4 +48,4 @@ export const GET_CURRENT_JOB = gql`
 			}
 		}
 	}
-`;
+`);

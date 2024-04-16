@@ -92,7 +92,7 @@ import { useToast } from "primevue/usetoast";
 
 import SearchCountries from "@/components/base/SearchCountries.vue";
 
-import { CREATE_COMPANY } from "@/apollo/mutations/company.mutations.ts";
+import { CREATE_COMPANY } from "@/apollo/gql/mutations/company.mutations.ts";
 import type { CreateCompanyInput } from "@/ts/types/company";
 
 const router = useRouter();

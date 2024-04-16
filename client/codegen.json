@@ -1,0 +1,15 @@
+{
+  "overwrite":true,
+  "schema": "../server/src/schemas/schema.graphql",
+  "documents": "src/apollo/gql/**/*.ts",
+  "generates": {
+    "src/apollo/generated/": {
+      "preset": "client",
+      "plugins":[],
+      "config": {
+        "useTypeImports": true,
+        "skipTypename": true
+      }
+    }
+  }
+}

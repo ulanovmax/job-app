@@ -1,5 +1,5 @@
 <template>
-	<ProgressSpinner class="mx-auto my-10 !block" v-if="loading" />
+	<ProgressSpinner v-if="loading" class="mx-auto my-10 !block" />
 
 	<div v-else>
 		<div class="mb-5">
@@ -59,9 +59,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { GET_CURRENT_JOB } from "@/apollo/queries/jobs.queries";
 import { useQuery } from "@vue/apollo-composable";
 import ProgressSpinner from "primevue/progressspinner";
+
+import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.queries";
 import { useFormatDate } from "@/composables/useFormatDate";
 
 const { params } = useRoute();

@@ -27,13 +27,13 @@ import ProgressSpinner from "primevue/progressspinner";
 
 import JobCard from "@/components/cards/JobCard.vue";
 
-import { GET_JOBS } from "@/apollo/queries/jobs.queries";
+import { GET_JOBS } from "@/apollo/gql/queries/jobs.queries";
 import type { JobList } from "@/ts/types/jobs";
 
 const limit = ref(2);
 const offset = ref(0);
 
-const { result, loading, refetch } = useQuery<{ jobs: JobList }>(
+const { result, loading, refetch } = useQuery(
 	GET_JOBS,
 	{
 		limit: limit.value,

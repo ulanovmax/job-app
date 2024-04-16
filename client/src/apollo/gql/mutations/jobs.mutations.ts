@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
+import { graphql } from "@/apollo/generated";
 
-export const CREATE_JOBS = gql`
+export const CREATE_JOBS = graphql(`
 	mutation CreateJob($input: JobCreateInput!) {
 		job: createJob(input: $input) {
 			id
 			title
 		}
 	}
-`;
+`);
