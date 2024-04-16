@@ -1,5 +1,5 @@
-interface CandidateEntity {
-    id: number,
+export interface CandidateEntity {
+    id: string,
     name: string,
     email: string,
     years: number,

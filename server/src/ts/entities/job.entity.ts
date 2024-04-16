@@ -1,12 +1,12 @@
 export interface JobEntity {
-    id: number,
-    companyId: number,
+    id: string,
+    companyId: string,
     title: string,
     dateCreated: string,
     type: JobType,
     country: string,
     responses: number,
-    requirements: JobRequirements,
+    requirements: JobRequirements | string,
     description?: string
 }
 
@@ -16,6 +16,6 @@ export interface JobRequirements {
 }
 
 export enum JobType {
-    Office,
-    Remote
+    Office = "Office",
+    Remote = "Remote"
 }

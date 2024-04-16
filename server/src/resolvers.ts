@@ -33,10 +33,7 @@ export const resolvers: Resolvers<ResolverContext> = {
 
       const company = await getCompany(context.id)
 
-      return addJob({
-        companyId: company.id,
-        country: company.country
-      }, input);
+      return addJob(company.id, company.country, input);
     },
 
     createCompany: async (_root, { input }) => addCompany(input),

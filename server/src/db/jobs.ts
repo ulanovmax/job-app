@@ -1,9 +1,11 @@
 import { connection } from "./connection.ts";
 import { generateId } from "./ids.ts";
+import {JobEntity} from "../ts/entities/job.entity.js";
+import {JobCreateInput} from "../generated/shema.js";
 
-const getJobTable = () => connection.table("job");
+const getJobTable = () => connection.table<JobEntity>("job");
 
-export const getJobs = async (limit: number, offset: number) => {
+export const getJobs = async (limit: number, offset: number): Promise<JobEntity[]> => {
   const query = getJobTable().select().orderBy("dateCreated", "desc");
 
   if (limit) {
@@ -23,15 +25,15 @@ export const countJobs = async () => {
   return count as number
 }
 
-export const getJob = async (id: string) => await getJobTable().first().where({ id });
+export const getJob = async (id: string): Promise<JobEntity> => await getJobTable().first().where({ id });
 
-export const getJobsByCompany = async (companyId: string) =>
+export const getJobsByCompany = async (companyId: string):  Promise<JobEntity[]> =>
   await getJobTable().select().where({ companyId });
 
-export const addJob = async ({ companyId, country }, input) => {
+export const addJob = async (companyId: JobEntity["companyId"], country: JobEntity["country"], input: JobCreateInput) => {
   const { title, description, type, requirements } = input;
 
-  const job = {
+  const job: JobEntity = {
     id: generateId(),
     dateCreated: new Date().toISOString(),
     responses: 0,

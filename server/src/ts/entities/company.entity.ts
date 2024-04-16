@@ -1,5 +1,5 @@
 export interface CompanyEntity {
-    id: number,
+    id: string,
     dateCreated: string,
     name: string,
     email: string,

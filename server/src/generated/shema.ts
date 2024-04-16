@@ -1,5 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
+// @ts-ignore
 import { CompanyEntity } from './src/ts/entities/company.entity';
+// @ts-ignore
 import { JobEntity } from './src/ts/entities/job.entity';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
