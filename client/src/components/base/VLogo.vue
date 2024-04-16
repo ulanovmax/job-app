@@ -1,6 +1,6 @@
 <template>
 	<router-link
-		class="flex gap-1 text-4xl font-bold transition-transform hover:scale-105"
+		class="inline-flex gap-1 text-4xl font-bold transition-transform hover:scale-105"
 		to="/"
 	>
 		<span class="text-primary-200"> H </span>

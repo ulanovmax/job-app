@@ -8,7 +8,7 @@
 		<template v-else-if="profileInfo">
 			<div class="bg fade-down min-h-44 rounded-xl bg-primary-500"></div>
 
-			<div class="fade-up relative z-20 -mt-20 px-5">
+			<div class="fade-up relative z-20 -mt-24 px-5">
 				<div
 					class="pointer-events-none mb-5 flex h-40 w-40 select-none items-center justify-center rounded-full bg-primary-700 text-7xl font-semibold uppercase"
 				>
@@ -18,7 +18,7 @@
 					{{ profileInfo.name }}
 				</h1>
 
-				<h2 class="mb-5 text-lg font-normal opacity-60">
+				<h2 class="mb-5 text-lg font-normal capitalize opacity-60">
 					{{ tokenInfo?.role }}
 				</h2>
 
