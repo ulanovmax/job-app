@@ -1,5 +1,3 @@
-import { Company } from "./company";
-
 interface Job {
 	id: string;
 	companyId: number;

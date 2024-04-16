@@ -1,4 +1,4 @@
-import { connection } from "../src/db/connection.ts";
+import { connection } from "../src/db/connection.js";
 import knex from "knex";
 
 const { schema } = connection;

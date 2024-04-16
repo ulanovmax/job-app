@@ -32,7 +32,7 @@
     "typescript": "^5.2.2"
   },
   "nodemonConfig": {
-    "ext": "graphql,js",
+    "ext": "graphql,ts,js",
     "execMap": {
       "ts": "node --loader ts-node/esm"
     }

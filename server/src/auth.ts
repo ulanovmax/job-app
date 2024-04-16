@@ -21,8 +21,10 @@ export async function handleLogin(req: Request, res: Response) {
 
   const user = candidate ?? company;
 
-  if (!user || user.password !== password) {
-    res.status(401).json({ error: 'Unauthorized' });
+  if (!user) {
+    res.status(401).json({ error: 'Unauthorized', code: "UNAUTHORIZED" });
+  } else if (user.password !== password) {
+    res.status(401).json({ error: 'Password is not correct', code: "PASSWORD_NOT_CORRECT" });
   } else {
     const claims: Token = {
       id: user.id,

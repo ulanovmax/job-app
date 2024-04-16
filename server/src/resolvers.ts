@@ -15,7 +15,7 @@ export const resolvers: Resolvers<ResolverContext> = {
       const items = await getJobs(limit, offset);
       const totalCount  = await countJobs();
 
-      return { items, totalCount  }
+      return { items, totalCount }
     },
     company: (_root, { id }) => getCompany(id),
     job: (_root, { id }) => getJob(id),
@@ -31,7 +31,7 @@ export const resolvers: Resolvers<ResolverContext> = {
         throw unauthorizedError()
       }
 
-      const company = await getCompany(context.id)
+      const company = await getCompany(context.id);
 
       return addJob(company.id, company.country, input);
     },

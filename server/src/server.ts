@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser"
 import {authMiddleware, getAuthInfo, handleLogin, handleLogout} from "./auth.ts";
 import corsOptions from "./cors.ts";
 import jwt from "jsonwebtoken";
+import {Token} from "./ts/token.js";
 
 const PORT = 9000;
 
@@ -22,7 +23,7 @@ app.post("/logout", handleLogout);
 app.get("/auth", getAuthInfo)
 
 const getContext = ({ req }) => {
-  const decoded = jwt.decode( req.cookies["accessToken"]);
+  const decoded: Token = jwt.decode( req.cookies["accessToken"]);
   return { context: decoded }
 }
 

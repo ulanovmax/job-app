@@ -52,6 +52,7 @@ import { useToast } from "primevue/usetoast";
 
 import type { LoginInput } from "@/api/login.api.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
+import { isLoginError } from "@/ts/types/error.d.ts";
 
 const toast = useToast();
 const router = useRouter();
@@ -74,13 +75,25 @@ const handleSubmit = async () => {
 
 		void router.replace({ name: "main" });
 	} catch (e) {
-		toast.add({
-			severity: "error",
-			summary: "Login Error",
-			detail: "Couldn't find your account",
-			closable: true,
-			life: 3000,
-		});
+		if (isLoginError(e)) {
+			if (e.code === "PASSWORD_NOT_CORRECT") {
+				toast.add({
+					severity: "error",
+					summary: "Login Error",
+					detail: "Password is not correct",
+					closable: true,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Login Error",
+					detail: "Couldn't find your account",
+					closable: true,
+					life: 3000,
+				});
+			}
+		}
 	} finally {
 		isLoading.value = false;
 	}

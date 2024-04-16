@@ -1,4 +1,4 @@
-import { connection } from "./connection.ts";
+import { connection } from "./connection.js";
 import { generateId } from "./ids.ts";
 import {JobEntity} from "../ts/entities/job.entity.js";
 import {JobCreateInput} from "../generated/shema.js";
@@ -20,7 +20,7 @@ export const getJobs = async (limit: number, offset: number): Promise<JobEntity[
 };
 
 export const countJobs = async () => {
-  const { count } = await getJobTable().first().count("*", "count");
+  const { count } = await getJobTable().first().count('*', { as: 'count' });
 
   return count as number
 }
