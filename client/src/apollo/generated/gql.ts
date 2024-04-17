@@ -19,7 +19,7 @@ const documents = {
     "\n\tquery GetCandidate($id: ID!) {\n\t\tcandidate(id: $id) {\n\t\t\tname\n\t\t\texperience\n\t\t\temail\n\t\t\tenglishLevel\n\t\t\tid\n\t\t\tyears\n\t\t}\n\t}\n": types.GetCandidateDocument,
     "\n\tquery GetCompany($companyId: ID!, $jobsLimit: Int) {\n\t\tcompany(id: $companyId) {\n\t\t\tid\n\t\t\temail\n\t\t\tname\n\t\t\tcountry\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\temployees\n\t\t\tjobs(limit: $jobsLimit) {\n\t\t\t\titems {\n\t\t\t\t\tid\n\t\t\t\t\ttitle\n\t\t\t\t\tdateCreated\n\t\t\t\t\tdescription\n\t\t\t\t\ttype\n\t\t\t\t\tresponses\n\t\t\t\t\tcountry\n\n\t\t\t\t\trequirements {\n\t\t\t\t\t\tenglishLevel\n\t\t\t\t\t\tyears\n\t\t\t\t\t}\n\n\t\t\t\t\tcompany {\n\t\t\t\t\t\tname\n\t\t\t\t\t\tid\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t}\n\t}\n": types.GetCompanyDocument,
     "\n\tquery getJobs($limit: Int, $offset: Int) {\n\t\tjobs(limit: $limit, offset: $offset) {\n\t\t\titems {\n\t\t\t\ttitle\n\t\t\t\tid\n\t\t\t\tcountry\n\t\t\t\tresponses\n\t\t\t\ttype\n\t\t\t\tdescription\n\t\t\t\tdateCreated\n\n\t\t\t\trequirements {\n\t\t\t\t\tyears\n\t\t\t\t\tenglishLevel\n\t\t\t\t}\n\n\t\t\t\tcompany {\n\t\t\t\t\tname\n\t\t\t\t\tid\n\t\t\t\t}\n\t\t\t}\n\n\t\t\ttotalCount\n\t\t}\n\t}\n": types.GetJobsDocument,
-    "\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": types.GetJobDocument,
+    "\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n": types.GetJobDocument,
 };
 
 /**
@@ -63,7 +63,7 @@ export function graphql(source: "\n\tquery getJobs($limit: Int, $offset: Int) {\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n"];
+export function graphql(source: "\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery GetJob($id: ID!) {\n\t\tjob(id: $id) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\ttype\n\t\t\tresponses\n\t\t\tcountry\n\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\n\t\t\tcompany {\n\t\t\t\tname\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

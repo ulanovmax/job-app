@@ -46,6 +46,7 @@ export const GET_CURRENT_JOB = graphql(`
 
 			company {
 				name
+				id
 			}
 		}
 	}

@@ -27,8 +27,12 @@
 
 			<div class="max-w-sm flex-grow rounded-lg bg-surface-700 p-5">
 				<router-link
+					v-if="isCompanyShow"
 					class="mb-4 block text-xl text-primary-400 hover:underline"
-					to="#"
+					:to="{
+						name: 'companyView',
+						params: { id: job.company.id },
+					}"
 				>
 					{{ job.company.name }}
 				</router-link>
@@ -65,6 +69,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.query.ts";
 import { useFormatDate } from "@/composables/useFormatDate";
+import { useAuthStore } from "@/store/auth.store.ts";
 
 const { params } = useRoute();
 
@@ -73,6 +78,11 @@ const { result, loading } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
 });
 
 const job = computed(() => result.value?.job);
+
+const { getTokenInfo } = useAuthStore();
+const tokenInfo = getTokenInfo();
+
+const isCompanyShow = computed(() => tokenInfo?.id !== job.value?.company.id);
 </script>
 
 <style scoped>

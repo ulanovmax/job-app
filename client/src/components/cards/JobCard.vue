@@ -6,6 +6,7 @@
 		<div class="flex items-start justify-between">
 			<div class="mb-2 flex items-center gap-4">
 				<router-link
+					v-if="isCompanyShow"
 					:to="{
 						name: 'companyView',
 						params: { id: data.company.id },
@@ -58,15 +59,28 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import Tag from "primevue/tag";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { useFormatDate } from "@/composables/useFormatDate";
+import { useAuthStore } from "@/store/auth.store.ts";
 
 interface Props {
 	data: Job;
 	editable?: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const { params } = useRoute();
+const { getTokenInfo } = useAuthStore();
+const tokenInfo = getTokenInfo();
+
+const isCompanyShow = computed(
+	() =>
+		params.id !== props.data.company.id &&
+		tokenInfo?.id !== props.data.company.id
+);
 </script>
