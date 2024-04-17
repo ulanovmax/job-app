@@ -16,7 +16,7 @@ import TabMenu from "primevue/tabmenu";
 
 const router = useRouter();
 
-const active = ref(1);
+const active = ref(0);
 
 const items = ref<MenuItem[]>([
 	{
@@ -24,7 +24,7 @@ const items = ref<MenuItem[]>([
 		icon: "pi pi-users",
 		command() {
 			active.value = 0;
-			router.push({ name: "jobBoardAll" });
+			void router.push({ name: "jobBoardAll" });
 		},
 	},
 	{
@@ -32,7 +32,7 @@ const items = ref<MenuItem[]>([
 		icon: "pi pi-user",
 		command() {
 			active.value = 1;
-			router.push({ name: "jobBoardMy" });
+			void router.push({ name: "jobBoardMy" });
 		},
 	},
 ]);

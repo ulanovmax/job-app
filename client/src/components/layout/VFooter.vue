@@ -1,5 +1,5 @@
 <template>
-	<footer class="bg-surface-700">
+	<footer class="bg-surface-900">
 		<div class="container py-10">
 			<div class="flex items-center justify-between gap-10">
 				<v-logo class="mb-5" />

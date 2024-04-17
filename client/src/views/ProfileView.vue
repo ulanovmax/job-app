@@ -8,7 +8,14 @@ import { useQuery } from "@vue/apollo-composable";
 
 import ProfileLayout from "@/components/layout/ProfileLayout.vue";
 
-import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
+import type {
+	Candidate,
+	Company,
+	GetCandidateQuery,
+	GetCandidateQueryVariables,
+	GetCompanyQuery,
+	GetCompanyQueryVariables,
+} from "@/apollo/generated/graphql.ts";
 import { GET_CANDIDATE } from "@/apollo/gql/queries/candidate.query.ts";
 import { GET_COMPANY } from "@/apollo/gql/queries/company.query.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
@@ -17,19 +24,22 @@ const { getTokenInfo } = useAuthStore();
 
 const tokenInfo = getTokenInfo();
 
-const profileInfo = ref<Company | null | Candidate>(null);
+const profileInfo = ref<Company | Candidate | null>(null);
 const isLoading = ref(true);
 
 // Set company profile info
 if (tokenInfo?.role === "company") {
-	const { result, onResult } = useQuery<{ company: Company }>(GET_COMPANY, {
+	const { result, onResult } = useQuery<
+		GetCompanyQuery,
+		GetCompanyQueryVariables
+	>(GET_COMPANY, {
 		companyId: tokenInfo.id,
 		jobsLimit: 4,
 	});
 
 	onResult(() => {
-		if (result.value) {
-			profileInfo.value = result.value.company;
+		if (result.value?.company) {
+			profileInfo.value = result.value.company as Company;
 
 			isLoading.value = false;
 		}
@@ -38,16 +48,16 @@ if (tokenInfo?.role === "company") {
 
 // Set candidate profile info
 if (tokenInfo?.role === "candidate") {
-	const { result, onResult } = useQuery<{ candidate: Candidate }>(
-		GET_CANDIDATE,
-		{
-			id: tokenInfo.id,
-		}
-	);
+	const { result, onResult } = useQuery<
+		GetCandidateQuery,
+		GetCandidateQueryVariables
+	>(GET_CANDIDATE, {
+		id: tokenInfo.id,
+	});
 
 	onResult(() => {
 		if (result.value) {
-			profileInfo.value = result.value.candidate;
+			profileInfo.value = result.value.candidate as Candidate;
 
 			isLoading.value = false;
 		}

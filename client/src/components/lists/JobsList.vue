@@ -23,6 +23,8 @@ import ProgressSpinner from "primevue/progressspinner";
 
 import JobCard from "@/components/cards/JobCard.vue";
 
+import { PaginationEnum } from "@/ts/enums/pagination.enum.ts";
+
 import type { JobList } from "@/apollo/generated/graphql.ts";
 
 interface Props {
@@ -40,8 +42,9 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
 	pagination: true,
-	limit: 4,
+	limit: PaginationEnum.Limit,
 	offset: 0,
+	listStyle: "grid grid-cols-1 gap-4",
 });
 
 const emits = defineEmits<Emits>();
