@@ -1,6 +1,8 @@
 export interface Token {
 	id: string;
 	email: string;
-	role: "candidate" | "company";
+	role: Roles;
 	name: string;
 }
+
+export type Roles = "candidate" | "company";

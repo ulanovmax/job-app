@@ -27,6 +27,7 @@ export const GET_COMPANY = graphql(`
 
 					company {
 						name
+						id
 					}
 				}
 

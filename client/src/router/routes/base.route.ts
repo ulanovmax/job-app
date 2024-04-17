@@ -1,3 +1,4 @@
+import companyRoute from "@/router/routes/company.route.ts";
 import profileRoute from "@/router/routes/profile.route.ts";
 
 import createJobRoute from "./create-job.route";
@@ -22,5 +23,6 @@ export default {
 		homeRoute,
 		jobRoute,
 		profileRoute,
+		companyRoute,
 	],
 };

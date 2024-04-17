@@ -5,7 +5,13 @@
 	>
 		<div class="flex items-start justify-between">
 			<div class="mb-2 flex items-center gap-4">
-				<router-link to="#" class="text-primary-400 hover:underline">
+				<router-link
+					:to="{
+						name: 'companyView',
+						params: { id: data.company.id },
+					}"
+					class="text-primary-400 hover:underline"
+				>
 					{{ data.company.name }}
 				</router-link>
 
@@ -39,9 +45,9 @@
 			<Tag :value="data.country" />
 			<Tag
 				severity="info"
-				:value="`${data.requirements.years} years of experience`"
+				:value="`${data.requirements?.years} years of experience`"
 			/>
-			<Tag severity="warning" :value="data.requirements.englishLevel" />
+			<Tag severity="warning" :value="data.requirements?.englishLevel" />
 			<Tag severity="success" :value="data.type" />
 		</div>
 

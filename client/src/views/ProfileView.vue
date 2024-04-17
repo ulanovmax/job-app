@@ -1,120 +1,16 @@
 <template>
-	<section>
-		<div v-if="isLoading" class="mt-20 text-center">
-			<p class="mb-5 text-2xl font-semibold">Please wait...</p>
-			<v-loader class="mx-auto" />
-		</div>
-
-		<template v-else-if="profileInfo">
-			<div class="bg fade-down min-h-44 rounded-xl bg-primary-500"></div>
-
-			<div class="fade-up relative z-20 -mt-24 px-5">
-				<div
-					class="pointer-events-none mb-5 flex h-40 w-40 select-none items-center justify-center rounded-full bg-primary-700 text-7xl font-semibold uppercase"
-				>
-					{{ profileInfo.name[0] }}
-				</div>
-				<h1 class="mb-2">
-					{{ profileInfo.name }}
-				</h1>
-
-				<h2 class="mb-5 text-lg font-normal capitalize opacity-60">
-					{{ tokenInfo?.role }}
-				</h2>
-
-				<ul v-if="isCompany(profileInfo)" class="mb-8 space-y-3">
-					<li class="list">
-						<i class="pi pi-at"></i>
-						<a
-							class="hover:underline"
-							:href="`mailto:${profileInfo.email}`"
-						>
-							{{ profileInfo.email }}
-						</a>
-					</li>
-					<li class="list">
-						<i class="pi pi-map-marker"></i>
-						{{ profileInfo.country }}
-					</li>
-					<li class="list">
-						<i class="pi pi-users"></i>
-						{{ profileInfo.employees }}
-						employees
-					</li>
-					<li class="list">
-						<i class="pi pi-calendar"></i>
-						on platform since
-						{{ useFormatDate(profileInfo.dateCreated) }}
-					</li>
-				</ul>
-
-				<ul v-if="isCandidate(profileInfo)" class="mb-8 space-y-3">
-					<li class="list">
-						<i class="pi pi-at"></i>
-						<a
-							class="hover:underline"
-							:href="`mailto:${profileInfo.email}`"
-						>
-							{{ profileInfo.email }}
-						</a>
-					</li>
-					<li class="list">
-						<i class="pi pi-language"></i>
-						{{ profileInfo.englishLevel }} english level
-					</li>
-					<li class="list">
-						<i class="pi pi-check-circle"></i>
-						{{ profileInfo.years }}
-						years of experience
-					</li>
-				</ul>
-
-				<div v-if="isCompany(profileInfo)" class="mb-10">
-					<h2>About company</h2>
-
-					<p>
-						{{
-							profileInfo.description
-								? profileInfo.description
-								: "No description"
-						}}
-					</p>
-				</div>
-
-				<div v-if="isCandidate(profileInfo)" class="mb-10">
-					<h2>Experience</h2>
-
-					<p>
-						{{ profileInfo.experience }}
-					</p>
-				</div>
-
-				<div
-					v-if="
-						isCompany(profileInfo) &&
-						profileInfo.jobs.items.length > 0
-					"
-				>
-					<h2>Last published jobs</h2>
-
-					<jobs-list :pagination="false" :jobs="profileInfo.jobs" />
-				</div>
-			</div>
-		</template>
-	</section>
+	<profile-layout :data="profileInfo" :loading="isLoading" />
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 
-import VLoader from "@/components/base/VLoader.vue";
-import JobsList from "@/components/lists/JobsList.vue";
+import ProfileLayout from "@/components/layout/ProfileLayout.vue";
 
 import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
 import { GET_CANDIDATE } from "@/apollo/gql/queries/candidate.query.ts";
 import { GET_COMPANY } from "@/apollo/gql/queries/company.query.ts";
-import { useFormatDate } from "@/composables/useFormatDate.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const { getTokenInfo } = useAuthStore();
@@ -122,17 +18,10 @@ const { getTokenInfo } = useAuthStore();
 const tokenInfo = getTokenInfo();
 
 const profileInfo = ref<Company | null | Candidate>(null);
-const isLoading = ref(false);
-
-const isCandidate = (profile: Company | Candidate): profile is Candidate =>
-	"years" in profile || tokenInfo?.role === "candidate";
-const isCompany = (profile: Company | Candidate): profile is Company =>
-	"employees" in profile || tokenInfo?.role === "company";
+const isLoading = ref(true);
 
 // Set company profile info
 if (tokenInfo?.role === "company") {
-	isLoading.value = true;
-
 	const { result, onResult } = useQuery<{ company: Company }>(GET_COMPANY, {
 		companyId: tokenInfo.id,
 		jobsLimit: 4,
@@ -149,8 +38,6 @@ if (tokenInfo?.role === "company") {
 
 // Set candidate profile info
 if (tokenInfo?.role === "candidate") {
-	isLoading.value = true;
-
 	const { result, onResult } = useQuery<{ candidate: Candidate }>(
 		GET_CANDIDATE,
 		{
@@ -168,26 +55,4 @@ if (tokenInfo?.role === "candidate") {
 }
 </script>
 
-<style scoped>
-.bg {
-	background: repeating-linear-gradient(
-		45deg,
-		#008080,
-		#008080 10px,
-		#20b2aa 10px,
-		#20b2aa 20px
-	);
-}
-
-h2 {
-	@apply mb-4 text-xl;
-}
-
-.list {
-	@apply flex items-center gap-3;
-}
-
-.list i {
-	@apply text-xl opacity-50;
-}
-</style>
+<style scoped></style>
