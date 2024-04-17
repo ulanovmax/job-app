@@ -39,6 +39,7 @@ export type Company = {
   country: Scalars['String']['output'];
   dateCreated: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
   employees: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   jobs: JobList;
@@ -121,9 +122,15 @@ export type MutationCreateJobArgs = {
 };
 
 export type Query = {
+  candidate?: Maybe<Candidate>;
   company?: Maybe<Company>;
   job?: Maybe<Job>;
   jobs: JobList;
+};
+
+
+export type QueryCandidateArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -263,6 +270,7 @@ export type CompanyResolvers<ContextType = any, ParentType extends ResolversPare
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   dateCreated?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   employees?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   jobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<CompanyJobsArgs>>;
@@ -302,6 +310,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  candidate?: Resolver<Maybe<ResolversTypes['Candidate']>, ParentType, ContextType, RequireFields<QueryCandidateArgs, 'id'>>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
   job?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<QueryJobArgs, 'id'>>;
   jobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<QueryJobsArgs>>;

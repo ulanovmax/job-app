@@ -24,8 +24,8 @@ import { useQuery } from "@vue/apollo-composable";
 
 import JobsList from "@/components/lists/JobsList.vue";
 
+import type { JobList } from "@/apollo/generated/graphql.ts";
 import { GET_JOBS } from "@/apollo/gql/queries/jobs.query.ts";
-import type { JobList } from "@/ts/types/jobs";
 
 const limit = ref(4);
 const offset = ref(0);
@@ -48,7 +48,7 @@ const jobs = computed(() => {
 		return { items, totalCount };
 	}
 
-	return {};
+	return null;
 });
 </script>
 

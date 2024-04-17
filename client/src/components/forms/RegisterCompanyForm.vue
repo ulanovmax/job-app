@@ -92,13 +92,13 @@ import { useToast } from "primevue/usetoast";
 
 import SearchCountries from "@/components/base/SearchCountries.vue";
 
+import type { CompanyCreateInput } from "@/apollo/generated/graphql.ts";
 import { CREATE_COMPANY } from "@/apollo/gql/mutations/company.mutation.ts";
-import type { CreateCompanyInput } from "@/ts/types/company";
 
 const router = useRouter();
 const toast = useToast();
 
-const initialState: CreateCompanyInput = {
+const initialState: CompanyCreateInput = {
 	name: "",
 	email: "",
 	country: "",
@@ -107,7 +107,7 @@ const initialState: CreateCompanyInput = {
 	description: undefined,
 };
 
-const state = ref<CreateCompanyInput>({ ...initialState });
+const state = ref<CompanyCreateInput>({ ...initialState });
 const repeatPassword = ref("");
 
 const { mutate: createCompany, loading } = useMutation(CREATE_COMPANY, {

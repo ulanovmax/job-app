@@ -68,7 +68,7 @@ import { useFormatDate } from "@/composables/useFormatDate";
 
 const { params } = useRoute();
 
-const { result, loading, error } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
+const { result, loading } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
 	id: params.id,
 });
 

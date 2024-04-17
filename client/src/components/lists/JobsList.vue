@@ -26,7 +26,7 @@ import JobCard from "@/components/cards/JobCard.vue";
 import type { JobList } from "@/apollo/generated/graphql.ts";
 
 interface Props {
-	jobs: JobList;
+	jobs: JobList | null;
 	loading?: boolean;
 	pagination?: boolean;
 	limit?: number;

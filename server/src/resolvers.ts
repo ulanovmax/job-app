@@ -1,7 +1,7 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
 import {noPermissionError, unauthorizedError} from "./errors.ts";
-import {addCandidate} from "./db/candidates.js";
+import {addCandidate, getCandidate} from "./db/candidates.js";
 import { Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
 
@@ -19,6 +19,7 @@ export const resolvers: Resolvers<ResolverContext> = {
     },
     company: (_root, { id }) => getCompany(id),
     job: (_root, { id }) => getJob(id),
+    candidate: (_root, { id }) => getCandidate(id)
   },
 
   Mutation: {

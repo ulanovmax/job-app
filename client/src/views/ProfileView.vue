@@ -22,7 +22,16 @@
 					{{ tokenInfo?.role }}
 				</h2>
 
-				<ul class="mb-8 space-y-3">
+				<ul v-if="isCompany(profileInfo)" class="mb-8 space-y-3">
+					<li class="list">
+						<i class="pi pi-at"></i>
+						<a
+							class="hover:underline"
+							:href="`mailto:${profileInfo.email}`"
+						>
+							{{ profileInfo.email }}
+						</a>
+					</li>
 					<li class="list">
 						<i class="pi pi-map-marker"></i>
 						{{ profileInfo.country }}
@@ -39,7 +48,28 @@
 					</li>
 				</ul>
 
-				<div class="mb-10">
+				<ul v-if="isCandidate(profileInfo)" class="mb-8 space-y-3">
+					<li class="list">
+						<i class="pi pi-at"></i>
+						<a
+							class="hover:underline"
+							:href="`mailto:${profileInfo.email}`"
+						>
+							{{ profileInfo.email }}
+						</a>
+					</li>
+					<li class="list">
+						<i class="pi pi-language"></i>
+						{{ profileInfo.englishLevel }} english level
+					</li>
+					<li class="list">
+						<i class="pi pi-check-circle"></i>
+						{{ profileInfo.years }}
+						years of experience
+					</li>
+				</ul>
+
+				<div v-if="isCompany(profileInfo)" class="mb-10">
 					<h2>About company</h2>
 
 					<p>
@@ -53,7 +83,7 @@
 
 				<div
 					v-if="
-						tokenInfo?.role === 'company' &&
+						isCompany(profileInfo) &&
 						profileInfo.jobs.items.length > 0
 					"
 				>
@@ -73,7 +103,8 @@ import { useQuery } from "@vue/apollo-composable";
 import VLoader from "@/components/base/VLoader.vue";
 import JobsList from "@/components/lists/JobsList.vue";
 
-import type { Company } from "@/apollo/generated/graphql.ts";
+import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
+import { GET_CANDIDATE } from "@/apollo/gql/queries/candidate.query.ts";
 import { GET_COMPANY } from "@/apollo/gql/queries/company.query.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
 
@@ -83,10 +114,16 @@ const { getTokenInfo } = useAuthStore();
 
 const tokenInfo = getTokenInfo();
 
-const profileInfo = ref<Company | null>(null);
+const profileInfo = ref<Company | null | Candidate>(null);
 const isLoading = ref(false);
 
-if (tokenInfo && tokenInfo.role === "company") {
+const isCandidate = (profile: Company | Candidate): profile is Candidate =>
+	"years" in profile || tokenInfo?.role === "candidate";
+const isCompany = (profile: Company | Candidate): profile is Company =>
+	"employees" in profile || tokenInfo?.role === "company";
+
+// Set company profile info
+if (tokenInfo?.role === "company") {
 	isLoading.value = true;
 
 	const { result, onResult } = useQuery<{ company: Company }>(GET_COMPANY, {
@@ -97,6 +134,26 @@ if (tokenInfo && tokenInfo.role === "company") {
 	onResult(() => {
 		if (result.value) {
 			profileInfo.value = result.value.company;
+
+			isLoading.value = false;
+		}
+	});
+}
+
+// Set candidate profile info
+if (tokenInfo?.role === "candidate") {
+	isLoading.value = true;
+
+	const { result, onResult } = useQuery<{ candidate: Candidate }>(
+		GET_CANDIDATE,
+		{
+			id: tokenInfo.id,
+		}
+	);
+
+	onResult(() => {
+		if (result.value) {
+			profileInfo.value = result.value.candidate;
 
 			isLoading.value = false;
 		}

@@ -2,6 +2,7 @@ type Query {
   jobs(limit: Int, offset: Int): JobList!
   job(id: ID!): Job
   company(id: ID!): Company
+  candidate(id: ID!): Candidate
 }
 
 type Mutation {
@@ -28,6 +29,7 @@ input CandidateCreateInput {
 
 type Company {
   id: ID!
+  email: String!
   dateCreated: String!
   name: String!
   description: String

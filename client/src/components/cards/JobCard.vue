@@ -52,11 +52,10 @@
 </template>
 
 <script lang="ts" setup>
-import Button from "primevue/button";
 import Tag from "primevue/tag";
 
+import type { Job } from "@/apollo/generated/graphql.ts";
 import { useFormatDate } from "@/composables/useFormatDate";
-import type { Job } from "@/ts/types/jobs";
 
 interface Props {
 	data: Job;

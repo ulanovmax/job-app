@@ -31,14 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import Button from "primevue/button";
-import { useToast } from "primevue/usetoast";
-
 import HeaderMenu from "@/components/base/HeaderMenu.vue";
 import VLogo from "@/components/base/VLogo.vue";
-
-import { useAuthStore } from "@/store/auth.store.ts";
 </script>
 
 <style scoped>

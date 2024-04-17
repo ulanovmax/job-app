@@ -86,14 +86,14 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import { useToast } from "primevue/usetoast";
 
+import type { CandidateCreateInput } from "@/apollo/generated/graphql.ts";
 import { CREATE_CANDIDATE } from "@/apollo/gql/mutations/candidate.mutation.ts";
 import { langLevels } from "@/constants/langLevels.ts";
-import type { CreateCandidateInput } from "@/ts/types/candidate";
 
 const toast = useToast();
 const router = useRouter();
 
-const initialState: CreateCandidateInput = {
+const initialState: CandidateCreateInput = {
 	name: "",
 	email: "",
 	years: 0,
@@ -101,7 +101,7 @@ const initialState: CreateCandidateInput = {
 	password: "",
 };
 
-const state = ref<CreateCandidateInput>({ ...initialState });
+const state = ref<CandidateCreateInput>({ ...initialState });
 const repeatPassword = ref("");
 
 const { mutate: createCompany, loading } = useMutation(CREATE_CANDIDATE, {

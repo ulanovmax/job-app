@@ -4,6 +4,7 @@ export const GET_COMPANY = graphql(`
 	query GetCompany($companyId: ID!, $jobsLimit: Int) {
 		company(id: $companyId) {
 			id
+			email
 			name
 			country
 			dateCreated

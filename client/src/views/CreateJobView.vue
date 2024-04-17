@@ -76,9 +76,9 @@ import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
+import { JobType } from "@/apollo/generated/graphql.ts";
 import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutation.ts";
 import { langLevels } from "@/constants/langLevels.ts";
-import type { JobType } from "@/ts/types/jobs";
 
 const toast = useToast();
 
@@ -92,7 +92,7 @@ const initialState = {
 
 const state = ref({ ...initialState });
 
-const jobTypes = ref<JobType[]>(["Office", "Remote"]);
+const jobTypes = ref<JobType[]>([JobType.Remote, JobType.Office]);
 
 const {
 	mutate: createJob,

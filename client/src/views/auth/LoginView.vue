@@ -10,18 +10,20 @@
 					@submit.prevent="handleSubmit"
 				>
 					<fieldset class="field">
-						<label for="title">Type your email</label>
+						<label for="email">Type your email</label>
 						<InputText
-							id="title"
+							id="email"
 							v-model="state.email"
+							type="email"
 							placeholder="Email"
 						/>
 					</fieldset>
 
 					<fieldset class="field">
-						<label for="title">Type your password</label>
+						<label for="password">Type your password</label>
 						<Password
 							v-model="state.password"
+							input-id="password"
 							placeholder="Password"
 							:feedback="false"
 							toggle-mask
@@ -52,7 +54,7 @@ import { useToast } from "primevue/usetoast";
 
 import type { LoginInput } from "@/api/login.api.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
-import { isLoginError } from "@/ts/types/error.d.ts";
+import type { isLoginError } from "@/ts/types/error.d.ts";
 
 const toast = useToast();
 const router = useRouter();
