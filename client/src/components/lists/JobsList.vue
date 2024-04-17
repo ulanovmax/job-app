@@ -1,7 +1,7 @@
 <template>
 	<ProgressSpinner v-if="loading" class="mx-auto my-10 !block" />
 
-	<div v-else-if="jobs" class="grid grid-cols-2 gap-4">
+	<div v-else-if="jobs" :class="[listStyle]">
 		<job-card v-for="card in jobs.items" :key="card.id" :data="card" />
 	</div>
 
@@ -31,6 +31,7 @@ interface Props {
 	pagination?: boolean;
 	limit?: number;
 	offset?: number;
+	listStyle?: string;
 }
 
 interface Emits {

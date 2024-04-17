@@ -27,11 +27,15 @@ export const countJobs = async () => {
 
 export const getJob = async (id: string): Promise<JobEntity> => await getJobTable().first().where({ id });
 
-export const getJobsByCompany = async (companyId: string, limit?: number):  Promise<JobEntity[]> => {
+export const getJobsByCompany = async (companyId: string, limit?: number, offset?: number):  Promise<JobEntity[]> => {
   const query = getJobTable().select().where({companyId});
 
   if (limit) {
     query.limit(limit)
+  }
+
+  if (offset) {
+    query.offset(offset)
   }
 
   return await query;

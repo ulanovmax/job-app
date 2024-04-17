@@ -48,8 +48,8 @@ export const resolvers: Resolvers<ResolverContext> = {
   },
 
   Company: {
-    jobs: async (company, { limit}) => {
-      const items = await getJobsByCompany(company.id, limit);
+    jobs: async (company, { limit, offset}) => {
+      const items = await getJobsByCompany(company.id, limit, offset);
       const totalCount  = await countJobs();
 
       return { items, totalCount }

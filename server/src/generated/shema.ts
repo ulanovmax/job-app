@@ -54,6 +54,7 @@ export type Company = {
 /** Types for company */
 export type CompanyJobsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CompanyCreateInput = {

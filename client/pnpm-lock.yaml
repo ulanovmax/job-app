@@ -8,6 +8,9 @@ dependencies:
   '@apollo/client':
     specifier: ^3.9.9
     version: 3.9.9(graphql@16.8.1)
+  '@graphql-typed-document-node/core':
+    specifier: ^3.2.0
+    version: 3.2.0(graphql@16.8.1)
   '@types/js-cookie':
     specifier: ^3.0.6
     version: 3.0.6
@@ -53,10 +56,10 @@ dependencies:
 
 devDependencies:
   '@graphql-codegen/cli':
-    specifier: ^5.0.2
+    specifier: 5.0.2
     version: 5.0.2(graphql@16.8.1)(typescript@5.4.3)
   '@graphql-codegen/client-preset':
-    specifier: ^4.2.5
+    specifier: 4.2.5
     version: 4.2.5(graphql@16.8.1)
   '@nabla/vite-plugin-eslint':
     specifier: ^2.0.2

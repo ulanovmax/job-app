@@ -42,7 +42,7 @@ type Company {
   name: String!
   description: String
   country: String!
-  jobs(limit: Int): JobList!
+  jobs(limit: Int, offset: Int): JobList!
   employees: Int!
 }
 

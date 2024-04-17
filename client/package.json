@@ -7,10 +7,11 @@
 		"dev": "vite",
 		"build": "vue-tsc && vite build",
 		"preview": "vite preview",
-		"codegen": "graphql-codegen --config codegen.json"
+		"codegen": "graphql-codegen --config codegen.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.9.9",
+		"@graphql-typed-document-node/core": "^3.2.0",
 		"@types/js-cookie": "^3.0.6",
 		"@vue/apollo-composable": "^4.0.2",
 		"axios": "^1.6.8",

@@ -51,3 +51,33 @@ export const GET_CURRENT_JOB = graphql(`
 		}
 	}
 `);
+
+export const GET_JOBS_BY_COMPANY = graphql(`
+	query GetJobsByCompany($companyId: ID!, $jobsLimit: Int, $jobsOffset: Int) {
+		company(id: $companyId) {
+			jobs(limit: $jobsLimit, offset: $jobsOffset) {
+				items {
+					id
+					title
+					dateCreated
+					description
+					type
+					responses
+					country
+
+					requirements {
+						englishLevel
+						years
+					}
+
+					company {
+						name
+						id
+					}
+				}
+
+				totalCount
+			}
+		}
+	}
+`);
