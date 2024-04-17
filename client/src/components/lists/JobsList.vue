@@ -2,7 +2,12 @@
 	<ProgressSpinner v-if="loading" class="mx-auto my-10 !block" />
 
 	<div v-else-if="jobs" :class="[listStyle]">
-		<job-card v-for="card in jobs.items" :key="card.id" :data="card" />
+		<job-card
+			v-for="card in jobs.items"
+			:key="card.id"
+			:editable="editable"
+			:data="card"
+		/>
 	</div>
 
 	<Paginator
@@ -29,6 +34,7 @@ import type { JobList } from "@/apollo/generated/graphql.ts";
 
 interface Props {
 	jobs: JobList | null;
+	editable?: boolean;
 	loading?: boolean;
 	pagination?: boolean;
 	limit?: number;

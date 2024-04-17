@@ -1,0 +1,38 @@
+<template>
+	<Dialog v-model:visible="isEditOpen" modal header="Edit job">
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+			aliquip ex ea commodo consequat. Duis aute irure dolor in
+			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</Dialog>
+
+	<Dialog v-model:visible="isDeleteOpen" modal header="Delete job">
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+			aliquip ex ea commodo consequat. Duis aute irure dolor in
+			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</Dialog>
+</template>
+
+<script setup lang="ts">
+import Dialog from "primevue/dialog";
+
+import { storeToRefs } from "pinia";
+
+import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
+
+const jobPopupStore = useJobPopup();
+const { isEditOpen, isDeleteOpen } = storeToRefs(jobPopupStore);
+</script>
+
+<style scoped></style>

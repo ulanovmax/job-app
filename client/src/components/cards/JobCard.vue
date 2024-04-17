@@ -26,12 +26,18 @@
 				</div>
 			</div>
 
-			<div v-if="editable" class="flex items-center gap-3">
-				<button class="opacity-50 transition-opacity hover:opacity-100">
+			<div v-if="editable" class="flex items-center gap-2" @click.prevent>
+				<button
+					class="action-btn bg-surface-800"
+					@click="isEditOpen = true"
+				>
 					<i class="pi pi-pencil"></i>
 				</button>
-				<button class="opacity-50 transition-opacity hover:opacity-100">
-					<i class="pi pi-ban"></i>
+				<button
+					class="action-btn bg-red-500"
+					@click="isDeleteOpen = true"
+				>
+					<i class="pi pi-trash"></i>
 				</button>
 			</div>
 		</div>
@@ -63,9 +69,12 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import Tag from "primevue/tag";
 
+import { storeToRefs } from "pinia";
+
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { useFormatDate } from "@/composables/useFormatDate";
 import { useAuthStore } from "@/store/auth.store.ts";
+import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
 
 interface Props {
 	data: Job;
@@ -73,6 +82,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const jobPopupStore = useJobPopup();
+const { isEditOpen, isDeleteOpen } = storeToRefs(jobPopupStore);
 
 const { params } = useRoute();
 const { getTokenInfo } = useAuthStore();
@@ -84,3 +96,9 @@ const isCompanyShow = computed(
 		tokenInfo?.id !== props.data.company.id
 );
 </script>
+
+<style scoped>
+.action-btn {
+	@apply h-10 w-10 rounded-lg transition-opacity hover:opacity-60;
+}
+</style>

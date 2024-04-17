@@ -1,6 +1,7 @@
 <template>
 	<jobs-list
 		v-model:offset="offset"
+		editable
 		:loading="loading"
 		:jobs="jobs"
 		@update:offset="

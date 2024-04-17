@@ -16,7 +16,7 @@ import TabMenu from "primevue/tabmenu";
 
 const router = useRouter();
 
-const active = ref(0);
+const active = ref(router.currentRoute.value.name === "jobBoardAll" ? 0 : 1);
 
 const items = ref<MenuItem[]>([
 	{
