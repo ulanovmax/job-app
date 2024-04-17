@@ -19,9 +19,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+/** Types for candidate */
 export type Candidate = {
   email: Scalars['String']['output'];
   englishLevel: Scalars['String']['output'];
+  experience: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   years: Scalars['Int']['output'];
@@ -30,11 +32,13 @@ export type Candidate = {
 export type CandidateCreateInput = {
   email: Scalars['String']['input'];
   englishLevel: Scalars['String']['input'];
+  experience: Scalars['String']['input'];
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
   years: Scalars['Int']['input'];
 };
 
+/** Types for company */
 export type Company = {
   country: Scalars['String']['output'];
   dateCreated: Scalars['String']['output'];
@@ -47,6 +51,7 @@ export type Company = {
 };
 
 
+/** Types for company */
 export type CompanyJobsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -60,6 +65,7 @@ export type CompanyCreateInput = {
   password: Scalars['String']['input'];
 };
 
+/** Types for job */
 export type Job = {
   company: Company;
   country: Scalars['String']['output'];
@@ -72,7 +78,7 @@ export type Job = {
   type: JobType;
 };
 
-/** Create job */
+/** Arguments for creating job */
 export type JobCreateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   requirements?: InputMaybe<JobRequirementsInput>;
@@ -260,6 +266,7 @@ export type ResolversParentTypes = {
 export type CandidateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Candidate'] = ResolversParentTypes['Candidate']> = {
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   englishLevel?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  experience?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   years?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

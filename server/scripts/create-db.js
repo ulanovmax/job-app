@@ -1,5 +1,4 @@
 import { connection } from "../src/db/connection.js";
-import knex from "knex";
 
 const { schema } = connection;
 
@@ -46,6 +45,7 @@ await schema.createTable("candidate", (table) => {
   table.integer("years").notNullable();
   table.enu("englishLevel", langLevels).notNullable();
   table.text("password").notNullable();
+  table.text("experience").notNullable();
 });
 
 // await connection.table("company").insert([
@@ -66,5 +66,7 @@ await schema.createTable("candidate", (table) => {
 //     password: 'gotoinc2024',
 //   },
 // ]);
+
+console.log("Tables successfully created");
 
 process.exit();

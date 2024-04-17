@@ -81,6 +81,14 @@
 					</p>
 				</div>
 
+				<div v-if="isCandidate(profileInfo)" class="mb-10">
+					<h2>Experience</h2>
+
+					<p>
+						{{ profileInfo.experience }}
+					</p>
+				</div>
+
 				<div
 					v-if="
 						isCompany(profileInfo) &&
@@ -106,9 +114,8 @@ import JobsList from "@/components/lists/JobsList.vue";
 import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
 import { GET_CANDIDATE } from "@/apollo/gql/queries/candidate.query.ts";
 import { GET_COMPANY } from "@/apollo/gql/queries/company.query.ts";
+import { useFormatDate } from "@/composables/useFormatDate.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
-
-import { useFormatDate } from "../composables/useFormatDate.ts";
 
 const { getTokenInfo } = useAuthStore();
 

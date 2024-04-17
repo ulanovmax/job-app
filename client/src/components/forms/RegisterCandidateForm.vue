@@ -18,29 +18,29 @@
 					placeholder="example@mail.com"
 				/>
 			</fieldset>
+
+			<fieldset class="field">
+				<label for="years"> Select years of experience </label>
+				<InputNumber
+					v-model="state.years"
+					input-id="years"
+					:use-grouping="false"
+					suffix=" years"
+				/>
+			</fieldset>
+
+			<fieldset class="field">
+				<label for="englishLevel">Select your English level</label>
+				<Dropdown
+					v-model="state.englishLevel"
+					input-id="englishLevel"
+					:options="langLevels"
+					show-clear
+					placeholder="English level"
+					class="w-full"
+				/>
+			</fieldset>
 		</div>
-
-		<fieldset class="field">
-			<label for="years"> Select years of experience </label>
-			<InputNumber
-				v-model="state.years"
-				input-id="years"
-				:use-grouping="false"
-				suffix=" years"
-			/>
-		</fieldset>
-
-		<fieldset class="field">
-			<label for="englishLevel">Select your English level</label>
-			<Dropdown
-				v-model="state.englishLevel"
-				input-id="englishLevel"
-				:options="langLevels"
-				show-clear
-				placeholder="English level"
-				class="w-full"
-			/>
-		</fieldset>
 
 		<fieldset class="field">
 			<label for="candidatePassword">Create password</label>
@@ -64,6 +64,17 @@
 			/>
 		</fieldset>
 
+		<fieldset class="field">
+			<label for="experience"> Tell about your experience </label>
+
+			<Textarea
+				id="experience"
+				v-model="state.experience"
+				rows="5"
+				cols="30"
+			/>
+		</fieldset>
+
 		<Button
 			:loading="loading"
 			label="Sign in"
@@ -84,6 +95,7 @@ import Dropdown from "primevue/dropdown";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
+import Textarea from "primevue/textarea";
 import { useToast } from "primevue/usetoast";
 
 import type { CandidateCreateInput } from "@/apollo/generated/graphql.ts";
@@ -99,6 +111,7 @@ const initialState: CandidateCreateInput = {
 	years: 0,
 	englishLevel: "",
 	password: "",
+	experience: "",
 };
 
 const state = ref<CandidateCreateInput>({ ...initialState });

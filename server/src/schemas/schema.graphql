@@ -11,12 +11,16 @@ type Mutation {
   createCandidate(input: CandidateCreateInput!): Candidate
 }
 
+"""
+Types for candidate
+"""
 type Candidate {
   id: ID!
   name: String!
   email: String!
   years: Int!
   englishLevel: String!
+  experience: String!
 }
 
 input CandidateCreateInput {
@@ -25,8 +29,12 @@ input CandidateCreateInput {
   years: Int!
   englishLevel: String!
   password: String!
+  experience: String!
 }
 
+"""
+Types for company
+"""
 type Company {
   id: ID!
   email: String!
@@ -47,6 +55,9 @@ input CompanyCreateInput {
   description: String
 }
 
+"""
+Types for job
+"""
 type Job {
   id: ID!
   title: String!
@@ -80,7 +91,7 @@ enum JobType {
 }
 
 """
-Create job
+Arguments for creating job
 """
 input JobCreateInput {
   title: String!

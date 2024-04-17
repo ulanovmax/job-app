@@ -4,5 +4,6 @@ export interface CandidateEntity {
     email: string,
     years: number,
     englishLevel: string,
-    password: string
+    password: string,
+    experience: string
 }
