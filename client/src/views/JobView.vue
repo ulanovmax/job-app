@@ -68,7 +68,7 @@ import ProgressSpinner from "primevue/progressspinner";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.query.ts";
-import { useFormatDate } from "@/composables/useFormatDate";
+import { useFormatDate } from "@/hooks/useFormatDate";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const { params } = useRoute();

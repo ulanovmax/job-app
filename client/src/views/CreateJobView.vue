@@ -77,7 +77,7 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
 import { JobType } from "@/apollo/generated/graphql.ts";
-import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutation.ts";
+import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutations.ts";
 import { langLevels } from "@/constants/langLevels.ts";
 
 const toast = useToast();

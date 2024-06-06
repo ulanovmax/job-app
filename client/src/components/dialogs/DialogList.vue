@@ -1,11 +1,5 @@
-<template>
-	<teleport to="body">
-		<job-dialogs />
-	</teleport>
-</template>
+<template></template>
 
-<script setup lang="ts">
-import JobDialogs from "@/components/dialogs/JobDialogs.vue";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

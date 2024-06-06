@@ -1,4 +1,4 @@
-import {getJobs, getJob, addJob, getJobsByCompany, countJobs} from "./db/jobs.js";
+import {getJobs, getJob, addJob, getJobsByCompany, countJobs, updateJob, deleteJob} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
 import {noPermissionError, unauthorizedError} from "./errors.ts";
 import {addCandidate, getCandidate} from "./db/candidates.js";
@@ -39,7 +39,11 @@ export const resolvers: Resolvers<ResolverContext> = {
 
     createCompany: async (_root, { input }) => addCompany(input),
 
-    createCandidate: async (_root, { input }) => addCandidate(input)
+    createCandidate: async (_root, { input }) => addCandidate(input),
+
+    updateJob: async (_root, { id,companyId, input }) => updateJob(id, companyId, input),
+
+    deleteJob: async (_root, { id, companyId }) => deleteJob(id, companyId),
   },
 
   Job: {

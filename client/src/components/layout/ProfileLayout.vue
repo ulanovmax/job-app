@@ -104,7 +104,7 @@ import VLoader from "@/components/base/VLoader.vue";
 import JobsList from "@/components/lists/JobsList.vue";
 
 import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
-import { useFormatDate } from "@/composables/useFormatDate.ts";
+import { useFormatDate } from "@/hooks/useFormatDate.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 interface Props {

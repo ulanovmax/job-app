@@ -52,7 +52,7 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import { useToast } from "primevue/usetoast";
 
-import type { LoginInput } from "@/api/login.api.ts";
+import type { LoginInput } from "@/api/auth/login.api.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
 import type { isLoginError } from "@/ts/types/error.d.ts";
 

@@ -18,7 +18,7 @@ import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 
 import { getCountries } from "@/api/get-countries.api.ts";
-import useDebounce from "@/composables/useDebounce.ts";
+import useDebounce from "@/hooks/useDebounce.ts";
 import type { Country } from "@/ts/types/country";
 
 interface Props {

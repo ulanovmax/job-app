@@ -16,6 +16,8 @@ const documents = {
     "\n\tmutation CreateCandidate($input: CandidateCreateInput!) {\n\t\tcandidate: createCandidate(input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\temail\n\t\t}\n\t}\n": types.CreateCandidateDocument,
     "\n\tmutation CreateCompany($input: CompanyCreateInput!) {\n\t\tcompany: createCompany(input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t}\n\t}\n": types.CreateCompanyDocument,
     "\n\tmutation CreateJob($input: JobCreateInput!) {\n\t\tjob: createJob(input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n": types.CreateJobDocument,
+    "\n\tmutation DeleteJob($id: ID!, $companyId: ID!) {\n\t\tjob: deleteJob(id: $id, companyId: $companyId) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n": types.DeleteJobDocument,
+    "\n\tmutation UpdateJob($id: ID!, $companyId: ID!, $input: JobCreateInput!) {\n\t\tjob: updateJob(id: $id, companyId: $companyId, input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdescription\n\t\t\ttype\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\t\t}\n\t}\n": types.UpdateJobDocument,
     "\n\tquery GetCandidate($id: ID!) {\n\t\tcandidate(id: $id) {\n\t\t\tname\n\t\t\texperience\n\t\t\temail\n\t\t\tenglishLevel\n\t\t\tid\n\t\t\tyears\n\t\t}\n\t}\n": types.GetCandidateDocument,
     "\n\tquery GetCompany($companyId: ID!, $jobsLimit: Int) {\n\t\tcompany(id: $companyId) {\n\t\t\tid\n\t\t\temail\n\t\t\tname\n\t\t\tcountry\n\t\t\tdateCreated\n\t\t\tdescription\n\t\t\temployees\n\t\t\tjobs(limit: $jobsLimit) {\n\t\t\t\titems {\n\t\t\t\t\tid\n\t\t\t\t\ttitle\n\t\t\t\t\tdateCreated\n\t\t\t\t\tdescription\n\t\t\t\t\ttype\n\t\t\t\t\tresponses\n\t\t\t\t\tcountry\n\n\t\t\t\t\trequirements {\n\t\t\t\t\t\tenglishLevel\n\t\t\t\t\t\tyears\n\t\t\t\t\t}\n\n\t\t\t\t\tcompany {\n\t\t\t\t\t\tname\n\t\t\t\t\t\tid\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t}\n\t}\n": types.GetCompanyDocument,
     "\n\tquery getJobs($limit: Int, $offset: Int) {\n\t\tjobs(limit: $limit, offset: $offset) {\n\t\t\titems {\n\t\t\t\ttitle\n\t\t\t\tid\n\t\t\t\tcountry\n\t\t\t\tresponses\n\t\t\t\ttype\n\t\t\t\tdescription\n\t\t\t\tdateCreated\n\n\t\t\t\trequirements {\n\t\t\t\t\tyears\n\t\t\t\t\tenglishLevel\n\t\t\t\t}\n\n\t\t\t\tcompany {\n\t\t\t\t\tname\n\t\t\t\t\tid\n\t\t\t\t}\n\t\t\t}\n\n\t\t\ttotalCount\n\t\t}\n\t}\n": types.GetJobsDocument,
@@ -49,6 +51,14 @@ export function graphql(source: "\n\tmutation CreateCompany($input: CompanyCreat
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n\tmutation CreateJob($input: JobCreateInput!) {\n\t\tjob: createJob(input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n"): (typeof documents)["\n\tmutation CreateJob($input: JobCreateInput!) {\n\t\tjob: createJob(input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation DeleteJob($id: ID!, $companyId: ID!) {\n\t\tjob: deleteJob(id: $id, companyId: $companyId) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n"): (typeof documents)["\n\tmutation DeleteJob($id: ID!, $companyId: ID!) {\n\t\tjob: deleteJob(id: $id, companyId: $companyId) {\n\t\t\tid\n\t\t\ttitle\n\t\t}\n\t}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation UpdateJob($id: ID!, $companyId: ID!, $input: JobCreateInput!) {\n\t\tjob: updateJob(id: $id, companyId: $companyId, input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdescription\n\t\t\ttype\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\t\t}\n\t}\n"): (typeof documents)["\n\tmutation UpdateJob($id: ID!, $companyId: ID!, $input: JobCreateInput!) {\n\t\tjob: updateJob(id: $id, companyId: $companyId, input: $input) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tdescription\n\t\t\ttype\n\t\t\trequirements {\n\t\t\t\tenglishLevel\n\t\t\t\tyears\n\t\t\t}\n\t\t}\n\t}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

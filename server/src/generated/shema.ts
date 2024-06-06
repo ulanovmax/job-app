@@ -111,6 +111,8 @@ export type Mutation = {
   createCandidate?: Maybe<Candidate>;
   createCompany?: Maybe<Company>;
   createJob?: Maybe<Job>;
+  deleteJob?: Maybe<Job>;
+  updateJob?: Maybe<Job>;
 };
 
 
@@ -126,6 +128,19 @@ export type MutationCreateCompanyArgs = {
 
 export type MutationCreateJobArgs = {
   input: JobCreateInput;
+};
+
+
+export type MutationDeleteJobArgs = {
+  companyId: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateJobArgs = {
+  companyId: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<JobCreateInput>;
 };
 
 export type Query = {
@@ -315,6 +330,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createCandidate?: Resolver<Maybe<ResolversTypes['Candidate']>, ParentType, ContextType, RequireFields<MutationCreateCandidateArgs, 'input'>>;
   createCompany?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'input'>>;
   createJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationCreateJobArgs, 'input'>>;
+  deleteJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationDeleteJobArgs, 'companyId' | 'id'>>;
+  updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationUpdateJobArgs, 'companyId' | 'id'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

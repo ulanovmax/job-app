@@ -27,16 +27,10 @@
 			</div>
 
 			<div v-if="editable" class="flex items-center gap-2" @click.prevent>
-				<button
-					class="action-btn bg-surface-800"
-					@click="isEditOpen = true"
-				>
+				<button class="action-btn bg-surface-800" @click="editJob">
 					<i class="pi pi-pencil"></i>
 				</button>
-				<button
-					class="action-btn bg-red-500"
-					@click="isDeleteOpen = true"
-				>
+				<button class="action-btn bg-red-500" @click="deleteJob">
 					<i class="pi pi-trash"></i>
 				</button>
 			</div>
@@ -61,6 +55,10 @@
 		<p>
 			{{ data.description }}
 		</p>
+
+		<teleport to="body">
+			<job-dialogs />
+		</teleport>
 	</router-link>
 </template>
 
@@ -69,10 +67,12 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import Tag from "primevue/tag";
 
+import JobDialogs from "@/components/dialogs/JobDialogs.vue";
+
 import { storeToRefs } from "pinia";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
-import { useFormatDate } from "@/composables/useFormatDate";
+import { useFormatDate } from "@/hooks/useFormatDate";
 import { useAuthStore } from "@/store/auth.store.ts";
 import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
 
@@ -84,7 +84,17 @@ interface Props {
 const props = defineProps<Props>();
 
 const jobPopupStore = useJobPopup();
-const { isEditOpen, isDeleteOpen } = storeToRefs(jobPopupStore);
+const { isEditOpen, isDeleteOpen, selectedJob } = storeToRefs(jobPopupStore);
+
+const editJob = () => {
+	isEditOpen.value = true;
+	selectedJob.value = { ...props.data };
+};
+
+const deleteJob = () => {
+	isDeleteOpen.value = true;
+	selectedJob.value = { ...props.data };
+};
 
 const { params } = useRoute();
 const { getTokenInfo } = useAuthStore();

@@ -3,9 +3,9 @@ import { jwtDecode } from "jwt-decode";
 
 import { defineStore } from "pinia";
 
-import type { LoginInput } from "@/api/login.api.ts";
-import { loginAuth } from "@/api/login.api.ts";
-import { logoutAuth } from "@/api/logout.api.ts";
+import type { LoginInput } from "@/api/auth/login.api.ts";
+import { loginAuth } from "@/api/auth/login.api.ts";
+import { logoutAuth } from "@/api/auth/logout.api.ts";
 import { throwError } from "@/api/throw-error.api.ts";
 import router from "@/router";
 import type { Token } from "@/ts/types/token";

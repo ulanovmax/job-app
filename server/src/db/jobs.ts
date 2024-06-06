@@ -60,3 +60,27 @@ export const addJob = async (companyId: JobEntity["companyId"], country: JobEnti
 
   return job;
 };
+
+export const deleteJob = async (id: JobEntity["id"], companyId: JobEntity["companyId"]) => {
+  const job = await getJobTable().first().where({ id, companyId });
+  
+  if (!job) {
+    return null;
+  }
+  
+  await getJobTable().delete().where({ id });
+  
+  return job;
+}
+
+export const updateJob = async (id: JobEntity["id"], companyId: JobEntity["companyId"], input: JobCreateInput ) => {
+  const job: JobEntity = await getJobTable().first().where({ id, companyId });
+  
+  if (!job) {
+    return null;
+  }
+  
+  await getJobTable().update(input).where({ id });
+  
+  return { ...job, ...input } as JobEntity;
+}

@@ -9,6 +9,8 @@ type Mutation {
   createJob(input: JobCreateInput!): Job
   createCompany(input: CompanyCreateInput!): Company
   createCandidate(input: CandidateCreateInput!): Candidate
+  deleteJob(id: ID!, companyId: ID!): Job
+  updateJob(id: ID!, companyId: ID!, input: JobCreateInput!): Job
 }
 
 """
