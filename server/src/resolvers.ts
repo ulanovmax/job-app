@@ -9,6 +9,16 @@ export interface ResolverContext {
   context: Token
 }
 
+const checkPermission = (context: Token) => {
+  if (context.role !== "company") {
+    throw noPermissionError()
+  }
+
+  if (!context.id) {
+    throw unauthorizedError()
+  }
+}
+
 export const resolvers: Resolvers<ResolverContext> = {
   Query: {
     jobs: async (_root, { limit, offset }, { context }) => {
@@ -24,13 +34,7 @@ export const resolvers: Resolvers<ResolverContext> = {
 
   Mutation: {
     createJob: async (_root, { input }, { context }) => {
-      if (context.role !== "company") {
-        throw noPermissionError()
-      }
-
-      if (!context.name) {
-        throw unauthorizedError()
-      }
+      checkPermission(context)
 
       const company = await getCompany(context.id);
 
@@ -41,9 +45,17 @@ export const resolvers: Resolvers<ResolverContext> = {
 
     createCandidate: async (_root, { input }) => addCandidate(input),
 
-    updateJob: async (_root, { id,companyId, input }) => updateJob(id, companyId, input),
+    updateJob: async (_root, { id,companyId, input }, { context }) => {
+      checkPermission(context)
 
-    deleteJob: async (_root, { id, companyId }) => deleteJob(id, companyId),
+      await updateJob(id, companyId, input)
+    },
+
+    deleteJob: async (_root, { id, companyId }, { context }) => {
+      checkPermission(context)
+
+      await deleteJob(id, companyId)
+    },
   },
 
   Job: {

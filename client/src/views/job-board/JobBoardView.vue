@@ -6,6 +6,10 @@
 	/>
 
 	<router-view></router-view>
+
+	<teleport to="body">
+		<job-dialogs />
+	</teleport>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +17,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { MenuItem } from "primevue/menuitem";
 import TabMenu from "primevue/tabmenu";
+
+import JobDialogs from "@/components/dialogs/JobDialogs.vue";
 
 const router = useRouter();
 

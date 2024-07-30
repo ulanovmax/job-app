@@ -11,7 +11,7 @@ export const unauthorizedError = () => {
 export const companyNotFoundError = () => {
     return new GraphQLError("Company is not found", {
         extensions: {
-            code: "COMPANY_NOT_FOUND"
+            code: "COMPANY_NOT_FOUND",
         }
     })
 }

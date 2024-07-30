@@ -75,12 +75,30 @@ export const deleteJob = async (id: JobEntity["id"], companyId: JobEntity["compa
 
 export const updateJob = async (id: JobEntity["id"], companyId: JobEntity["companyId"], input: JobCreateInput ) => {
   const job: JobEntity = await getJobTable().first().where({ id, companyId });
+
+  const { title, requirements, type, description } = input;
   
   if (!job) {
     return null;
   }
-  
-  await getJobTable().update(input).where({ id });
-  
-  return { ...job, ...input } as JobEntity;
+
+  const body = {
+    title,
+    type,
+    description,
+    requirements: JSON.stringify(requirements),
+  }
+
+  try {
+    await getJobTable().update(body).where({ id });
+  } catch (e) {
+    console.log(e)
+  }
+
+  const updatedJob: JobEntity = {
+    ...job,
+    ...body,
+  }
+
+  return updatedJob;
 }

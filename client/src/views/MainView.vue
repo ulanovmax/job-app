@@ -8,12 +8,9 @@
 	</main>
 
 	<v-footer />
-
-	<dialog-list />
 </template>
 
 <script setup lang="ts">
-import DialogList from "@/components/dialogs/DialogList.vue";
 import VFooter from "@/components/layout/VFooter.vue";
 import VHeader from "@/components/layout/VHeader.vue";
 </script>

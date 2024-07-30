@@ -19,45 +19,19 @@ export const useMyJobsStore = defineStore("myJobs", () => {
 
 		const tokenInfo = getTokenInfo();
 
-		try {
-			const { data } = await apolloClient.query({
-				query: GET_JOBS_BY_COMPANY,
-				variables: {
-					companyId: tokenInfo?.id as string,
-					jobsLimit: PaginationEnum.Limit,
-					jobsOffset: offset.value,
-				},
-				fetchPolicy: "network-only",
-			});
+		const { data } = await apolloClient.query({
+			query: GET_JOBS_BY_COMPANY,
+			variables: {
+				companyId: tokenInfo?.id as string,
+				jobsLimit: PaginationEnum.Limit,
+				jobsOffset: offset.value,
+			},
+			fetchPolicy: "network-only",
+		});
 
-			if (data.company) {
-				jobs.value = data.company.jobs as JobList;
-			}
-		} catch (e) {
-			console.log(e);
+		if (data.company) {
+			jobs.value = data.company.jobs as JobList;
 		}
-
-		// const { result, onResult, loading, refetch } = useQuery(
-		// 	GET_JOBS_BY_COMPANY,
-		// 	{
-		// 		companyId: tokenInfo?.id as string,
-		// 		jobsLimit: PaginationEnum.Limit,
-		// 		jobsOffset: offset.value,
-		// 	},
-		// 	{
-		// 		fetchPolicy: "network-only",
-		// 	}
-		// );
-		//
-		// onResult(() => {
-		// 	console.log(result.value);
-		//
-		// 	if (result.value?.company) {
-		// 		jobs.value = result.value.company.jobs as JobList;
-		// 	}
-		// });
-		//
-		// return { loading, refetch };
 	};
 
 	return {

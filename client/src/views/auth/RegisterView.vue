@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<section class="mt-24">
+		<section class="mb-10 mt-24">
 			<div class="container flex w-full flex-col items-center">
 				<h1 class="mb-5">Create account</h1>
 

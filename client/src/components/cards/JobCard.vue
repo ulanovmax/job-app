@@ -55,10 +55,6 @@
 		<p>
 			{{ data.description }}
 		</p>
-
-		<teleport to="body">
-			<job-dialogs />
-		</teleport>
 	</router-link>
 </template>
 
