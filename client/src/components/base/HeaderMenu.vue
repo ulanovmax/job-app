@@ -30,9 +30,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import type { MenuItem } from "primevue/menuitem";
 import TieredMenu from "primevue/tieredmenu";
-import { useToast } from "primevue/usetoast";
 
 import { useAuthStore } from "@/store/auth.store.ts";
 
@@ -74,13 +74,7 @@ const handleLogout = async () => {
 	try {
 		await logout();
 	} catch (e) {
-		toast.add({
-			severity: "error",
-			summary: "Logout error",
-			detail: "Couldn't logout you from account",
-			closable: true,
-			life: 3000,
-		});
+		toast.error("Couldn't logout you from account");
 	} finally {
 		isLoading.value = false;
 	}

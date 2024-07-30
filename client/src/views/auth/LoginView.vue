@@ -23,6 +23,7 @@
 						<label for="password">Type your password</label>
 						<Password
 							v-model="state.password"
+							autocomplete="current-password"
 							input-id="password"
 							placeholder="Password"
 							:feedback="false"
@@ -30,7 +31,12 @@
 						/>
 					</fieldset>
 
-					<Button label="Sign in" class="w-full" type="submit" />
+					<Button
+						:loading="isLoading"
+						label="Sign in"
+						class="w-full"
+						type="submit"
+					/>
 				</form>
 
 				<router-link
@@ -47,14 +53,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
-import { useToast } from "primevue/usetoast";
 
 import type { LoginInput } from "@/api/auth/login.api.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
-import type { isLoginError } from "@/ts/types/error.d.ts";
+import { isLoginError } from "@/ts/guards/error.guard.ts";
 
 const toast = useToast();
 const router = useRouter();
@@ -78,23 +84,9 @@ const handleSubmit = async () => {
 		void router.replace({ name: "main" });
 	} catch (e) {
 		if (isLoginError(e)) {
-			if (e.code === "PASSWORD_NOT_CORRECT") {
-				toast.add({
-					severity: "error",
-					summary: "Login Error",
-					detail: "Password is not correct",
-					closable: true,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Login Error",
-					detail: "Couldn't find your account",
-					closable: true,
-					life: 3000,
-				});
-			}
+			toast.error(e.error);
+		} else {
+			toast.error("Lost connection with the server");
 		}
 	} finally {
 		isLoading.value = false;

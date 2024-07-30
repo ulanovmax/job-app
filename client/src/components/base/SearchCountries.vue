@@ -13,9 +13,9 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 import type { DropdownChangeEvent } from "primevue/dropdown";
 import Dropdown from "primevue/dropdown";
-import { useToast } from "primevue/usetoast";
 
 import { getCountries } from "@/api/get-countries.api.ts";
 import useDebounce from "@/hooks/useDebounce.ts";
@@ -64,13 +64,7 @@ const loadCountries = useDebounce(async () => {
 
 		countries.value = countriesArray.filter((item) => item.name);
 	} catch (e) {
-		toast.add({
-			severity: "error",
-			summary: "Country Error",
-			detail: "Couldn't find your country",
-			closable: true,
-			life: 3000,
-		});
+		toast.error("Couldn't find your country");
 	} finally {
 		loading.value = false;
 	}

@@ -1,12 +1,15 @@
 import { createApp, h, provide } from "vue";
+import type { PluginOptions } from "vue-toastification";
+import { POSITION } from "vue-toastification";
+import Toast from "vue-toastification";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import PrimeVue from "primevue/config";
-import ToastService from "primevue/toastservice";
 
 // Pinia
 import { createPinia } from "pinia";
 import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 
+import "vue-toastification/dist/index.css";
 import "./assets/tailwind.css";
 import "./assets/base.css";
 import "primeicons/primeicons.css";
@@ -19,6 +22,12 @@ import router from "./router";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);
+
+// Toast options
+const toastOptions: PluginOptions = {
+	position: POSITION.BOTTOM_RIGHT,
+	pauseOnHover: false,
+};
 
 const app = createApp({
 	setup() {
@@ -34,5 +43,5 @@ app.use(router)
 		unstyled: true,
 		pt: Lara,
 	})
-	.use(ToastService)
+	.use(Toast, toastOptions)
 	.mount("#app");

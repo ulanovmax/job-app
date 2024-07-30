@@ -29,6 +29,7 @@ module.exports = {
 	plugins: ["@typescript-eslint", "prettier", "simple-import-sort"],
 	ignorePatterns: ["src/presets/**/*.js"],
 	rules: {
+		"@typescript-eslint/restrict-template-expressions": "off",
 		"@typescript-eslint/no-explicit-any": "warn",
 		"@typescript-eslint/no-confusing-void-expression": "off",
 		"@typescript-eslint/await-thenable": "off",

@@ -88,6 +88,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import type { FetchResult } from "@apollo/client";
 import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
@@ -96,7 +97,6 @@ import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import Textarea from "primevue/textarea";
-import { useToast } from "primevue/usetoast";
 
 import type { CandidateCreateInput } from "@/apollo/generated/graphql.ts";
 import { CREATE_CANDIDATE } from "@/apollo/gql/mutations/candidate.mutation.ts";
@@ -132,24 +132,12 @@ const handleSubmit = async () => {
 				throw response.errors;
 			}
 
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: "Your account is successfully created",
-				closable: true,
-				life: 3000,
-			});
+			toast.success("Your account is successfully created");
 
 			void router.push({ name: "login" });
 		}
 	} catch (e) {
-		toast.add({
-			severity: "error",
-			summary: "Register Error",
-			detail: "Couldn't register your account",
-			closable: true,
-			life: 3000,
-		});
+		toast.error("Couldn't register your account");
 	}
 };
 </script>

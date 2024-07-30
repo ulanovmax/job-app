@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useToast } from "vue-toastification";
 import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
@@ -74,7 +75,6 @@ import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
 
 import { JobType } from "@/apollo/generated/graphql.ts";
 import { CREATE_JOBS } from "@/apollo/gql/mutations/jobs.mutations.ts";
@@ -118,23 +118,11 @@ const hundleSubmit = () => {
 onDone(() => {
 	state.value = initialState;
 
-	toast.add({
-		severity: "success",
-		summary: "Success",
-		detail: "Job was successfully created",
-		closable: true,
-		life: 3000,
-	});
+	toast.success("Job was successfully created");
 });
 
 onError(() => {
-	toast.add({
-		severity: "error",
-		summary: "Error",
-		detail: "Couldn't create job",
-		closable: true,
-		life: 3000,
-	});
+	toast.error("Couldn't create job");
 });
 </script>
 

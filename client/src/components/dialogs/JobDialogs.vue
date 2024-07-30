@@ -47,10 +47,10 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from "vue-toastification";
 import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
-import { useToast } from "primevue/usetoast";
 
 import { storeToRefs } from "pinia";
 
@@ -78,26 +78,14 @@ const handleDelete = async () => {
 			if (response?.data) {
 				const { data } = response;
 
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: `${data.job?.title || "Job"} was successfully deleted`,
-					closable: true,
-					life: 3000,
-				});
+				toast.success(
+					`${data.job?.title || "Job"} was successfully deleted`
+				);
 
 				void loadMyJobs();
 			}
 		} catch (e) {
-			console.log(e);
-
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: `Removing was not complete`,
-				closable: true,
-				life: 3000,
-			});
+			toast.error(`Removing was not complete`);
 		} finally {
 			isDeleteOpen.value = false;
 		}

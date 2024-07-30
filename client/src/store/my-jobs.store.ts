@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import { useQuery } from "@vue/apollo-composable";
 
 import { PaginationEnum } from "@/ts/enums/pagination.enum.ts";
 
@@ -28,6 +27,7 @@ export const useMyJobsStore = defineStore("myJobs", () => {
 					jobsLimit: PaginationEnum.Limit,
 					jobsOffset: offset.value,
 				},
+				fetchPolicy: "network-only",
 			});
 
 			if (data.company) {

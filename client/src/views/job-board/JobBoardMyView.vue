@@ -1,4 +1,12 @@
 <template>
+	<Button
+		label="Add new job"
+		icon="pi pi-plus"
+		class="mb-10"
+		icon-pos="right"
+		@click="router.push({ name: 'createJob' })"
+	/>
+
 	<jobs-list
 		v-model:offset="offset"
 		editable
@@ -10,6 +18,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import Button from "primevue/button";
 
 import JobsList from "@/components/lists/JobsList.vue";
 
@@ -21,6 +31,7 @@ import { useMyJobsStore } from "@/store/my-jobs.store.ts";
 const { getTokenInfo } = useAuthStore();
 
 const tokenInfo = getTokenInfo();
+const router = useRouter();
 
 const myJobsStore = useMyJobsStore();
 const { offset, jobs } = storeToRefs(myJobsStore);
