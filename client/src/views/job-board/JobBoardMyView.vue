@@ -25,12 +25,8 @@ import JobsList from "@/components/lists/JobsList.vue";
 
 import { storeToRefs } from "pinia";
 
-import { useAuthStore } from "@/store/auth.store.ts";
 import { useMyJobsStore } from "@/store/my-jobs.store.ts";
 
-const { getTokenInfo } = useAuthStore();
-
-const tokenInfo = getTokenInfo();
 const router = useRouter();
 
 const myJobsStore = useMyJobsStore();

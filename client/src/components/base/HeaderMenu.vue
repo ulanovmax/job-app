@@ -42,19 +42,12 @@ const toast = useToast();
 const router = useRouter();
 const isLoading = ref(false);
 
-const { getTokenInfo } = useAuthStore();
+const { getTokenInfo, isCompany } = useAuthStore();
 
 const menu = ref();
 const tokenInfo = getTokenInfo();
 
 const items = ref<MenuItem[]>([
-	{
-		label: "Add job",
-		icon: "pi pi-plus",
-		command() {
-			router.push({ name: "createJob" });
-		},
-	},
 	{
 		label: "Logout",
 		icon: "pi pi-sign-out",
@@ -63,6 +56,16 @@ const items = ref<MenuItem[]>([
 		},
 	},
 ]);
+
+if (isCompany()) {
+	items.value.unshift({
+		label: "Add job",
+		icon: "pi pi-plus",
+		command() {
+			void router.push({ name: "createJob" });
+		},
+	});
+}
 
 const toggle = (event) => {
 	menu.value.toggle(event);

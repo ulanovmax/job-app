@@ -14,7 +14,7 @@ const router = createRouter({
 
 const nonProtectedRoutes = ["/login", "/register"];
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
 	const { getAccessToken } = useAuthStore();
 
 	if (to.meta.requiresAuth) {

@@ -67,11 +67,16 @@ export const useAuthStore = defineStore("authStore", () => {
 		}
 	};
 
+	const isCandidate = () => getTokenInfo()?.role === "candidate";
+	const isCompany = () => getTokenInfo()?.role === "company";
+
 	return {
 		getAccessToken,
 		getTokenInfo,
 		checkProfileAuth,
 		login,
+		isCandidate,
+		isCompany,
 		logout,
 	};
 });
