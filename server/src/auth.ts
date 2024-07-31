@@ -1,9 +1,9 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
-import {getCandidateByEmail} from "./db/candidates.js";
+import {getCandidate, getCandidateByEmail} from "./db/candidates.js";
 import {getCompany, getCompanyByEmail} from "./db/company.js";
 import {Token} from "./ts/token.js";
-import {Response, Request} from "express";
+import type {Response, Request} from "express";
 
 const secret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
 
@@ -46,14 +46,62 @@ export async function handleLogin(req: Request, res: Response) {
   }
 }
 
-export const handleLogout = async (req, res) => {
+export const handleLogout = async (_req, res) => {
   res.clearCookie('accessToken').status(200).json({ success: true });
 }
 
-export const getAuthInfo = async (req,res) => {
-  if (!req.cookies.accessToken) {
-    res.status(401).json({ error: 'Unauthorized' });
-  } else {
-    res.status(200).json({ success: true })
+export const checkAuth = async (req, res) => {
+  try {
+    const accessToken = req.cookies["accessToken"];
+
+    console.log(req.cookies)
+
+    if (!accessToken) {
+      return res.status(401).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+    }
+
+    const decoded = jwt.decode(accessToken);
+
+    if (!decoded) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid token'
+      });
+    }
+
+    if (decoded.role === 'company') {
+      const company = await getCompany(decoded.id);
+
+      if (!company) {
+        return res.status(401).json({
+          success: false,
+          error: 'Account not found'
+        });
+      }
+    } else if (decoded.role === 'candidate') {
+      const candidate = await getCandidate(decoded.id);
+
+      if (!candidate) {
+        return res.status(401).json({
+          success: false,
+          error: 'Account not found'
+        });
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid role'
+      });
+    }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error'
+    });
   }
-}
+};

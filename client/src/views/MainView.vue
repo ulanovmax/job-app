@@ -13,6 +13,12 @@
 <script setup lang="ts">
 import VFooter from "@/components/layout/VFooter.vue";
 import VHeader from "@/components/layout/VHeader.vue";
+
+import { useAuthStore } from "@/store/auth.store.ts";
+
+const { checkProfileAuth } = useAuthStore();
+
+void checkProfileAuth();
 </script>
 
 <style scoped lang="postcss"></style>

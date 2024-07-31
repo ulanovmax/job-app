@@ -26,7 +26,15 @@ export type Candidate = {
   experience: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  savedJobs: JobList;
   years: Scalars['Int']['output'];
+};
+
+
+/** Types for candidate */
+export type CandidateSavedJobsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CandidateCreateInput = {
@@ -140,7 +148,7 @@ export type MutationDeleteJobArgs = {
 export type MutationUpdateJobArgs = {
   companyId: Scalars['ID']['input'];
   id: Scalars['ID']['input'];
-  input?: InputMaybe<JobCreateInput>;
+  input: JobCreateInput;
 };
 
 export type Query = {
@@ -243,7 +251,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  Candidate: ResolverTypeWrapper<Candidate>;
+  Candidate: ResolverTypeWrapper<Omit<Candidate, 'savedJobs'> & { savedJobs: ResolversTypes['JobList'] }>;
   CandidateCreateInput: CandidateCreateInput;
   Company: ResolverTypeWrapper<CompanyEntity>;
   CompanyCreateInput: CompanyCreateInput;
@@ -263,7 +271,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
-  Candidate: Candidate;
+  Candidate: Omit<Candidate, 'savedJobs'> & { savedJobs: ResolversParentTypes['JobList'] };
   CandidateCreateInput: CandidateCreateInput;
   Company: CompanyEntity;
   CompanyCreateInput: CompanyCreateInput;
@@ -285,6 +293,7 @@ export type CandidateResolvers<ContextType = any, ParentType extends ResolversPa
   experience?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  savedJobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<CandidateSavedJobsArgs>>;
   years?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -331,7 +340,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createCompany?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'input'>>;
   createJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationCreateJobArgs, 'input'>>;
   deleteJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationDeleteJobArgs, 'companyId' | 'id'>>;
-  updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationUpdateJobArgs, 'companyId' | 'id'>>;
+  updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationUpdateJobArgs, 'companyId' | 'id' | 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

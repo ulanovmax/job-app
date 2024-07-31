@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 
 import { defineStore } from "pinia";
 
+import { checkAuth } from "@/api/auth/check-auth.api.ts";
 import type { LoginInput } from "@/api/auth/login.api.ts";
 import { loginAuth } from "@/api/auth/login.api.ts";
 import { logoutAuth } from "@/api/auth/logout.api.ts";
@@ -17,6 +18,11 @@ export const useAuthStore = defineStore("authStore", () => {
 		const token = getAccessToken();
 
 		return token ? jwtDecode<Token>(token) : null;
+	};
+
+	const clearAuth = () => {
+		Cookies.remove("accessToken");
+		void router.replace({ name: "login" });
 	};
 
 	const login = async (input: LoginInput) => {
@@ -42,10 +48,21 @@ export const useAuthStore = defineStore("authStore", () => {
 		try {
 			await logoutAuth();
 
-			Cookies.remove("accessToken");
-
-			void router.replace({ name: "login" });
+			clearAuth();
 		} catch (e) {
+			throwError(e);
+		}
+	};
+
+	const checkProfileAuth = async () => {
+		try {
+			const res = await checkAuth();
+
+			if (res?.error) {
+				clearAuth();
+			}
+		} catch (e) {
+			// clearAuth();
 			throwError(e);
 		}
 	};
@@ -53,6 +70,7 @@ export const useAuthStore = defineStore("authStore", () => {
 	return {
 		getAccessToken,
 		getTokenInfo,
+		checkProfileAuth,
 		login,
 		logout,
 	};

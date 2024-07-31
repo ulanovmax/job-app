@@ -23,6 +23,7 @@ type Candidate {
   years: Int!
   englishLevel: String!
   experience: String!
+  savedJobs(limit: Int, offset: Int): JobList!
 }
 
 input CandidateCreateInput {

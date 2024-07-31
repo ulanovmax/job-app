@@ -48,19 +48,23 @@ export const resolvers: Resolvers<ResolverContext> = {
     updateJob: async (_root, { id,companyId, input }, { context }) => {
       checkPermission(context)
 
-      await updateJob(id, companyId, input)
+     return await updateJob(id, companyId, input)
     },
 
     deleteJob: async (_root, { id, companyId }, { context }) => {
       checkPermission(context)
 
-      await deleteJob(id, companyId)
+      return await deleteJob(id, companyId)
     },
   },
 
   Job: {
     company: (job) => getCompany(job.companyId),
-    requirements: (job) => JSON.parse(job.requirements),
+    requirements: (job) => {
+      if (typeof job.requirements === 'string') {
+        return JSON.parse(job.requirements)
+      }
+    },
   },
 
   Company: {

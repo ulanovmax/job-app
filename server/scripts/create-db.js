@@ -46,6 +46,7 @@ await schema.createTable("candidate", (table) => {
   table.enu("englishLevel", langLevels).notNullable();
   table.text("password").notNullable();
   table.text("experience").notNullable();
+  table.json('savedJobs').notNullable()
 });
 
 // await connection.table("company").insert([
