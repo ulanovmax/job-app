@@ -49,15 +49,15 @@ await schema.createTable("candidate", (table) => {
   table.json('savedJobs').notNullable()
 });
 
-// await connection.table("company").insert([
-//   {
-//     id: "FjcJCHJALA4i",
-//     name: "Gotoinc",
-//     description:
-//       "Our mission is to launch, and upscale software businesses with our proven workflow and effective collaboration. We believe that optimal digital solutions for everyday hassles allow humanity to focus more on matters of global importance.",
-//     country: "Ukraine",
-//   },
-// ]);
+await connection.table("company").insert([
+  {
+    id: "FjcJCHJALA4i",
+    name: "Gotoinc",
+    description:
+      "Our mission is to launch, and upscale software businesses with our proven workflow and effective collaboration. We believe that optimal digital solutions for everyday hassles allow humanity to focus more on matters of global importance.",
+    country: "Ukraine",
+  },
+]);
 //
 // await connection.table('user').insert([
 //   {

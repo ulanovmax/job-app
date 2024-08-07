@@ -9,6 +9,8 @@ type Mutation {
   createJob(input: JobCreateInput!): Job
   createCompany(input: CompanyCreateInput!): Company
   createCandidate(input: CandidateCreateInput!): Candidate
+  addSavedJob(candidateId: ID!, jobId: ID!): [ID!]
+  removeSavedJob(candidateId: ID!, jobId: ID!): [ID!]
   deleteJob(id: ID!, companyId: ID!): Job
   updateJob(id: ID!, companyId: ID!, input: JobCreateInput!): Job
 }
@@ -23,7 +25,7 @@ type Candidate {
   years: Int!
   englishLevel: String!
   experience: String!
-  savedJobs(limit: Int, offset: Int): JobList!
+  savedJobs: JobList!
 }
 
 input CandidateCreateInput {

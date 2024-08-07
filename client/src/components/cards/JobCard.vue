@@ -26,12 +26,35 @@
 				</div>
 			</div>
 
-			<div v-if="editable" class="flex items-center gap-2" @click.prevent>
+			<div
+				v-if="editable && isCompany()"
+				class="flex items-center gap-2"
+				@click.prevent
+			>
 				<button class="action-btn bg-surface-800" @click="editJob">
 					<i class="pi pi-pencil"></i>
 				</button>
 				<button class="action-btn bg-red-500" @click="deleteJob">
 					<i class="pi pi-trash"></i>
+				</button>
+			</div>
+
+			<div v-if="isCandidate()" @click.prevent>
+				<button
+					:class="{
+						'bg-surface-800': !isJobSaved(data.id),
+						'bg-green-500': isJobSaved(data.id),
+					}"
+					class="action-btn"
+					@click="handleSaveJob"
+				>
+					<i
+						:class="{
+							'pi-bookmark': !isJobSaved(data.id),
+							'pi-bookmark-fill': isJobSaved(data.id),
+						}"
+						class="pi"
+					></i>
 				</button>
 			</div>
 		</div>
@@ -63,24 +86,35 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import Tag from "primevue/tag";
 
-import JobDialogs from "@/components/dialogs/JobDialogs.vue";
-
 import { storeToRefs } from "pinia";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useAuthStore } from "@/store/auth.store.ts";
 import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
+import { useJobsStore } from "@/store/jobs.store.ts";
 
 interface Props {
 	data: Job;
 	editable?: boolean;
 }
 
+interface Emits {
+	(e: "save", value: Job["id"]): void;
+	(e: "remove-saved", value: Job["id"]): void;
+}
+
 const props = defineProps<Props>();
+const emits = defineEmits<Emits>();
+
+const { params } = useRoute();
+const { getTokenInfo, isCompany, isCandidate } = useAuthStore();
+const tokenInfo = getTokenInfo();
 
 const jobPopupStore = useJobPopup();
 const { isEditOpen, isDeleteOpen, selectedJob } = storeToRefs(jobPopupStore);
+
+const { isJobSaved } = useJobsStore();
 
 const editJob = () => {
 	isEditOpen.value = true;
@@ -92,9 +126,12 @@ const deleteJob = () => {
 	selectedJob.value = { ...props.data };
 };
 
-const { params } = useRoute();
-const { getTokenInfo } = useAuthStore();
-const tokenInfo = getTokenInfo();
+const handleSaveJob = () => {
+	console.log(isJobSaved(props.data.id));
+	isJobSaved(props.data.id)
+		? emits("remove-saved", props.data.id)
+		: emits("save", props.data.id);
+};
 
 const isCompanyShow = computed(
 	() =>

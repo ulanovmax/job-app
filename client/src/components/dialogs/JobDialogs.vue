@@ -50,12 +50,12 @@ import { storeToRefs } from "pinia";
 
 import { DELETE_JOB } from "@/apollo/gql/mutations/jobs.mutations.ts";
 import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
-import { useMyJobsStore } from "@/store/my-jobs.store.ts";
+import { useJobsStore } from "@/store/jobs.store.ts";
 
 const jobPopupStore = useJobPopup();
 const { isEditOpen, isDeleteOpen, selectedJob } = storeToRefs(jobPopupStore);
 
-const { loadMyJobs } = useMyJobsStore();
+const { loadMyJobs } = useJobsStore();
 
 const { mutate: deleteJob, loading: isDeleteLoading } = useMutation(DELETE_JOB);
 

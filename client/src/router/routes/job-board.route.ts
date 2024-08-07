@@ -30,6 +30,14 @@ export default {
 			path: "saved",
 			name: "jobBoardSaved",
 			component: () => import("@/views/job-board/JobBoardSavedView.vue"),
+
+			beforeEnter: () => {
+				const { isCandidate } = useAuthStore();
+
+				if (!isCandidate()) {
+					return { name: "main" };
+				}
+			},
 		},
 	],
 };

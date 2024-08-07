@@ -1,7 +1,7 @@
 import { connection } from "./connection.js";
 import { generateId } from "./ids.ts";
 import {JobEntity} from "../ts/entities/job.entity.js";
-import {JobCreateInput} from "../generated/shema.js";
+import {Job, JobCreateInput} from "../generated/shema.js";
 
 const getJobTable = () => connection.table<JobEntity>("job");
 
@@ -25,7 +25,7 @@ export const countJobs = async () => {
   return count as number
 }
 
-export const getJob = async (id: string): Promise<JobEntity> => await getJobTable().first().where({ id });
+export const getJob = async (id: string): Promise<Job> => await getJobTable().first().where({ id });
 
 export const getJobsByCompany = async (companyId: string, limit?: number, offset?: number):  Promise<JobEntity[]> => {
   const query = getJobTable().select().where({companyId});

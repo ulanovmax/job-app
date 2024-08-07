@@ -25,11 +25,11 @@ import JobsList from "@/components/lists/JobsList.vue";
 
 import { storeToRefs } from "pinia";
 
-import { useMyJobsStore } from "@/store/my-jobs.store.ts";
+import { useJobsStore } from "@/store/jobs.store.ts";
 
 const router = useRouter();
 
-const myJobsStore = useMyJobsStore();
+const myJobsStore = useJobsStore();
 const { offset, jobs } = storeToRefs(myJobsStore);
 
 const isLoading = ref(false);

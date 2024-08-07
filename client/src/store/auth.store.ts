@@ -8,6 +8,7 @@ import type { LoginInput } from "@/api/auth/login.api.ts";
 import { loginAuth } from "@/api/auth/login.api.ts";
 import { logoutAuth } from "@/api/auth/logout.api.ts";
 import { throwError } from "@/api/throw-error.api.ts";
+import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
 import router from "@/router";
 import type { Token } from "@/ts/types/token";
 
@@ -62,13 +63,16 @@ export const useAuthStore = defineStore("authStore", () => {
 				clearAuth();
 			}
 		} catch (e) {
-			// clearAuth();
+			clearAuth();
 			throwError(e);
 		}
 	};
 
-	const isCandidate = () => getTokenInfo()?.role === "candidate";
-	const isCompany = () => getTokenInfo()?.role === "company";
+	const isCandidate = (data?: Candidate | Company): data is Candidate =>
+		data ? "experience" in data : getTokenInfo()?.role === "candidate";
+
+	const isCompany = (data?: Candidate | Company): data is Company =>
+		data ? "employees" in data : getTokenInfo()?.role === "company";
 
 	return {
 		getAccessToken,

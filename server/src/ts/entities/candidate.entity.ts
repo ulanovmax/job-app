@@ -1,5 +1,3 @@
-import { JobList} from "../../generated/shema.js";
-
 export interface CandidateEntity {
     id: string,
     name: string,
@@ -8,5 +6,5 @@ export interface CandidateEntity {
     englishLevel: string,
     password: string,
     experience: string,
-    savedJobs: JobList
+    savedJobs: string[] | string
 }

@@ -1,7 +1,13 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs, updateJob, deleteJob} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
 import {noPermissionError, unauthorizedError} from "./errors.ts";
-import {addCandidate, getCandidate} from "./db/candidates.js";
+import {
+  addCandidate,
+  getCandidate,
+  getCandidateSavedJobs,
+  removeSavedJobForCandidate,
+  saveJobsForCandidate
+} from "./db/candidates.js";
 import { Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
 
@@ -9,8 +15,18 @@ export interface ResolverContext {
   context: Token
 }
 
-const checkPermission = (context: Token) => {
+const checkCompanyPermission = (context: Token) => {
   if (context.role !== "company") {
+    throw noPermissionError()
+  }
+
+  if (!context.id) {
+    throw unauthorizedError()
+  }
+}
+
+const checkCandidatePermission = (context: Token) => {
+  if (context.role !== "candidate") {
     throw noPermissionError()
   }
 
@@ -34,7 +50,7 @@ export const resolvers: Resolvers<ResolverContext> = {
 
   Mutation: {
     createJob: async (_root, { input }, { context }) => {
-      checkPermission(context)
+      checkCompanyPermission(context)
 
       const company = await getCompany(context.id);
 
@@ -46,16 +62,28 @@ export const resolvers: Resolvers<ResolverContext> = {
     createCandidate: async (_root, { input }) => addCandidate(input),
 
     updateJob: async (_root, { id,companyId, input }, { context }) => {
-      checkPermission(context)
+      checkCompanyPermission(context)
 
      return await updateJob(id, companyId, input)
     },
 
     deleteJob: async (_root, { id, companyId }, { context }) => {
-      checkPermission(context)
+      checkCompanyPermission(context)
 
       return await deleteJob(id, companyId)
     },
+
+    addSavedJob: async (_root, { jobId, candidateId }, { context }) => {
+      checkCandidatePermission(context);
+
+      return await saveJobsForCandidate({ candidateId, jobId })
+    },
+
+    removeSavedJob: async (_root, { jobId, candidateId }, { context }) => {
+      checkCandidatePermission(context);
+
+      return await removeSavedJobForCandidate({ candidateId, jobId })
+    }
   },
 
   Job: {
@@ -75,4 +103,8 @@ export const resolvers: Resolvers<ResolverContext> = {
       return { items, totalCount }
     },
   },
+
+  Candidate: {
+    savedJobs: async (candidate) => getCandidateSavedJobs(candidate)
+  }
 };

@@ -1,6 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { CompanyEntity } from './src/ts/entities/company.entity';
 import { JobEntity } from './src/ts/entities/job.entity';
+import { CandidateEntity } from './src/ts/entities/candidate.entity';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -28,13 +29,6 @@ export type Candidate = {
   name: Scalars['String']['output'];
   savedJobs: JobList;
   years: Scalars['Int']['output'];
-};
-
-
-/** Types for candidate */
-export type CandidateSavedJobsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CandidateCreateInput = {
@@ -116,11 +110,19 @@ export enum JobType {
 }
 
 export type Mutation = {
+  addSavedJob?: Maybe<Array<Scalars['ID']['output']>>;
   createCandidate?: Maybe<Candidate>;
   createCompany?: Maybe<Company>;
   createJob?: Maybe<Job>;
   deleteJob?: Maybe<Job>;
+  removeSavedJob?: Maybe<Array<Scalars['ID']['output']>>;
   updateJob?: Maybe<Job>;
+};
+
+
+export type MutationAddSavedJobArgs = {
+  candidateId: Scalars['ID']['input'];
+  jobId: Scalars['ID']['input'];
 };
 
 
@@ -142,6 +144,12 @@ export type MutationCreateJobArgs = {
 export type MutationDeleteJobArgs = {
   companyId: Scalars['ID']['input'];
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveSavedJobArgs = {
+  candidateId: Scalars['ID']['input'];
+  jobId: Scalars['ID']['input'];
 };
 
 
@@ -251,7 +259,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  Candidate: ResolverTypeWrapper<Omit<Candidate, 'savedJobs'> & { savedJobs: ResolversTypes['JobList'] }>;
+  Candidate: ResolverTypeWrapper<CandidateEntity>;
   CandidateCreateInput: CandidateCreateInput;
   Company: ResolverTypeWrapper<CompanyEntity>;
   CompanyCreateInput: CompanyCreateInput;
@@ -271,7 +279,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
-  Candidate: Omit<Candidate, 'savedJobs'> & { savedJobs: ResolversParentTypes['JobList'] };
+  Candidate: CandidateEntity;
   CandidateCreateInput: CandidateCreateInput;
   Company: CompanyEntity;
   CompanyCreateInput: CompanyCreateInput;
@@ -293,7 +301,7 @@ export type CandidateResolvers<ContextType = any, ParentType extends ResolversPa
   experience?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  savedJobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<CandidateSavedJobsArgs>>;
+  savedJobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType>;
   years?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -336,10 +344,12 @@ export type JobRequirementsResolvers<ContextType = any, ParentType extends Resol
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addSavedJob?: Resolver<Maybe<Array<ResolversTypes['ID']>>, ParentType, ContextType, RequireFields<MutationAddSavedJobArgs, 'candidateId' | 'jobId'>>;
   createCandidate?: Resolver<Maybe<ResolversTypes['Candidate']>, ParentType, ContextType, RequireFields<MutationCreateCandidateArgs, 'input'>>;
   createCompany?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'input'>>;
   createJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationCreateJobArgs, 'input'>>;
   deleteJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationDeleteJobArgs, 'companyId' | 'id'>>;
+  removeSavedJob?: Resolver<Maybe<Array<ResolversTypes['ID']>>, ParentType, ContextType, RequireFields<MutationRemoveSavedJobArgs, 'candidateId' | 'jobId'>>;
   updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationUpdateJobArgs, 'companyId' | 'id' | 'input'>>;
 };
 

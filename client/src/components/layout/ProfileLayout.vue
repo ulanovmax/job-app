@@ -18,8 +18,11 @@
 					{{ data.name }}
 				</h1>
 
-				<h2 class="mb-5 text-lg font-normal capitalize opacity-60">
-					{{ tokenInfo?.role }}
+				<h2
+					v-if="tokenInfo"
+					class="mb-5 text-lg font-normal capitalize opacity-60"
+				>
+					{{ tokenInfo.role }}
 				</h2>
 
 				<ul v-if="isCompany(data)" class="mb-8 space-y-3">
@@ -92,7 +95,12 @@
 				<div v-if="isCompany(data) && data.jobs.items.length > 0">
 					<h2>Last published jobs</h2>
 
-					<jobs-list :pagination="false" :jobs="data.jobs" />
+					<jobs-list
+						:pagination="false"
+						:jobs="jobs"
+						:loading="jobsLoading"
+						@update:jobs="updateJobs"
+					/>
 				</div>
 			</div>
 		</template>
@@ -100,12 +108,25 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useQuery } from "@vue/apollo-composable";
+
 import VLoader from "@/components/base/VLoader.vue";
 import JobsList from "@/components/lists/JobsList.vue";
 
-import type { Candidate, Company } from "@/apollo/generated/graphql.ts";
+import { PaginationEnum } from "@/ts/enums/pagination.enum.ts";
+
+import type {
+	Candidate,
+	Company,
+	GetJobsQuery,
+	GetJobsQueryVariables,
+	JobList,
+} from "@/apollo/generated/graphql.ts";
+import { GET_JOBS } from "@/apollo/gql/queries/jobs.query.ts";
 import { useFormatDate } from "@/hooks/useFormatDate.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
+import { useJobsStore } from "@/store/jobs.store.ts";
 
 interface Props {
 	data: Candidate | Company | null;
@@ -114,15 +135,42 @@ interface Props {
 
 defineProps<Props>();
 
-const { getTokenInfo } = useAuthStore();
+const { loadSavedJobs } = useJobsStore();
+
+const { getTokenInfo, isCompany, isCandidate } = useAuthStore();
 
 const tokenInfo = getTokenInfo();
 
-const isCandidate = (data: Props["data"]): data is Candidate =>
-	!!data && "experience" in data;
+if (isCandidate()) {
+	void loadSavedJobs();
+}
 
-const isCompany = (data: Props["data"]): data is Company =>
-	!!data && "employees" in data;
+const {
+	result,
+	loading: jobsLoading,
+	refetch,
+} = useQuery<GetJobsQuery, GetJobsQueryVariables>(
+	GET_JOBS,
+	{
+		limit: PaginationEnum.Limit,
+	},
+	{
+		fetchPolicy: "network-only",
+	}
+);
+
+const jobs = computed(() => {
+	if (result.value) {
+		return result.value.jobs as JobList;
+	}
+
+	return null;
+});
+
+const updateJobs = async () => {
+	await loadSavedJobs();
+	await refetch();
+};
 </script>
 
 <style scoped>

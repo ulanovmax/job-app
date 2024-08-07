@@ -8,7 +8,8 @@
         "skipTypename": true,
         "mappers": {
           "Company": "./src/ts/entities/company.entity#CompanyEntity",
-          "Job": "./src/ts/entities/job.entity#JobEntity"
+          "Job": "./src/ts/entities/job.entity#JobEntity",
+          "Candidate": "./src/ts/entities/candidate.entity#CandidateEntity"
         }
       }
     }
