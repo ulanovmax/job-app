@@ -54,8 +54,6 @@ export const checkAuth = async (req, res) => {
   try {
     const accessToken = req.cookies["accessToken"];
 
-    console.log(req.cookies)
-
     if (!accessToken) {
       return res.status(401).json({
         success: false,

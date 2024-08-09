@@ -46,8 +46,6 @@ export const addCandidate = async (input: CandidateCreateInput): Promise<Candida
 export const getCandidateSavedJobs = async (candidate: CandidateEntity): Promise<JobList> => {
     const jobsIds = (typeof candidate.savedJobs === 'string' ? JSON.parse(candidate.savedJobs) : [...candidate.savedJobs]) as string[];
 
-    console.log(jobsIds)
-
     const jobs = await Promise.all(jobsIds.map(async (id) => {
         const job = await getJob(id);
 

@@ -24,6 +24,14 @@ export const candidateNotFoundError = () => {
     })
 }
 
+export const userNotFoundError = () => {
+    return new GraphQLError("User is not found", {
+        extensions: {
+            code: "USER_NOT_FOUND",
+        }
+    })
+}
+
 export const jobNotFoundError = () => {
     return new GraphQLError("Job is not found", {
         extensions: {

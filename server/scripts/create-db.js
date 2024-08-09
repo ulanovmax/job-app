@@ -5,6 +5,7 @@ const { schema } = connection;
 await schema.dropTableIfExists("candidate");
 await schema.dropTableIfExists("job");
 await schema.dropTableIfExists("company");
+await schema.dropTableIfExists("messages");
 
 await schema.createTable("company", (table) => {
   table.text("id").notNullable().primary();
@@ -49,6 +50,14 @@ await schema.createTable("candidate", (table) => {
   table.json('savedJobs').notNullable()
 });
 
+await schema.createTable("messages", (table) => {
+  table.text("id").notNullable().primary();
+  table.text("senderId").notNullable();
+  table.text("receiverId").notNullable();
+  table.text("dateCreated").notNullable();
+  table.text("content").notNullable();
+});
+
 await connection.table("company").insert([
   {
     id: "FjcJCHJALA4i",
@@ -58,15 +67,15 @@ await connection.table("company").insert([
     country: "Ukraine",
   },
 ]);
-//
-// await connection.table('user').insert([
-//   {
-//     id: 'AcMJpL7b413Z',
-//     companyId: 'FjcJCHJALA4i',
-//     email: 'ulanov.work@gmail.com',
-//     password: 'gotoinc2024',
-//   },
-// ]);
+
+await connection.table('user').insert([
+  {
+    id: 'AcMJpL7b413Z',
+    companyId: 'FjcJCHJALA4i',
+    email: 'ulanov.work@gmail.com',
+    password: 'gotoinc2024',
+  },
+]);
 
 console.log("Tables successfully created");
 

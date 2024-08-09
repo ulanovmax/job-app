@@ -9,7 +9,8 @@
         "mappers": {
           "Company": "./src/ts/entities/company.entity#CompanyEntity",
           "Job": "./src/ts/entities/job.entity#JobEntity",
-          "Candidate": "./src/ts/entities/candidate.entity#CandidateEntity"
+          "Candidate": "./src/ts/entities/candidate.entity#CandidateEntity",
+          "Message": "./src/ts/entities/message.entity#MessageEntity"
         }
       }
     }

@@ -6,11 +6,16 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServer } from "@apollo/server";
 import { resolvers } from "./resolvers.ts";
 
+import { createServer as createHttpServer } from "node:http"
+import {useServer as useWsServer} from "graphql-ws/lib/use/ws";
+
 import cookieParser from "cookie-parser"
 import {authMiddleware, checkAuth, handleLogin, handleLogout} from "./auth.ts";
 import corsOptions from "./cors.ts";
 import jwt from "jsonwebtoken";
 import {Token} from "./ts/token.js";
+import {WebSocketServer} from "ws";
+import {makeExecutableSchema} from "@graphql-tools/schema";
 
 const PORT = 9000;
 
@@ -28,11 +33,9 @@ const getContext = ({ req }) => {
 }
 
 const typeDefs = await readFile('./src/schemas/schema.graphql', 'utf8');
+const schema = makeExecutableSchema({ typeDefs, resolvers })
 
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+const apolloServer = new ApolloServer({ schema });
 
 // @ts-ignore
 await apolloServer.start();
@@ -40,7 +43,12 @@ await apolloServer.start();
 // @ts-ignore
 app.use('/graphql', expressMiddleware(apolloServer, { context: getContext }));
 
-app.listen({ port: PORT }, () => {
+const httpServer = createHttpServer(app);
+const wsServer = new WebSocketServer({ server: httpServer, path: "/graphql" });
+
+useWsServer({ schema }, wsServer)
+
+httpServer.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`GraphQL Server running on http://localhost:${PORT}/graphql`);
 });

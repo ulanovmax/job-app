@@ -1,6 +1,12 @@
 import {getJobs, getJob, addJob, getJobsByCompany, countJobs, updateJob, deleteJob} from "./db/jobs.js";
 import { getCompany, addCompany } from "./db/company.js";
-import {noPermissionError, unauthorizedError} from "./errors.ts";
+import {
+  candidateNotFoundError,
+  companyNotFoundError,
+  noPermissionError,
+  unauthorizedError,
+  userNotFoundError
+} from "./errors.ts";
 import {
   addCandidate,
   getCandidate,
@@ -10,10 +16,15 @@ import {
 } from "./db/candidates.js";
 import { Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
+import {PubSub} from "graphql-subscriptions";
+import {createMessage, getMessages} from "./db/messages.js";
+import jwt from "jsonwebtoken";
 
 export interface ResolverContext {
   context: Token
 }
+
+const pubSub = new PubSub()
 
 const checkCompanyPermission = (context: Token) => {
   if (context.role !== "company") {
@@ -35,6 +46,8 @@ const checkCandidatePermission = (context: Token) => {
   }
 }
 
+// @ts-ignore
+// @ts-ignore
 export const resolvers: Resolvers<ResolverContext> = {
   Query: {
     jobs: async (_root, { limit, offset }, { context }) => {
@@ -45,7 +58,8 @@ export const resolvers: Resolvers<ResolverContext> = {
     },
     company: (_root, { id }) => getCompany(id),
     job: (_root, { id }) => getJob(id),
-    candidate: (_root, { id }) => getCandidate(id)
+    candidate: (_root, { id }) => getCandidate(id),
+    messages: (_root) => getMessages()
   },
 
   Mutation: {
@@ -83,6 +97,33 @@ export const resolvers: Resolvers<ResolverContext> = {
       checkCandidatePermission(context);
 
       return await removeSavedJobForCandidate({ candidateId, jobId })
+    },
+
+    addMessage: async (_root, { senderId, receiverId, content }, { context }) => {
+      if (context.id !== senderId) {
+        throw noPermissionError()
+      }
+
+      const candidate = await getCandidate(receiverId);
+
+      if (!candidate) {
+        const company = await getCompany(receiverId);
+
+        if (!company) {
+          throw userNotFoundError()
+        }
+      }
+
+      const message =  await createMessage(senderId, receiverId, content);
+
+      await pubSub.publish('MESSAGE_ADDED', { messageAdded: message })
+    }
+  },
+
+  Subscription: {
+    messageAdded: {
+      // @ts-ignore
+      subscribe: () => pubSub.asyncIterator('MESSAGE_ADDED'),
     }
   },
 
