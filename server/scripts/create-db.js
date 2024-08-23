@@ -5,7 +5,9 @@ const { schema } = connection;
 await schema.dropTableIfExists("candidate");
 await schema.dropTableIfExists("job");
 await schema.dropTableIfExists("company");
+await schema.dropTableIfExists("chats");
 await schema.dropTableIfExists("messages");
+await schema.dropTableIfExists("responses");
 
 await schema.createTable("company", (table) => {
   table.text("id").notNullable().primary();
@@ -50,12 +52,25 @@ await schema.createTable("candidate", (table) => {
   table.json('savedJobs').notNullable()
 });
 
+await schema.createTable("chats", (table) => {
+  table.text("id").notNullable().primary();
+  table.text("dateCreated").notNullable();
+  table.text("senderId").notNullable();
+});
+
 await schema.createTable("messages", (table) => {
   table.text("id").notNullable().primary();
-  table.text("senderId").notNullable();
-  table.text("receiverId").notNullable();
+  table.text("chatId").notNullable();
   table.text("dateCreated").notNullable();
-  table.text("content").notNullable();
+  table.text("senderId").notNullable();
+  table.text("text").notNullable();
+});
+
+await schema.createTable("responses", (table) => {
+  table.text("id").notNullable().primary();
+  table.text("dateCreated");
+  table.text("jobId").notNullable();
+  table.text("candidateId").notNullable();
 });
 
 await connection.table("company").insert([

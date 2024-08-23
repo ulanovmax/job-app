@@ -1,5 +1,6 @@
 <template>
 	<TabMenu
+		v-if="route.name !== 'jobView'"
 		v-model:active-index="active"
 		class="mb-8 overflow-x-visible overflow-y-visible"
 		:model="items"
@@ -8,13 +9,14 @@
 	<router-view></router-view>
 
 	<teleport to="body">
+		<!-- Job dialogs  -->
 		<job-dialogs />
 	</teleport>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import type { MenuItem } from "primevue/menuitem";
 import TabMenu from "primevue/tabmenu";
 
@@ -23,6 +25,7 @@ import JobDialogs from "@/components/dialogs/JobDialogs.vue";
 import { useAuthStore } from "@/store/auth.store.ts";
 
 const router = useRouter();
+const route = useRoute();
 
 const { isCompany } = useAuthStore();
 

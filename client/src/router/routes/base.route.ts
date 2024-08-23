@@ -4,7 +4,6 @@ import profileRoute from "@/router/routes/profile.route.ts";
 import createJobRoute from "./create-job.route";
 import homeRoute from "./home.route";
 import inboxRoute from "./inbox.route";
-import jobRoute from "./job.route";
 import jobBoardRoute from "./job-board.route";
 
 export default {
@@ -21,7 +20,6 @@ export default {
 		inboxRoute,
 		createJobRoute,
 		homeRoute,
-		jobRoute,
 		profileRoute,
 		companyRoute,
 	],

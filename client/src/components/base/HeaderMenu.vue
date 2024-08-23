@@ -5,11 +5,10 @@
 			:to="{ name: 'profileView' }"
 			class="flex items-center rounded-md p-1 font-semibold transition-colors hover:text-primary-300"
 		>
-			<span
-				class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary-700 uppercase"
-			>
+			<profile-avatar class="mr-3">
 				{{ tokenInfo.name[0] }}
-			</span>
+			</profile-avatar>
+
 			<span>{{ tokenInfo.name }}</span>
 		</router-link>
 
@@ -33,6 +32,8 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { MenuItem } from "primevue/menuitem";
 import TieredMenu from "primevue/tieredmenu";
+
+import ProfileAvatar from "@/components/base/ProfileAvatar.vue";
 
 import { useAuthStore } from "@/store/auth.store.ts";
 

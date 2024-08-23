@@ -36,14 +36,20 @@
 	<Dialog v-model:visible="isEditOpen" modal header="Edit job">
 		<job-form :job="selectedJob" @update="handleEdit" />
 	</Dialog>
+
+	<Dialog v-model:visible="isApplyOpen" modal :header="applyHeader">
+		<apply-form :job="selectedJob" />
+	</Dialog>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useToast } from "vue-toastification";
 import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 
+import ApplyForm from "@/components/forms/ApplyForm.vue";
 import JobForm from "@/components/forms/JobForm.vue";
 
 import { storeToRefs } from "pinia";
@@ -53,13 +59,19 @@ import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
 import { useJobsStore } from "@/store/jobs.store.ts";
 
 const jobPopupStore = useJobPopup();
-const { isEditOpen, isDeleteOpen, selectedJob } = storeToRefs(jobPopupStore);
+const { isEditOpen, isDeleteOpen, selectedJob, isApplyOpen } =
+	storeToRefs(jobPopupStore);
 
 const { loadMyJobs } = useJobsStore();
 
 const { mutate: deleteJob, loading: isDeleteLoading } = useMutation(DELETE_JOB);
 
 const toast = useToast();
+
+const applyHeader = computed(
+	() =>
+		`Apply for the ${selectedJob.value ? `"${selectedJob.value.title}"` : "job"}`
+);
 
 const handleDelete = async () => {
 	if (selectedJob.value) {

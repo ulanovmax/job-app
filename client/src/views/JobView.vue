@@ -25,36 +25,45 @@
 				{{ job.description ? job.description : "No description" }}
 			</div>
 
-			<div class="max-w-sm flex-grow rounded-lg bg-surface-700 p-5">
-				<router-link
-					v-if="isCompanyShow"
-					class="mb-4 block text-xl text-primary-400 hover:underline"
-					:to="{
-						name: 'companyView',
-						params: { id: job.company.id },
-					}"
-				>
-					{{ job.company.name }}
-				</router-link>
+			<div class="max-w-sm flex-grow">
+				<div class="mb-5 rounded-lg bg-surface-700 p-5">
+					<router-link
+						v-if="isCompanyShow"
+						class="mb-4 block text-xl text-primary-400 hover:underline"
+						:to="{
+							name: 'companyView',
+							params: { id: job.company.id },
+						}"
+					>
+						{{ job.company.name }}
+					</router-link>
 
-				<ul>
-					<li class="list-item">
-						<i class="pi pi-map-marker"></i>
-						{{ job.country }}
-					</li>
-					<li class="list-item">
-						<i class="pi pi-briefcase"></i>
-						{{ job.type }}
-					</li>
-					<li class="list-item">
-						<i class="pi pi-check-circle"></i>
-						{{ job.requirements?.years }} years of experience
-					</li>
-					<li class="list-item">
-						<i class="pi pi-language"></i>
-						{{ job.requirements?.englishLevel }}
-					</li>
-				</ul>
+					<ul>
+						<li class="list-item">
+							<i class="pi pi-map-marker"></i>
+							{{ job.country }}
+						</li>
+						<li class="list-item">
+							<i class="pi pi-briefcase"></i>
+							{{ job.type }}
+						</li>
+						<li class="list-item">
+							<i class="pi pi-check-circle"></i>
+							{{ job.requirements?.years }} years of experience
+						</li>
+						<li class="list-item">
+							<i class="pi pi-language"></i>
+							{{ job.requirements?.englishLevel }}
+						</li>
+					</ul>
+				</div>
+
+				<Button
+					v-if="isCandidate()"
+					label="Apply for the job"
+					class="w-full"
+					@click="handleApply"
+				/>
 			</div>
 		</div>
 	</div>
@@ -64,14 +73,23 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
+import Button from "primevue/button";
 import ProgressSpinner from "primevue/progressspinner";
+
+import { storeToRefs } from "pinia";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
 import { GET_CURRENT_JOB } from "@/apollo/gql/queries/jobs.query.ts";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useAuthStore } from "@/store/auth.store.ts";
+import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
 
 const { params } = useRoute();
+
+const { getTokenInfo, isCandidate } = useAuthStore();
+const tokenInfo = getTokenInfo();
+
+const { selectedJob, isApplyOpen } = storeToRefs(useJobPopup());
 
 const { result, loading } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
 	id: params.id,
@@ -79,10 +97,12 @@ const { result, loading } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
 
 const job = computed(() => result.value?.job);
 
-const { getTokenInfo } = useAuthStore();
-const tokenInfo = getTokenInfo();
-
 const isCompanyShow = computed(() => tokenInfo?.id !== job.value?.company.id);
+
+const handleApply = () => {
+	selectedJob.value = job.value;
+	isApplyOpen.value = true;
+};
 </script>
 
 <style scoped>

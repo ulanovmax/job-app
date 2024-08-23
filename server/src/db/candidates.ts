@@ -3,12 +3,12 @@ import {generateId} from "./ids.js";
 import {CandidateEntity} from "../ts/entities/candidate.entity.js";
 import {
     CandidateCreateInput,
-    JobList,
     MutationAddSavedJobArgs, MutationRemoveSavedJobArgs
 } from "../generated/shema.js";
 import {candidateNotFoundError, jobNotFoundError} from "../errors.js";
 import {getJob, getJobs} from "./jobs.js";
-import {JobEntity} from "../ts/entities/job.entity.js";
+
+import {JobEntity, JobList} from "../ts/entities/job.entity.js";
 
 const getCandidateTable = () => connection.table<CandidateEntity>('candidate');
 

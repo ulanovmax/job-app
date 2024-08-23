@@ -3,7 +3,7 @@ import { generateId } from "./ids.ts";
 import {JobEntity} from "../ts/entities/job.entity.js";
 import {Job, JobCreateInput} from "../generated/shema.js";
 
-const getJobTable = () => connection.table<JobEntity>("job");
+export const getJobTable = () => connection.table<JobEntity>("job");
 
 export const getJobs = async (limit: number, offset: number): Promise<JobEntity[]> => {
   const query = getJobTable().select().orderBy("dateCreated", "desc");
@@ -25,7 +25,7 @@ export const countJobs = async () => {
   return count as number
 }
 
-export const getJob = async (id: string): Promise<Job> => await getJobTable().first().where({ id });
+export const getJob = async (id: string): Promise<JobEntity> => await getJobTable().first().where({ id });
 
 export const getJobsByCompany = async (companyId: string, limit?: number, offset?: number):  Promise<JobEntity[]> => {
   const query = getJobTable().select().where({companyId});
@@ -101,4 +101,4 @@ export const updateJob = async (id: JobEntity["id"], companyId: JobEntity["compa
   }
 
   return updatedJob;
-}
+};

@@ -13,7 +13,7 @@ import cookieParser from "cookie-parser"
 import {authMiddleware, checkAuth, handleLogin, handleLogout} from "./auth.ts";
 import corsOptions from "./cors.ts";
 import jwt from "jsonwebtoken";
-import {Token} from "./ts/token.js";
+import {Token} from "./ts/token.ts";
 import {WebSocketServer} from "ws";
 import {makeExecutableSchema} from "@graphql-tools/schema";
 

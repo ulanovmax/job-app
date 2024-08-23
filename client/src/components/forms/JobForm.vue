@@ -1,16 +1,16 @@
 <template>
 	<form @submit.prevent="handleSubmit">
 		<div class="grid grid-cols-2 gap-4">
-			<fieldset class="field">
+			<div class="field">
 				<label for="title">Type job role</label>
 				<InputText
 					id="title"
 					v-model="state.title"
 					placeholder="Role"
 				/>
-			</fieldset>
+			</div>
 
-			<fieldset class="field">
+			<div class="field">
 				<label>Select a job type</label>
 				<Dropdown
 					v-model="state.selectedType"
@@ -19,9 +19,9 @@
 					placeholder="Type"
 					class="w-full"
 				/>
-			</fieldset>
+			</div>
 
-			<fieldset class="field">
+			<div class="field">
 				<label>Select a preferable English level</label>
 				<Dropdown
 					v-model="state.selectedLang"
@@ -30,20 +30,20 @@
 					placeholder="English level"
 					class="w-full"
 				/>
-			</fieldset>
+			</div>
 
-			<fieldset class="field">
+			<div class="field">
 				<label>Type required years of experience</label>
 				<InputNumber
 					v-model="state.yearsNumber"
 					:use-grouping="false"
 				/>
-			</fieldset>
+			</div>
 
-			<fieldset class="field col-span-full">
+			<div class="field col-span-full">
 				<label>Type description (optional)</label>
 				<Textarea v-model="state.description" class="min-h-44" />
-			</fieldset>
+			</div>
 
 			<Button
 				:loading="isLoading"

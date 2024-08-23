@@ -3,7 +3,9 @@ type Query {
   job(id: ID!): Job
   company(id: ID!): Company
   candidate(id: ID!): Candidate
-  messages: [Message!]
+  chats: [Chat!]!
+  response(jobId: ID!): [Response!]!
+  messages(chatId: ID!): [Message!]!
 }
 
 type Mutation {
@@ -14,11 +16,17 @@ type Mutation {
   removeSavedJob(candidateId: ID!, jobId: ID!): [ID!]
   deleteJob(id: ID!, companyId: ID!): Job
   updateJob(id: ID!, companyId: ID!, input: JobCreateInput!): Job
-  addMessage(senderId: ID!, receiverId: ID!, content: String!): Message
+  addMessage(chatId: ID!, text: String!): Message
+  addResponse(jobId: ID!, text: String!): Response
 }
 
 type Subscription {
   messageAdded: Message
+}
+
+type User {
+  name: String!
+  id: ID!
 }
 
 """
@@ -101,6 +109,13 @@ enum JobType {
   Remote
 }
 
+type Response {
+  id: ID!
+  dateCreated: String!
+  jobId: String!
+  candidateId: String!
+}
+
 """
 Arguments for creating job
 """
@@ -112,14 +127,20 @@ input JobCreateInput {
 }
 
 """
-Types for messages
+Types for chat
 """
+type Chat {
+  id: ID!
+  dateCreated: String!
+  sender: User!
+}
+
 type Message {
   id: ID!
-  senderId: ID!
-  receiverId: ID!
+  text: ID!
   dateCreated: String!
-  content: String
+  chat: Chat!
+  sender: User!
 }
 
 

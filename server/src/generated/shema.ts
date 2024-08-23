@@ -1,8 +1,8 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { CompanyEntity } from './src/ts/entities/company.entity';
-import { JobEntity } from './src/ts/entities/job.entity';
+import { JobEntity, JobList, ResponseEntity } from './src/ts/entities/job.entity';
 import { CandidateEntity } from './src/ts/entities/candidate.entity';
-import { MessageEntity } from './src/ts/entities/message.entity';
+import { MessageEntity, ChatEntity } from './src/ts/entities/chat.entity';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -10,7 +10,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -39,6 +38,13 @@ export type CandidateCreateInput = {
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
   years: Scalars['Int']['input'];
+};
+
+/** Types for chat */
+export type Chat = {
+  dateCreated: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  sender: User;
 };
 
 /** Types for company */
@@ -110,17 +116,17 @@ export enum JobType {
   Remote = 'Remote'
 }
 
-/** Types for messages */
 export type Message = {
-  content?: Maybe<Scalars['String']['output']>;
+  chat: Chat;
   dateCreated: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  receiverId: Scalars['ID']['output'];
-  senderId: Scalars['ID']['output'];
+  sender: User;
+  text: Scalars['ID']['output'];
 };
 
 export type Mutation = {
   addMessage?: Maybe<Message>;
+  addResponse?: Maybe<Response>;
   addSavedJob?: Maybe<Array<Scalars['ID']['output']>>;
   createCandidate?: Maybe<Candidate>;
   createCompany?: Maybe<Company>;
@@ -132,9 +138,14 @@ export type Mutation = {
 
 
 export type MutationAddMessageArgs = {
-  content: Scalars['String']['input'];
-  receiverId: Scalars['ID']['input'];
-  senderId: Scalars['ID']['input'];
+  chatId: Scalars['ID']['input'];
+  text: Scalars['String']['input'];
+};
+
+
+export type MutationAddResponseArgs = {
+  jobId: Scalars['ID']['input'];
+  text: Scalars['String']['input'];
 };
 
 
@@ -179,10 +190,12 @@ export type MutationUpdateJobArgs = {
 
 export type Query = {
   candidate?: Maybe<Candidate>;
+  chats: Array<Chat>;
   company?: Maybe<Company>;
   job?: Maybe<Job>;
   jobs: JobList;
-  messages?: Maybe<Array<Message>>;
+  messages: Array<Message>;
+  response: Array<Response>;
 };
 
 
@@ -206,8 +219,30 @@ export type QueryJobsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+export type QueryMessagesArgs = {
+  chatId: Scalars['ID']['input'];
+};
+
+
+export type QueryResponseArgs = {
+  jobId: Scalars['ID']['input'];
+};
+
+export type Response = {
+  candidateId: Scalars['String']['output'];
+  dateCreated: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  jobId: Scalars['String']['output'];
+};
+
 export type Subscription = {
   messageAdded?: Maybe<Message>;
+};
+
+export type User = {
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 
@@ -284,21 +319,24 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Candidate: ResolverTypeWrapper<CandidateEntity>;
   CandidateCreateInput: CandidateCreateInput;
+  Chat: ResolverTypeWrapper<ChatEntity>;
   Company: ResolverTypeWrapper<CompanyEntity>;
   CompanyCreateInput: CompanyCreateInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Job: ResolverTypeWrapper<JobEntity>;
   JobCreateInput: JobCreateInput;
-  JobList: ResolverTypeWrapper<Omit<JobList, 'items'> & { items: Array<ResolversTypes['Job']> }>;
+  JobList: ResolverTypeWrapper<JobList>;
   JobRequirements: ResolverTypeWrapper<JobRequirements>;
   JobRequirementsInput: JobRequirementsInput;
   JobType: JobType;
   Message: ResolverTypeWrapper<MessageEntity>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  Response: ResolverTypeWrapper<ResponseEntity>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
+  User: ResolverTypeWrapper<User>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -306,20 +344,23 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Candidate: CandidateEntity;
   CandidateCreateInput: CandidateCreateInput;
+  Chat: ChatEntity;
   Company: CompanyEntity;
   CompanyCreateInput: CompanyCreateInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Job: JobEntity;
   JobCreateInput: JobCreateInput;
-  JobList: Omit<JobList, 'items'> & { items: Array<ResolversParentTypes['Job']> };
+  JobList: JobList;
   JobRequirements: JobRequirements;
   JobRequirementsInput: JobRequirementsInput;
   Message: MessageEntity;
   Mutation: {};
   Query: {};
+  Response: ResponseEntity;
   String: Scalars['String']['output'];
   Subscription: {};
+  User: User;
 };
 
 export type CandidateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Candidate'] = ResolversParentTypes['Candidate']> = {
@@ -330,6 +371,13 @@ export type CandidateResolvers<ContextType = any, ParentType extends ResolversPa
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   savedJobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType>;
   years?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ChatResolvers<ContextType = any, ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']> = {
+  dateCreated?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -371,16 +419,17 @@ export type JobRequirementsResolvers<ContextType = any, ParentType extends Resol
 };
 
 export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  chat?: Resolver<ResolversTypes['Chat'], ParentType, ContextType>;
   dateCreated?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  receiverId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  senderId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addMessage?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationAddMessageArgs, 'content' | 'receiverId' | 'senderId'>>;
+  addMessage?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationAddMessageArgs, 'chatId' | 'text'>>;
+  addResponse?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationAddResponseArgs, 'jobId' | 'text'>>;
   addSavedJob?: Resolver<Maybe<Array<ResolversTypes['ID']>>, ParentType, ContextType, RequireFields<MutationAddSavedJobArgs, 'candidateId' | 'jobId'>>;
   createCandidate?: Resolver<Maybe<ResolversTypes['Candidate']>, ParentType, ContextType, RequireFields<MutationCreateCandidateArgs, 'input'>>;
   createCompany?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'input'>>;
@@ -392,18 +441,35 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   candidate?: Resolver<Maybe<ResolversTypes['Candidate']>, ParentType, ContextType, RequireFields<QueryCandidateArgs, 'id'>>;
+  chats?: Resolver<Array<ResolversTypes['Chat']>, ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
   job?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<QueryJobArgs, 'id'>>;
   jobs?: Resolver<ResolversTypes['JobList'], ParentType, ContextType, Partial<QueryJobsArgs>>;
-  messages?: Resolver<Maybe<Array<ResolversTypes['Message']>>, ParentType, ContextType>;
+  messages?: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryMessagesArgs, 'chatId'>>;
+  response?: Resolver<Array<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryResponseArgs, 'jobId'>>;
+};
+
+export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {
+  candidateId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  dateCreated?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  jobId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
   messageAdded?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageAdded", ParentType, ContextType>;
 };
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Candidate?: CandidateResolvers<ContextType>;
+  Chat?: ChatResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
   Job?: JobResolvers<ContextType>;
   JobList?: JobListResolvers<ContextType>;
@@ -411,6 +477,8 @@ export type Resolvers<ContextType = any> = {
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Response?: ResponseResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
 

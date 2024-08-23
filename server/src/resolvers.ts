@@ -1,11 +1,16 @@
-import {getJobs, getJob, addJob, getJobsByCompany, countJobs, updateJob, deleteJob} from "./db/jobs.js";
-import { getCompany, addCompany } from "./db/company.js";
 import {
-  candidateNotFoundError,
-  companyNotFoundError,
+  getJobs,
+  getJob,
+  addJob,
+  getJobsByCompany,
+  countJobs,
+  updateJob,
+  deleteJob,
+} from "./db/jobs.js";
+import {getCompany, addCompany} from "./db/company.js";
+import {
   noPermissionError,
   unauthorizedError,
-  userNotFoundError
 } from "./errors.ts";
 import {
   addCandidate,
@@ -14,11 +19,11 @@ import {
   removeSavedJobForCandidate,
   saveJobsForCandidate
 } from "./db/candidates.js";
-import { Resolvers} from "./generated/shema.js";
+import {Message, Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
 import {PubSub} from "graphql-subscriptions";
-import {createMessage, getMessages} from "./db/messages.js";
-import jwt from "jsonwebtoken";
+import {createMessage, createResponse, getChat, getChatMessages} from "./db/chat.js";
+import {createChat, getChats} from "./db/chat.js";
 
 export interface ResolverContext {
   context: Token
@@ -46,6 +51,22 @@ const checkCandidatePermission = (context: Token) => {
   }
 }
 
+const checkPermission = async (context: Token) => {
+  if (context.role === "candidate") {
+    const candidate = await getCandidate(context.id);
+
+    if (!candidate) {
+      throw noPermissionError()
+    }
+  } else {
+    const company = await getCompany(context.id);
+
+    if (!company) {
+      throw noPermissionError()
+    }
+  }
+}
+
 // @ts-ignore
 // @ts-ignore
 export const resolvers: Resolvers<ResolverContext> = {
@@ -56,10 +77,20 @@ export const resolvers: Resolvers<ResolverContext> = {
 
       return { items, totalCount }
     },
+
     company: (_root, { id }) => getCompany(id),
+
     job: (_root, { id }) => getJob(id),
+
     candidate: (_root, { id }) => getCandidate(id),
-    messages: (_root) => getMessages()
+
+    chats: async (_root, _args, { context}) => {
+      await checkPermission(context);
+
+      return await getChats(context.id, context.role)
+    },
+
+    messages: async (_root, { chatId }, { context } ) => getChatMessages(chatId, context.id, context.role),
   },
 
   Mutation: {
@@ -99,24 +130,36 @@ export const resolvers: Resolvers<ResolverContext> = {
       return await removeSavedJobForCandidate({ candidateId, jobId })
     },
 
-    addMessage: async (_root, { senderId, receiverId, content }, { context }) => {
-      if (context.id !== senderId) {
-        throw noPermissionError()
-      }
+    addMessage: async (_root, { text, chatId }, { context }) => {
+      await checkPermission(context);
 
-      const candidate = await getCandidate(receiverId);
+      const { id, senderId, dateCreated } = await createMessage(context.id, chatId, text);
 
-      if (!candidate) {
-        const company = await getCompany(receiverId);
+      const sender = await (context.role === 'company' ? await getCompany(senderId) : getCandidate(senderId));
+      const chat = await getChat(chatId, context.id, context.role);
 
-        if (!company) {
-          throw userNotFoundError()
-        }
-      }
-
-      const message =  await createMessage(senderId, receiverId, content);
+      const message: Message = {
+        id,
+        text,
+        dateCreated,
+        sender: {
+          id: sender.id,
+          name: sender.name
+        },
+        chat
+      };
 
       await pubSub.publish('MESSAGE_ADDED', { messageAdded: message })
+    },
+
+    addResponse: async (_root, { jobId, text }, { context }) => {
+      checkCandidatePermission(context);
+
+      const { response, message} = await createResponse(jobId, context.id, text);
+
+      await pubSub.publish('MESSAGE_ADDED', { messageAdded: message })
+
+      return response;
     }
   },
 
