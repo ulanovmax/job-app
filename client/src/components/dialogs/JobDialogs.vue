@@ -38,7 +38,7 @@
 	</Dialog>
 
 	<Dialog v-model:visible="isApplyOpen" modal :header="applyHeader">
-		<apply-form :job="selectedJob" />
+		<apply-form :job="selectedJob" @added="isApplyOpen = false" />
 	</Dialog>
 </template>
 

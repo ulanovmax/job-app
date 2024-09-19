@@ -11,8 +11,6 @@
           "Job": "./src/ts/entities/job.entity#JobEntity",
           "JobList": "./src/ts/entities/job.entity#JobList",
           "Candidate": "./src/ts/entities/candidate.entity#CandidateEntity",
-          "Message": "./src/ts/entities/chat.entity#MessageEntity",
-          "Chat": "./src/ts/entities/chat.entity#ChatEntity",
           "Response": "./src/ts/entities/job.entity#ResponseEntity"
         }
       }

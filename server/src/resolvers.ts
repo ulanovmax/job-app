@@ -19,11 +19,10 @@ import {
   removeSavedJobForCandidate,
   saveJobsForCandidate
 } from "./db/candidates.js";
-import {Message, Resolvers} from "./generated/shema.js";
+import { Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
 import {PubSub} from "graphql-subscriptions";
-import {createMessage, createResponse, getChat, getChatMessages} from "./db/chat.js";
-import {createChat, getChats} from "./db/chat.js";
+import {createResponse, getResponse, getResponses} from "./db/responses.js";
 
 export interface ResolverContext {
   context: Token
@@ -71,7 +70,7 @@ const checkPermission = async (context: Token) => {
 // @ts-ignore
 export const resolvers: Resolvers<ResolverContext> = {
   Query: {
-    jobs: async (_root, { limit, offset }, { context }) => {
+    jobs: async (_root, { limit, offset }) => {
       const items = await getJobs(limit, offset);
       const totalCount  = await countJobs();
 
@@ -84,13 +83,17 @@ export const resolvers: Resolvers<ResolverContext> = {
 
     candidate: (_root, { id }) => getCandidate(id),
 
-    chats: async (_root, _args, { context}) => {
-      await checkPermission(context);
+    responses: async (_root, _args, { context }) => {
+      checkCompanyPermission(context);
 
-      return await getChats(context.id, context.role)
+      const res = await getResponses(context.id)
+
+      // console.log(res)
+
+      return res
     },
 
-    messages: async (_root, { chatId }, { context } ) => getChatMessages(chatId, context.id, context.role),
+    response: async (_root, { id }) => getResponse(id),
   },
 
   Mutation: {
@@ -130,43 +133,21 @@ export const resolvers: Resolvers<ResolverContext> = {
       return await removeSavedJobForCandidate({ candidateId, jobId })
     },
 
-    addMessage: async (_root, { text, chatId }, { context }) => {
-      await checkPermission(context);
-
-      const { id, senderId, dateCreated } = await createMessage(context.id, chatId, text);
-
-      const sender = await (context.role === 'company' ? await getCompany(senderId) : getCandidate(senderId));
-      const chat = await getChat(chatId, context.id, context.role);
-
-      const message: Message = {
-        id,
-        text,
-        dateCreated,
-        sender: {
-          id: sender.id,
-          name: sender.name
-        },
-        chat
-      };
-
-      await pubSub.publish('MESSAGE_ADDED', { messageAdded: message })
-    },
-
     addResponse: async (_root, { jobId, text }, { context }) => {
       checkCandidatePermission(context);
 
-      const { response, message} = await createResponse(jobId, context.id, text);
+      const response = await createResponse(jobId, context.id, text);
 
-      await pubSub.publish('MESSAGE_ADDED', { messageAdded: message })
+      await pubSub.publish('RESPONSE_ADDED', { responseAdded: response })
 
       return response;
     }
   },
 
   Subscription: {
-    messageAdded: {
+    responseAdded: {
       // @ts-ignore
-      subscribe: () => pubSub.asyncIterator('MESSAGE_ADDED'),
+      subscribe: () => pubSub.asyncIterator('RESPONSE_ADDED'),
     }
   },
 
@@ -177,6 +158,11 @@ export const resolvers: Resolvers<ResolverContext> = {
         return JSON.parse(job.requirements)
       }
     },
+    responses: (job) => {
+      if (typeof job.responses === 'string') {
+        return JSON.parse(job.responses)
+      }
+    }
   },
 
   Company: {
@@ -190,5 +176,11 @@ export const resolvers: Resolvers<ResolverContext> = {
 
   Candidate: {
     savedJobs: async (candidate) => getCandidateSavedJobs(candidate)
+  },
+
+  Response: {
+    job: async (response) => getJob(response.jobId),
+    company: async (response) => getCompany(response.companyId),
+    candidate: async (response) => getCandidate(response.candidateId),
   }
 };

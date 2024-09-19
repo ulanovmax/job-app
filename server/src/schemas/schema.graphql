@@ -3,9 +3,8 @@ type Query {
   job(id: ID!): Job
   company(id: ID!): Company
   candidate(id: ID!): Candidate
-  chats: [Chat!]!
-  response(jobId: ID!): [Response!]!
-  messages(chatId: ID!): [Message!]!
+  response(id: ID!): Response
+  responses: [Response!]!
 }
 
 type Mutation {
@@ -16,17 +15,11 @@ type Mutation {
   removeSavedJob(candidateId: ID!, jobId: ID!): [ID!]
   deleteJob(id: ID!, companyId: ID!): Job
   updateJob(id: ID!, companyId: ID!, input: JobCreateInput!): Job
-  addMessage(chatId: ID!, text: String!): Message
   addResponse(jobId: ID!, text: String!): Response
 }
 
 type Subscription {
-  messageAdded: Message
-}
-
-type User {
-  name: String!
-  id: ID!
+  responseAdded: Response
 }
 
 """
@@ -83,7 +76,7 @@ type Job {
   company: Company!
   dateCreated: String!
   description: String
-  responses: Int!
+  responses: [String!]!
   country: String!
   type: JobType!
   requirements: JobRequirements
@@ -112,8 +105,10 @@ enum JobType {
 type Response {
   id: ID!
   dateCreated: String!
-  jobId: String!
-  candidateId: String!
+  job: Job!
+  company: Company!
+  candidate: Candidate!
+  message: String!
 }
 
 """
@@ -124,23 +119,6 @@ input JobCreateInput {
   description: String
   type: JobType
   requirements: JobRequirementsInput
-}
-
-"""
-Types for chat
-"""
-type Chat {
-  id: ID!
-  dateCreated: String!
-  sender: User!
-}
-
-type Message {
-  id: ID!
-  text: ID!
-  dateCreated: String!
-  chat: Chat!
-  sender: User!
 }
 
 

@@ -11,14 +11,47 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
+import { useQuery, useSubscription } from "@vue/apollo-composable";
+
 import VFooter from "@/components/layout/VFooter.vue";
 import VHeader from "@/components/layout/VHeader.vue";
 
+import { storeToRefs } from "pinia";
+
+import type { GetResponsesQuery } from "@/apollo/generated/graphql.ts";
+import { GET_RESPONSES } from "@/apollo/gql/queries/responses.query.ts";
+import { SUBSCRIBE_RESPONSES } from "@/apollo/gql/subscriptions/responses.subscription.ts";
 import { useAuthStore } from "@/store/auth.store.ts";
+import { useInboxStore } from "@/store/inbox.store.ts";
 
 const { checkProfileAuth } = useAuthStore();
+const { responses } = storeToRefs(useInboxStore());
 
 void checkProfileAuth();
+
+const { result, subscribeToMore, onResult } = useQuery<GetResponsesQuery>(
+	GET_RESPONSES,
+	{},
+	{
+		fetchPolicy: "network-only",
+	}
+);
+
+subscribeToMore({
+	document: SUBSCRIBE_RESPONSES,
+	updateQuery: (_result, { subscriptionData }) => {
+		if (subscriptionData.data.responseAdded) {
+			responses.value.unshift(subscriptionData.data.responseAdded);
+		}
+	},
+});
+
+onResult(() => {
+	if (result.value) {
+		responses.value = [...result.value.responses];
+	}
+});
 </script>
 
 <style scoped lang="postcss"></style>

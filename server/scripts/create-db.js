@@ -2,33 +2,31 @@ import { connection } from "../src/db/connection.js";
 
 const { schema } = connection;
 
-await schema.dropTableIfExists("candidate");
+// await schema.dropTableIfExists("candidate");
 await schema.dropTableIfExists("job");
-await schema.dropTableIfExists("company");
-await schema.dropTableIfExists("chats");
-await schema.dropTableIfExists("messages");
+// await schema.dropTableIfExists("company");
 await schema.dropTableIfExists("responses");
 
-await schema.createTable("company", (table) => {
-  table.text("id").notNullable().primary();
-  table.text("dateCreated");
-  table.text("name").notNullable();
-  table.text("email").notNullable().unique();
-  table.text("country").notNullable();
-  table.integer("employees").notNullable();
-  table.text("password").notNullable();
-  table.text("description");
-});
-
-const langLevels = [
-  "Beginner",
-  "Pre Intermediate",
-  "Intermediate",
-  "Upper Intermediate",
-  "Advanced",
-  "Proficient",
-];
-
+// await schema.createTable("company", (table) => {
+//   table.text("id").notNullable().primary();
+//   table.text("dateCreated");
+//   table.text("name").notNullable();
+//   table.text("email").notNullable().unique();
+//   table.text("country").notNullable();
+//   table.integer("employees").notNullable();
+//   table.text("password").notNullable();
+//   table.text("description");
+// });
+//
+// const langLevels = [
+//   "Beginner",
+//   "Pre Intermediate",
+//   "Intermediate",
+//   "Upper Intermediate",
+//   "Advanced",
+//   "Proficient",
+// ];
+//
 await schema.createTable("job", (table) => {
   table.text("id").notNullable().primary();
   table.text("companyId").notNullable().references("id").inTable("company");
@@ -37,60 +35,48 @@ await schema.createTable("job", (table) => {
   table.text("dateCreated").notNullable();
   table.text("country").notNullable();
   table.enu("type", ["Office", "Remote"]).notNullable();
-  table.integer("responses");
+  table.json("responses").notNullable();
   table.json("requirements").notNullable();
 });
-
-await schema.createTable("candidate", (table) => {
-  table.text("id").notNullable().primary();
-  table.text("name").notNullable();
-  table.text("email").notNullable().unique();
-  table.integer("years").notNullable();
-  table.enu("englishLevel", langLevels).notNullable();
-  table.text("password").notNullable();
-  table.text("experience").notNullable();
-  table.json('savedJobs').notNullable()
-});
-
-await schema.createTable("chats", (table) => {
-  table.text("id").notNullable().primary();
-  table.text("dateCreated").notNullable();
-  table.text("senderId").notNullable();
-});
-
-await schema.createTable("messages", (table) => {
-  table.text("id").notNullable().primary();
-  table.text("chatId").notNullable();
-  table.text("dateCreated").notNullable();
-  table.text("senderId").notNullable();
-  table.text("text").notNullable();
-});
+//
+// await schema.createTable("candidate", (table) => {
+//   table.text("id").notNullable().primary();
+//   table.text("name").notNullable();
+//   table.text("email").notNullable().unique();
+//   table.integer("years").notNullable();
+//   table.enu("englishLevel", langLevels).notNullable();
+//   table.text("password").notNullable();
+//   table.text("experience").notNullable();
+//   table.json('savedJobs').notNullable()
+// });
 
 await schema.createTable("responses", (table) => {
   table.text("id").notNullable().primary();
   table.text("dateCreated");
   table.text("jobId").notNullable();
   table.text("candidateId").notNullable();
+  table.text("companyId").notNullable();
+  table.text("message").notNullable();
 });
 
-await connection.table("company").insert([
-  {
-    id: "FjcJCHJALA4i",
-    name: "Gotoinc",
-    description:
-      "Our mission is to launch, and upscale software businesses with our proven workflow and effective collaboration. We believe that optimal digital solutions for everyday hassles allow humanity to focus more on matters of global importance.",
-    country: "Ukraine",
-  },
-]);
-
-await connection.table('user').insert([
-  {
-    id: 'AcMJpL7b413Z',
-    companyId: 'FjcJCHJALA4i',
-    email: 'ulanov.work@gmail.com',
-    password: 'gotoinc2024',
-  },
-]);
+// await connection.table("company").insert([
+//   {
+//     id: "FjcJCHJALA4i",
+//     name: "Gotoinc",
+//     description:
+//       "Our mission is to launch, and upscale software businesses with our proven workflow and effective collaboration. We believe that optimal digital solutions for everyday hassles allow humanity to focus more on matters of global importance.",
+//     country: "Ukraine",
+//   },
+// ]);
+//
+// await connection.table('user').insert([
+//   {
+//     id: 'AcMJpL7b413Z',
+//     companyId: 'FjcJCHJALA4i',
+//     email: 'ulanov.work@gmail.com',
+//     password: 'gotoinc2024',
+//   },
+// ]);
 
 console.log("Tables successfully created");
 

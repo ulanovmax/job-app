@@ -40,6 +40,14 @@ export const jobNotFoundError = () => {
     })
 }
 
+export const responseAlreadySentError = () => {
+    return new GraphQLError("Response is already sent", {
+        extensions: {
+            code: "RESPONSE_SENT",
+        }
+    })
+}
+
 export const noPermissionError = () => {
     return new GraphQLError("You have no permission for this operation", {
         extensions: {

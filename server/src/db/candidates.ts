@@ -50,11 +50,13 @@ export const getCandidateSavedJobs = async (candidate: CandidateEntity): Promise
         const job = await getJob(id);
 
         return job ?? null;
-    }).filter((job) => job));
+    }));
+
+    const filteredJobs = jobs.filter(job => job)
 
     return {
-        items: jobs,
-        totalCount: jobs.length
+        items: filteredJobs,
+        totalCount: filteredJobs.length
     }
 }
 

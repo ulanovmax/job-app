@@ -18,7 +18,7 @@
 
 				<div class="opacity-60">
 					<i class="pi pi-users"></i>
-					{{ data.responses }}
+					{{ data.responses.length }}
 				</div>
 				<div class="opacity-60">
 					<i class="pi pi-calendar"></i>
@@ -127,7 +127,6 @@ const deleteJob = () => {
 };
 
 const handleSaveJob = () => {
-	console.log(isJobSaved(props.data.id));
 	isJobSaved(props.data.id)
 		? emits("remove-saved", props.data.id)
 		: emits("save", props.data.id);

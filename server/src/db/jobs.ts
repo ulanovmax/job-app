@@ -2,6 +2,7 @@ import { connection } from "./connection.js";
 import { generateId } from "./ids.ts";
 import {JobEntity} from "../ts/entities/job.entity.js";
 import {Job, JobCreateInput} from "../generated/shema.js";
+import {deleteResponse, getResponseByJob} from "./responses.js";
 
 export const getJobTable = () => connection.table<JobEntity>("job");
 
@@ -47,7 +48,7 @@ export const addJob = async (companyId: JobEntity["companyId"], country: JobEnti
   const job: JobEntity = {
     id: generateId(),
     dateCreated: new Date().toISOString(),
-    responses: 0,
+    responses: JSON.stringify([]),
     companyId,
     country,
     title,
@@ -63,10 +64,13 @@ export const addJob = async (companyId: JobEntity["companyId"], country: JobEnti
 
 export const deleteJob = async (id: JobEntity["id"], companyId: JobEntity["companyId"]) => {
   const job = await getJobTable().first().where({ id, companyId });
+  const response = await getResponseByJob(job.id)
   
   if (!job) {
     return null;
   }
+
+  await deleteResponse(response.id)
   
   await getJobTable().delete().where({ id });
   
@@ -89,11 +93,7 @@ export const updateJob = async (id: JobEntity["id"], companyId: JobEntity["compa
     requirements: JSON.stringify(requirements),
   }
 
-  try {
-    await getJobTable().update(body).where({ id });
-  } catch (e) {
-    console.log(e)
-  }
+  await getJobTable().update(body).where({ id });
 
   const updatedJob: JobEntity = {
     ...job,

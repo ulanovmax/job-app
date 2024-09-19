@@ -15,7 +15,7 @@
 
 				<p class="flex items-center gap-2 opacity-60">
 					<i class="pi pi-users"></i>
-					{{ job.responses }}
+					{{ job.responses.length }}
 				</p>
 			</div>
 		</div>

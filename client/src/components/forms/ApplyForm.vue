@@ -1,5 +1,5 @@
 <template>
-	<form @submit.prevent="">
+	<form @submit.prevent="addResponse">
 		<div class="grid grid-cols-2 gap-4">
 			<div class="field col-span-full">
 				<label>
@@ -22,19 +22,52 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useToast } from "vue-toastification";
+import { useMutation } from "@vue/apollo-composable";
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
 
 import type { Job } from "@/apollo/generated/graphql.ts";
+import { CREATE_RESPONSE } from "@/apollo/gql/mutations/responses.mutation.ts";
 
 interface Props {
 	job?: Job;
 }
 
-defineProps<Props>();
+interface Emits {
+	(e: "added"): void;
+}
+
+const props = defineProps<Props>();
+const emits = defineEmits<Emits>();
 
 const applyText = ref("");
 const isLoading = ref(false);
+
+const toast = useToast();
+
+const { mutate } = useMutation(CREATE_RESPONSE);
+
+const addResponse = async () => {
+	if (props.job) {
+		isLoading.value = true;
+
+		try {
+			await mutate({
+				jobId: props.job.id,
+				text: applyText.value,
+			});
+
+			toast.success("Response has been sent");
+
+			emits("added");
+		} catch (e) {
+			toast.error("Response has not been sent");
+		} finally {
+			isLoading.value = false;
+		}
+	}
+};
 </script>
 
 <style scoped></style>

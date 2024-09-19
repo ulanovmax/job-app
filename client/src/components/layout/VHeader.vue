@@ -18,7 +18,10 @@
 						<li>
 							<router-link class="link" :to="{ name: 'inbox' }">
 								Inbox
-								<i class="pi pi-inbox"></i>
+								<span class="relative">
+									<i class="pi pi-inbox"></i>
+									<span v-if="showLabel" class="count"></span>
+								</span>
 							</router-link>
 						</li>
 					</ul>
@@ -31,8 +34,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from "vue";
+
 import HeaderMenu from "@/components/base/HeaderMenu.vue";
 import VLogo from "@/components/base/VLogo.vue";
+
+import { storeToRefs } from "pinia";
+
+import { useInboxStore } from "@/store/inbox.store.ts";
+
+const { responses, showLabel } = storeToRefs(useInboxStore());
+
+watch(responses, (value, oldValue) => {
+	if (value.length > oldValue.length) {
+		showLabel.value = true;
+	}
+});
 </script>
 
 <style scoped>
@@ -42,5 +59,9 @@ import VLogo from "@/components/base/VLogo.vue";
 	&.router-link-active {
 		@apply text-primary-400;
 	}
+}
+
+.count {
+	@apply absolute right-0 top-0 block h-1.5 w-1.5 rounded-full bg-red-500;
 }
 </style>

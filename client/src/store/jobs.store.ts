@@ -52,8 +52,6 @@ export const useJobsStore = defineStore("jobs", () => {
 				fetchPolicy: "network-only",
 			});
 
-			console.log(data.candidate);
-
 			if (data.candidate) {
 				savedJobs.value = data.candidate.savedJobs;
 			}
