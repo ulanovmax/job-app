@@ -38,7 +38,7 @@
 	</Dialog>
 
 	<Dialog v-model:visible="isApplyOpen" modal :header="applyHeader">
-		<apply-form :job="selectedJob" @added="isApplyOpen = false" />
+		<apply-form :job="selectedJob" @added="handleApply" />
 	</Dialog>
 </template>
 
@@ -55,6 +55,7 @@ import JobForm from "@/components/forms/JobForm.vue";
 import { storeToRefs } from "pinia";
 
 import { DELETE_JOB } from "@/apollo/gql/mutations/jobs.mutations.ts";
+import { useAuthStore } from "@/store/auth.store.ts";
 import { useJobPopup } from "@/store/dialogs/job-dialog.store.ts";
 import { useJobsStore } from "@/store/jobs.store.ts";
 
@@ -63,6 +64,8 @@ const { isEditOpen, isDeleteOpen, selectedJob, isApplyOpen } =
 	storeToRefs(jobPopupStore);
 
 const { loadMyJobs } = useJobsStore();
+
+const { getTokenInfo } = useAuthStore();
 
 const { mutate: deleteJob, loading: isDeleteLoading } = useMutation(DELETE_JOB);
 
@@ -101,6 +104,18 @@ const handleDelete = async () => {
 const handleEdit = () => {
 	isEditOpen.value = false;
 	void loadMyJobs();
+};
+
+const handleApply = () => {
+	const responses = [...selectedJob.value.responses];
+
+	if (selectedJob.value) {
+		responses.push(getTokenInfo().id);
+
+		selectedJob.value.responses = [...responses];
+	}
+
+	isApplyOpen.value = false;
 };
 </script>
 

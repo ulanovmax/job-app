@@ -2,6 +2,7 @@
 	<jobs-list
 		v-if="savedJobs?.items.length"
 		editable
+		:pagination="false"
 		:loading="isLoading"
 		:jobs="savedJobs"
 		@update:jobs="jobsStore.loadSavedJobs"

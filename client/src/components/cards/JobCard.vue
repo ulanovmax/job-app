@@ -20,9 +20,15 @@
 					<i class="pi pi-users"></i>
 					{{ data.responses.length }}
 				</div>
+
 				<div class="opacity-60">
 					<i class="pi pi-calendar"></i>
 					{{ useFormatDate(data.dateCreated) }}
+				</div>
+
+				<div v-if="isApplied" class="opacity-60">
+					<i class="pi pi-check-circle"></i>
+					Applied
 				</div>
 			</div>
 
@@ -75,7 +81,7 @@
 			<Tag severity="success" :value="data.type" />
 		</div>
 
-		<p>
+		<p class="line-camp line-camp-2">
 			{{ data.description }}
 		</p>
 	</router-link>
@@ -136,6 +142,10 @@ const isCompanyShow = computed(
 	() =>
 		params.id !== props.data.company.id &&
 		tokenInfo?.id !== props.data.company.id
+);
+
+const isApplied = computed(() =>
+	props.data.responses.includes(getTokenInfo().id)
 );
 </script>
 

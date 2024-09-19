@@ -5,11 +5,9 @@
 		<ul v-if="responses.length">
 			<li v-for="response in responses" :key="response.id">
 				<inbox-item
+					:role="isCompany() ? 'company' : 'candidate'"
 					:to="{ name: 'inboxView', params: { id: response.id } }"
-					:profile-name="response.candidate.name"
-					:date="response.dateCreated"
-					:job-name="response.job.title"
-					:message="response.message"
+					:data="response"
 				/>
 			</li>
 		</ul>
@@ -30,9 +28,12 @@ import InboxItem from "@/components/inbox/InboxItem.vue";
 
 import { storeToRefs } from "pinia";
 
+import { useAuthStore } from "@/store/auth.store.ts";
 import { useInboxStore } from "@/store/inbox.store.ts";
 
 const { showLabel, responses } = storeToRefs(useInboxStore());
+
+const { isCompany } = useAuthStore();
 
 const route = useRoute();
 

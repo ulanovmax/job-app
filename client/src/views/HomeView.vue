@@ -4,7 +4,6 @@
 
 		<jobs-list
 			v-model:offset="offset"
-			:pagination="false"
 			:loading="loading"
 			:jobs="jobs"
 			@update:jobs="updateJobs"

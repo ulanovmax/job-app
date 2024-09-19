@@ -62,6 +62,7 @@ const addResponse = async () => {
 
 			emits("added");
 		} catch (e) {
+			console.log(e);
 			toast.error("Response has not been sent");
 		} finally {
 			isLoading.value = false;

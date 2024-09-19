@@ -13,9 +13,9 @@ export async function createResponse(jobId: string, candidateId: string, text: s
         throw jobNotFoundError();
     }
 
-    // if (job.responses.includes(candidateId)) {
-    //     throw responseAlreadySentError()
-    // }
+    if (job.responses.includes(candidateId)) {
+        throw responseAlreadySentError()
+    }
 
     const id = generateId();
     const dateCreated = new Date().toISOString();
@@ -42,8 +42,12 @@ export async function createResponse(jobId: string, candidateId: string, text: s
     return response
 }
 
-export const getResponses = async (companyId: string) => {
+export const getCompanyResponses = async (companyId: string) => {
     return getResponsesTable().select().where({companyId}).orderBy("dateCreated", "desc");
+}
+
+export const getCandidateResponses = async (candidateId: string) => {
+    return getResponsesTable().select().where({candidateId}).orderBy("dateCreated", "desc");
 }
 
 export const getResponse = async (id: string) => await getResponsesTable().first().where({ id })

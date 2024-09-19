@@ -1,31 +1,34 @@
 <template>
 	<ProgressSpinner v-if="loading" class="mx-auto my-10 !block" />
 
-	<div v-else-if="job">
+	<div v-else-if="selectedJob">
 		<div class="mb-5">
 			<h1 class="mb-3">
-				{{ job.title }}
+				{{ selectedJob.title }}
 			</h1>
 
 			<div class="flex items-center gap-4">
 				<p class="flex items-center gap-2 opacity-60">
 					<i class="pi pi-calendar"></i>
-					{{ useFormatDate(job.dateCreated) }}
+					{{ useFormatDate(selectedJob.dateCreated) }}
 				</p>
 
-				<p class="flex items-center gap-2 opacity-60">
+				<p
+					v-if="selectedJob"
+					class="flex items-center gap-2 opacity-60"
+				>
 					<i class="pi pi-users"></i>
-					{{ job.responses.length }}
+					{{ selectedJob.responses.length }}
 				</p>
 			</div>
 		</div>
 
 		<div class="flex items-start justify-between gap-10">
 			<div class="content-element flex-grow">
-				{{ job.description ? job.description : "No description" }}
+				{{ selectedJob.description ?? "No description" }}
 			</div>
 
-			<div class="max-w-sm flex-grow">
+			<div class="w-full max-w-sm flex-shrink-0">
 				<div class="mb-5 rounded-lg bg-surface-700 p-5">
 					<router-link
 						v-if="isCompanyShow"
@@ -35,34 +38,40 @@
 							params: { id: job.company.id },
 						}"
 					>
-						{{ job.company.name }}
+						{{ selectedJob.company.name }}
 					</router-link>
 
 					<ul>
 						<li class="list-item">
 							<i class="pi pi-map-marker"></i>
-							{{ job.country }}
+							{{ selectedJob.country }}
 						</li>
 						<li class="list-item">
 							<i class="pi pi-briefcase"></i>
-							{{ job.type }}
+							{{ selectedJob.type }}
 						</li>
 						<li class="list-item">
 							<i class="pi pi-check-circle"></i>
-							{{ job.requirements?.years }} years of experience
+							{{ selectedJob.requirements?.years }} years of
+							experience
 						</li>
 						<li class="list-item">
 							<i class="pi pi-language"></i>
-							{{ job.requirements?.englishLevel }}
+							{{ selectedJob.requirements?.englishLevel }}
 						</li>
 					</ul>
 				</div>
 
 				<Button
 					v-if="isCandidate()"
-					label="Apply for the job"
+					:label="
+						isApplied
+							? 'You have already applied'
+							: 'Apply for the job'
+					"
 					class="w-full"
-					@click="handleApply"
+					:disabled="isApplied"
+					@click="isApplyOpen = true"
 				/>
 			</div>
 		</div>
@@ -70,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import Button from "primevue/button";
@@ -97,12 +106,17 @@ const { result, loading } = useQuery<{ job: Job }>(GET_CURRENT_JOB, {
 
 const job = computed(() => result.value?.job);
 
+const isApplied = computed(() =>
+	selectedJob.value?.responses.includes(getTokenInfo().id)
+);
+
 const isCompanyShow = computed(() => tokenInfo?.id !== job.value?.company.id);
 
-const handleApply = () => {
-	selectedJob.value = job.value;
-	isApplyOpen.value = true;
-};
+watch(job, (data) => {
+	if (data) {
+		selectedJob.value = { ...data };
+	}
+});
 </script>
 
 <style scoped>

@@ -50,6 +50,21 @@ h1 {
 	@apply text-3xl;
 }
 
+.line-camp {
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	overflow: hidden;
+	padding: 0 !important;
+
+	&.line-camp-4 {
+		-webkit-line-clamp: 4
+	}
+
+	&.line-camp-2 {
+		-webkit-line-clamp: 2
+	}
+}
+
 .fade-up {
 	animation: fade-up 0.5s ease
 }

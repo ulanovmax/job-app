@@ -11,8 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
-import { useQuery, useSubscription } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable";
 
 import VFooter from "@/components/layout/VFooter.vue";
 import VHeader from "@/components/layout/VHeader.vue";
@@ -26,7 +25,7 @@ import { useAuthStore } from "@/store/auth.store.ts";
 import { useInboxStore } from "@/store/inbox.store.ts";
 
 const { checkProfileAuth } = useAuthStore();
-const { responses } = storeToRefs(useInboxStore());
+const { responses, showLabel } = storeToRefs(useInboxStore());
 
 void checkProfileAuth();
 
@@ -40,9 +39,10 @@ const { result, subscribeToMore, onResult } = useQuery<GetResponsesQuery>(
 
 subscribeToMore({
 	document: SUBSCRIBE_RESPONSES,
-	updateQuery: (_result, { subscriptionData }) => {
+	updateQuery: (previousQueryResult, { subscriptionData }) => {
 		if (subscriptionData.data.responseAdded) {
 			responses.value.unshift(subscriptionData.data.responseAdded);
+			showLabel.value = true;
 		}
 	},
 });

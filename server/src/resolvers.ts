@@ -9,6 +9,7 @@ import {
 } from "./db/jobs.js";
 import {getCompany, addCompany} from "./db/company.js";
 import {
+  candidateNotFoundError, companyNotFoundError,
   noPermissionError,
   unauthorizedError,
 } from "./errors.ts";
@@ -22,7 +23,7 @@ import {
 import { Resolvers} from "./generated/shema.js";
 import {Token} from "./ts/token.js";
 import {PubSub} from "graphql-subscriptions";
-import {createResponse, getResponse, getResponses} from "./db/responses.js";
+import {createResponse, getCandidateResponses, getCompanyResponses, getResponse} from "./db/responses.js";
 
 export interface ResolverContext {
   context: Token
@@ -55,13 +56,13 @@ const checkPermission = async (context: Token) => {
     const candidate = await getCandidate(context.id);
 
     if (!candidate) {
-      throw noPermissionError()
+      throw candidateNotFoundError()
     }
   } else {
     const company = await getCompany(context.id);
 
     if (!company) {
-      throw noPermissionError()
+      throw companyNotFoundError()
     }
   }
 }
@@ -84,13 +85,13 @@ export const resolvers: Resolvers<ResolverContext> = {
     candidate: (_root, { id }) => getCandidate(id),
 
     responses: async (_root, _args, { context }) => {
-      checkCompanyPermission(context);
+      await checkPermission(context)
 
-      const res = await getResponses(context.id)
-
-      // console.log(res)
-
-      return res
+      if (context.role === 'company') {
+        return await getCompanyResponses(context.id)
+      } else {
+        return await getCandidateResponses(context.id)
+      }
     },
 
     response: async (_root, { id }) => getResponse(id),

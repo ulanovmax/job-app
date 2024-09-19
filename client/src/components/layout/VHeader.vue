@@ -17,10 +17,16 @@
 						</li>
 						<li>
 							<router-link class="link" :to="{ name: 'inbox' }">
-								Inbox
-								<span class="relative">
+								<span>
+									{{ isCompany() ? "Inbox" : "My responses" }}
+								</span>
+
+								<span class="relative leading-none">
 									<i class="pi pi-inbox"></i>
-									<span v-if="showLabel" class="count"></span>
+									<span
+										v-if="showLabel && isCompany()"
+										class="count"
+									></span>
 								</span>
 							</router-link>
 						</li>
@@ -34,22 +40,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-
 import HeaderMenu from "@/components/base/HeaderMenu.vue";
 import VLogo from "@/components/base/VLogo.vue";
 
 import { storeToRefs } from "pinia";
 
+import { useAuthStore } from "@/store/auth.store.ts";
 import { useInboxStore } from "@/store/inbox.store.ts";
 
-const { responses, showLabel } = storeToRefs(useInboxStore());
+const { showLabel } = storeToRefs(useInboxStore());
 
-watch(responses, (value, oldValue) => {
-	if (value.length > oldValue.length) {
-		showLabel.value = true;
-	}
-});
+const { isCompany } = useAuthStore();
 </script>
 
 <style scoped>
